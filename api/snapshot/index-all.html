@@ -70,11 +70,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonNumber.html#asDouble()" class="member-name-link">asDouble()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNumber.html" title="class in be.imgn.json">JsonNumber</a></dt>
 <dd>
-<div class="block">Returns the <code>double</code> nearest this number.</div>
+<div class="block">Returns the <code>double</code> nearest this number, or <code>NaN</code> or an infinity of JSON5.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonNumber.html#asFloat()" class="member-name-link">asFloat()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNumber.html" title="class in be.imgn.json">JsonNumber</a></dt>
 <dd>
-<div class="block">Returns the <code>float</code> nearest this number.</div>
+<div class="block">Returns the <code>float</code> nearest this number, or <code>NaN</code> or an infinity of JSON5.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonNumber.html#asInt()" class="member-name-link">asInt()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNumber.html" title="class in be.imgn.json">JsonNumber</a></dt>
 <dd>
@@ -98,25 +98,40 @@ code.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a> - package be.imgn.json</dt>
 <dd>
-<div class="block">Parsing and writing <a href="https://www.rfc-editor.org/rfc/rfc8259">RFC 8259</a> JSON.</div>
+<div class="block">Parsing and writing JSON: the parser and the writer, the documents and their immutable tree of values, and the
+errors.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a> - package be.imgn.json.bind</dt>
+<dd>
+<div class="block">The annotations that bind records to JSON, through code that the annotation processor of
+<code>be.imgn.json:json-processor</code> generates: <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind"><code>JsonRecord</code></a> and the annotations that tune it.</div>
 </dd>
 <dt><a href="be.imgn.json.processor/module-summary.html">be.imgn.json.processor</a> - module be.imgn.json.processor</dt>
 <dd>
-<div class="block">The annotation processor that generates the binders of the types annotated <code>be.imgn.json.JsonRecord</code>.</div>
+<div class="block">The annotation processor that generates the binders of the types annotated <code>be.imgn.json.bind.JsonRecord</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#beginArray()" class="member-name-link">beginArray()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/package-summary.html">be.imgn.json.spi</a> - package be.imgn.json.spi</dt>
 <dd>
-<div class="block">Reads the start of an array; <a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#hasNextElement()"><code>JsonStreamReader.hasNextElement()</code></a> then tells whether an element follows.</div>
+<div class="block">What the code generated for records implements and calls: not meant to be used directly.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#beginArray()" class="member-name-link">beginArray()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/package-summary.html">be.imgn.json.stream</a> - package be.imgn.json.stream</dt>
+<dd>
+<div class="block">Reading and writing JSON value by value, without a tree: <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream"><code>JsonStreamReader</code></a> over a parsed
+document, <a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream"><code>JsonStreamWriter</code></a> to an output.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#beginArray()" class="member-name-link">beginArray()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
+<dd>
+<div class="block">Reads the start of an array; <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#hasNextElement()"><code>JsonStreamReader.hasNextElement()</code></a> then tells whether an element follows.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#beginArray()" class="member-name-link">beginArray()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Starts an array.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#beginObject()" class="member-name-link">beginObject()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#beginObject()" class="member-name-link">beginObject()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
-<div class="block">Reads the start of an object; <a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#hasNextMember()"><code>JsonStreamReader.hasNextMember()</code></a> then tells whether a member follows.</div>
+<div class="block">Reads the start of an object; <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#hasNextMember()"><code>JsonStreamReader.hasNextMember()</code></a> then tells whether a member follows.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#beginObject()" class="member-name-link">beginObject()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#beginObject()" class="member-name-link">beginObject()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Starts an object.</div>
 </dd>
@@ -172,11 +187,11 @@ arrays do not either.</div>
 <dd>
 <div class="block">Returns the elements, as an unmodifiable list.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#endArray()" class="member-name-link">endArray()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#endArray()" class="member-name-link">endArray()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Ends the array being written.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#endObject()" class="member-name-link">endObject()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#endObject()" class="member-name-link">endObject()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Ends the object being written.</div>
 </dd>
@@ -201,13 +216,28 @@ arrays do not either.</div>
 <dd>
 <div class="block"><code>false</code>.</div>
 </dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html#format(be.imgn.json.JsonFormat)" class="member-name-link">format(JsonFormat)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></dt>
+<dd>
+<div class="block">Sets the syntax of the documents.</div>
+</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#format(be.imgn.json.JsonValue)" class="member-name-link">format(JsonValue)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
 <dd>
 <div class="block">Returns a value as JSON.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)" class="member-name-link">formatAs(Class, T)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
 <dd>
-<div class="block">Returns a value of a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, through the code the annotation processor generated.</div>
+<div class="block">Returns a value of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, through the code the
+annotation processor generated.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatLines(java.lang.Iterable)" class="member-name-link">formatLines(Iterable)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
+<dd>
+<div class="block">Returns values as <a href="https://jsonlines.org">JSON Lines</a>: each value compact, whatever the indentation of this
+writer, followed by <code>\n</code>, the last one included.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatLinesAs(java.lang.Class,java.lang.Iterable)" class="member-name-link">formatLinesAs(Class, Iterable)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
+<dd>
+<div class="block">Returns values of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as <a href="https://jsonlines.org">JSON Lines</a>, as
+<a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatLines(java.lang.Iterable)"><code>JsonWriter.formatLines(Iterable)</code></a> does.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:G">G</h2>
@@ -216,7 +246,7 @@ arrays do not either.</div>
 <dd>
 <div class="block">Returns an element.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonNames.html#get(int)" class="member-name-link">get(int)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNames.html" title="class in be.imgn.json">JsonNames</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonNames.html#get(int)" class="member-name-link">get(int)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a></dt>
 <dd>
 <div class="block">Returns a name.</div>
 </dd>
@@ -241,12 +271,12 @@ arrays do not either.</div>
 <dd>
 <div class="block">Returns a hash code value for this object.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#hasNextElement()" class="member-name-link">hasNextElement()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#hasNextElement()" class="member-name-link">hasNextElement()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Returns whether the array being read has another element, at which the reader then is; at the end of the
 array, reads it and returns <code>false</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#hasNextMember()" class="member-name-link">hasNextMember()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#hasNextMember()" class="member-name-link">hasNextMember()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Returns whether the object being read has another member, at whose name the reader then is; at the end of the
 object, reads it and returns <code>false</code>.</div>
@@ -254,7 +284,7 @@ object, reads it and returns <code>false</code>.</div>
 </dl>
 <h2 class="title" id="I:I">I</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/UnknownMembers.html#IGNORE" class="member-name-link">IGNORE</a> - Enum constant in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#IGNORE" class="member-name-link">IGNORE</a> - Enum constant in enum class be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a></dt>
 <dd>
 <div class="block">Skips the member; its value must still be valid JSON.</div>
 </dd>
@@ -277,22 +307,37 @@ object, reads it and returns <code>false</code>.</div>
 </dl>
 <h2 class="title" id="I:J">J</h2>
 <dl class="index">
+<dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html#JSON" class="member-name-link">JSON</a> - Enum constant in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></dt>
+<dd>
+<div class="block"><a href="https://www.rfc-editor.org/rfc/rfc8259">RFC 8259</a> JSON, the default.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html#JSON5" class="member-name-link">JSON5</a> - Enum constant in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></dt>
+<dd>
+<div class="block"><a href="https://spec.json5.org">JSON5 1.0.0</a>: JSON with comments; trailing commas; names written as ECMAScript
+5.1 identifiers; strings in single quotes, with more escape sequences and lines continued by a
+backslash; hexadecimal numbers, numbers with a leading or trailing decimal point or a plus sign, <code>NaN</code>
+and the infinities; and more white space, a leading byte order mark included.</div>
+</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonArray.html" class="type-name-link" title="class in be.imgn.json">JsonArray</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
 <div class="block">A JSON array: values, in order.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBinder.html" class="type-name-link" title="interface in be.imgn.json">JsonBinder&lt;T&gt;</a> - Interface in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html" class="type-name-link" title="interface in be.imgn.json.spi">JsonBinder&lt;T&gt;</a> - Interface in <a href="be.imgn.json/be/imgn/json/spi/package-summary.html">be.imgn.json.spi</a></dt>
 <dd>
 <div class="block">Reads a type from a stream and writes it to one.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html" class="type-name-link" title="class in be.imgn.json">JsonBindings</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" class="type-name-link" title="class in be.imgn.json.spi">JsonBindings</a> - Class in <a href="be.imgn.json/be/imgn/json/spi/package-summary.html">be.imgn.json.spi</a></dt>
 <dd>
-<div class="block">Reads the values that the code generated for <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> types binds from strings, and checks the type of a
-<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a>.</div>
+<div class="block">Reads the values that the code generated for <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> types binds from
+strings, and checks the type of a <a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a>.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html" class="type-name-link" title="enum class in be.imgn.json">JsonBoolean</a> - Enum Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
 <div class="block">A JSON boolean.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html#JSONC" class="member-name-link">JSONC</a> - Enum constant in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></dt>
+<dd>
+<div class="block"><a href="https://jsonc.org">JSONC</a>: JSON with <code>//</code> and <code>/* */</code> comments wherever JSON has whitespace.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonDocument.html" class="type-name-link" title="class in be.imgn.json">JsonDocument</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
@@ -302,20 +347,25 @@ object, reads it and returns <code>false</code>.</div>
 <dd>
 <div class="block">Thrown when a document cannot be read: it is not valid JSON, or it does not bind to the type it is read as.</div>
 </dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html" class="type-name-link" title="enum class in be.imgn.json">JsonFormat</a> - Enum Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dd>
+<div class="block">The syntax a <a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json"><code>JsonParser</code></a> reads, each strictly: a document is rejected as soon as it steps outside its
+format.</div>
+</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonMappingException.html" class="type-name-link" title="class in be.imgn.json">JsonMappingException</a> - Exception Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
 <div class="block">Thrown when a valid document does not bind to the type it is read as: a value of the wrong type, a number out of
 range, a missing or unknown member, or a value the type rejects.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonName.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonName</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/JsonName.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonName</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a></dt>
 <dd>
 <div class="block">Gives the name of a record component's member, the string of an enum constant, or the tag that names a record in a
 sealed interface, in place of its Java name.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonNames.html" class="type-name-link" title="class in be.imgn.json">JsonNames</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" class="type-name-link" title="class in be.imgn.json.stream">JsonNames</a> - Class in <a href="be.imgn.json/be/imgn/json/stream/package-summary.html">be.imgn.json.stream</a></dt>
 <dd>
-<div class="block">Member names known in advance, for <a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#name(be.imgn.json.JsonNames)"><code>JsonStreamReader.name(JsonNames)</code></a> to match without creating a <code>String</code>, and for
-<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#name(be.imgn.json.JsonNames,int)"><code>JsonStreamWriter.name(JsonNames, int)</code></a> to write already encoded.</div>
+<div class="block">Member names known in advance, for <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#name(be.imgn.json.stream.JsonNames)"><code>JsonStreamReader.name(JsonNames)</code></a> to match without creating a <code>String</code>, and for
+<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#name(be.imgn.json.stream.JsonNames,int)"><code>JsonStreamWriter.name(JsonNames, int)</code></a> to write already encoded.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonNull.html" class="type-name-link" title="enum class in be.imgn.json">JsonNull</a> - Enum Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
@@ -358,18 +408,20 @@ object with two members of the same name, or exceeds a limit, is rejected with a
 <dd>
 <div class="block">Creates a position.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonRecord.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonRecord</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonRecord</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a></dt>
 <dd>
 <div class="block">Marks a record, or a sealed interface of records, that documents bind to, with
-[JsonParser#parseAs(Class, byte[])], and that <a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)"><code>JsonWriter.formatAs(Class, Object)</code></a> writes.</div>
+[JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+<a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)">JsonWriter#formatAs(Class, Object)</a> writes.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" class="type-name-link" title="class in be.imgn.json">JsonStreamReader</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" class="type-name-link" title="class in be.imgn.json.stream">JsonStreamReader</a> - Class in <a href="be.imgn.json/be/imgn/json/stream/package-summary.html">be.imgn.json.stream</a></dt>
 <dd>
 <div class="block">Reads a document value by value, as typed reads.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" class="type-name-link" title="class in be.imgn.json">JsonStreamWriter</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" class="type-name-link" title="class in be.imgn.json.stream">JsonStreamWriter</a> - Class in <a href="be.imgn.json/be/imgn/json/stream/package-summary.html">be.imgn.json.stream</a></dt>
 <dd>
-<div class="block">Writes a document value by value, as UTF-8, compact or pretty as the <a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> that created it.</div>
+<div class="block">Writes a document value by value, as UTF-8, compact or pretty as the <a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a>
+that created it.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonString.html" class="type-name-link" title="class in be.imgn.json">JsonString</a> - Record Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
@@ -379,7 +431,7 @@ object with two members of the same name, or exceeds a limit, is rejected with a
 <dd>
 <div class="block">Creates a string.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonTagMember.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonTagMember</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/JsonTagMember.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonTagMember</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a></dt>
 <dd>
 <div class="block">Lays out a sealed interface as an object of its record whose tag member names the record, wherever it is among the
 members: <code>{&quot;type&quot;: &quot;circle&quot;, &quot;radius&quot;: 1}</code>.</div>
@@ -392,7 +444,7 @@ members: <code>{&quot;type&quot;: &quot;circle&quot;, &quot;radius&quot;: 1}</co
 <dd>
 <div class="block">A JSON value.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonWrapper.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonWrapper</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/JsonWrapper.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonWrapper</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a></dt>
 <dd>
 <div class="block">Lays out a sealed interface as an object with one member, named after the record, whose value is the record:
 <code>{&quot;circle&quot;: {&quot;radius&quot;: 1}}</code>.</div>
@@ -419,17 +471,17 @@ members: <code>{&quot;type&quot;: &quot;circle&quot;, &quot;radius&quot;: 1}</co
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#mappingError(int,java.lang.String)" class="member-name-link">mappingError(int, String)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#mappingError(int,java.lang.String)" class="member-name-link">mappingError(int, String)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Returns an error about a value, such as a missing member of an object or a value a record rejects, to throw.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#mappingError(int,java.lang.String,java.lang.Throwable)" class="member-name-link">mappingError(int, String, Throwable)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#mappingError(int,java.lang.String,java.lang.Throwable)" class="member-name-link">mappingError(int, String, Throwable)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Returns an error about a value, caused by an exception.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#mark()" class="member-name-link">mark()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#mark()" class="member-name-link">mark()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
-<div class="block">Returns a mark of the next value, for <a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#mappingError(int,java.lang.String)"><code>JsonStreamReader.mappingError(int, String)</code></a> to report an error at its position once it
+<div class="block">Returns a mark of the next value, for <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#mappingError(int,java.lang.String)"><code>JsonStreamReader.mappingError(int, String)</code></a> to report an error at its position once it
 was read.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html#maxDepth(int)" class="member-name-link">maxDepth(int)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></dt>
@@ -455,15 +507,15 @@ was read.</div>
 </dl>
 <h2 class="title" id="I:N">N</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#name(be.imgn.json.JsonNames)" class="member-name-link">name(JsonNames)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#name(be.imgn.json.stream.JsonNames)" class="member-name-link">name(JsonNames)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a member name, and returns its index among known names.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#name(be.imgn.json.JsonNames,int)" class="member-name-link">name(JsonNames, int)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#name(be.imgn.json.stream.JsonNames,int)" class="member-name-link">name(JsonNames, int)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a known member name, already encoded.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#name(java.lang.String)" class="member-name-link">name(String)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#name(java.lang.String)" class="member-name-link">name(String)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a member name.</div>
 </dd>
@@ -471,7 +523,7 @@ was read.</div>
 <dd>
 <div class="block"><code>null</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#nullValue()" class="member-name-link">nullValue()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#nullValue()" class="member-name-link">nullValue()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes <code>null</code>.</div>
 </dd>
@@ -506,7 +558,7 @@ was read.</div>
 <dd>
 <div class="block">Returns an array of values.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonNames.html#of(java.lang.String...)" class="member-name-link">of(String...)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNames.html" title="class in be.imgn.json">JsonNames</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonNames.html#of(java.lang.String...)" class="member-name-link">of(String...)</a> - Static method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a></dt>
 <dd>
 <div class="block">Returns names.</div>
 </dd>
@@ -551,33 +603,62 @@ was read.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseAs(java.lang.Class,byte%5B%5D)" class="member-name-link">parseAs(Class, byte[])</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
 <dd>
-<div class="block">Parses a document and binds it to a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type, through the code the annotation processor generated.</div>
+<div class="block">Parses a document and binds it to a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type, through the code
+the annotation processor generated.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)" class="member-name-link">parseAs(Class, ByteSource)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
 <dd>
-<div class="block">Parses a document, read whole, and binds it to a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type.</div>
+<div class="block">Parses a document, read whole, and binds it to a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseAs(java.lang.Class,be.imgn.gaia.core.io.CharSource)" class="member-name-link">parseAs(Class, CharSource)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
 <dd>
-<div class="block">Parses a document, read whole, and binds it to a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type.</div>
+<div class="block">Parses a document, read whole, and binds it to a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseAs(java.lang.Class,java.lang.String)" class="member-name-link">parseAs(Class, String)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
 <dd>
-<div class="block">Parses a document and binds it to a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type, through the code the annotation processor generated.</div>
+<div class="block">Parses a document and binds it to a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type, through the code
+the annotation processor generated.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(byte%5B%5D)" class="member-name-link">parseLines(byte[])</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
+<dd>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>: one JSON value per line, each a document of its own.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(be.imgn.gaia.core.io.ByteSource)" class="member-name-link">parseLines(ByteSource)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
+<dd>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(byte%5B%5D)"><code>JsonParser.parseLines(byte[])</code></a> does, read as the stream is consumed.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(java.lang.String)" class="member-name-link">parseLines(String)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
+<dd>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(byte%5B%5D)"><code>JsonParser.parseLines(byte[])</code></a> does.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLinesAs(java.lang.Class,byte%5B%5D)" class="member-name-link">parseLinesAs(Class, byte[])</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
+<dd>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(byte%5B%5D)"><code>JsonParser.parseLines(byte[])</code></a> does, and binds each line to a
+<a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLinesAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)" class="member-name-link">parseLinesAs(Class, ByteSource)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
+<dd>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(be.imgn.gaia.core.io.ByteSource)"><code>JsonParser.parseLines(ByteSource)</code></a> does, and binds each line to a
+<a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLinesAs(java.lang.Class,java.lang.String)" class="member-name-link">parseLinesAs(Class, String)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></dt>
+<dd>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="be.imgn.json/be/imgn/json/JsonParser.html#parseLines(byte%5B%5D)"><code>JsonParser.parseLines(byte[])</code></a> does, and binds each line to a
+<a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonException.html#path()" class="member-name-link">path()</a> - Method in exception class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonException.html" title="class in be.imgn.json">JsonException</a></dt>
 <dd>
 <div class="block">Returns the path to the value the error is in, as a <a href="https://www.rfc-editor.org/rfc/rfc6901">JSON Pointer</a>:
 <code>/items/2/name</code> is the member <code>name</code> of the third element of the member <code>items</code> of the root.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#peek()" class="member-name-link">peek()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#peek()" class="member-name-link">peek()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Returns the type of the next value, without reading it.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#peekTag(be.imgn.json.JsonNames,be.imgn.json.JsonNames)" class="member-name-link">peekTag(JsonNames, JsonNames)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#peekTag(be.imgn.json.stream.JsonNames,be.imgn.json.stream.JsonNames)" class="member-name-link">peekTag(JsonNames, JsonNames)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
-<div class="block">Returns the index of the tag that names the type of the next value, an object, from the string value of its tag
-member, wherever the member is among the others; the reader stays at the object.</div>
+<div class="block">Returns the index of the tag that names the type of the next value, an object, from the string value of
+its tag member, wherever the member is among the others; the reader stays at the object.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonException.html#position()" class="member-name-link">position()</a> - Method in exception class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonException.html" title="class in be.imgn.json">JsonException</a></dt>
 <dd>
@@ -606,31 +687,31 @@ member, wherever the member is among the others; the reader stays at the object.
 </dl>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/JsonBinder.html#read(be.imgn.json.JsonStreamReader)" class="member-name-link">read(JsonStreamReader)</a> - Method in interface be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBinder.html" title="interface in be.imgn.json">JsonBinder</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html#read(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">read(JsonStreamReader)</a> - Method in interface be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html" title="interface in be.imgn.json.spi">JsonBinder</a></dt>
 <dd>
 <div class="block">Reads a value of the type.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readBigDecimal()" class="member-name-link">readBigDecimal()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readBigDecimal()" class="member-name-link">readBigDecimal()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a number, exactly.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readBigInteger()" class="member-name-link">readBigInteger()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readBigInteger()" class="member-name-link">readBigInteger()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a number whose value is an integer, exactly.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readBoolean()" class="member-name-link">readBoolean()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readBoolean()" class="member-name-link">readBoolean()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a boolean.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readByte()" class="member-name-link">readByte()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readByte()" class="member-name-link">readByte()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a number whose value is an integer in the range of a <code>byte</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readDouble()" class="member-name-link">readDouble()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readDouble()" class="member-name-link">readDouble()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
-<div class="block">Reads a number, as the nearest <code>double</code>.</div>
+<div class="block">Reads a number, as the nearest <code>double</code>, or <code>NaN</code> or an infinity of JSON5.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readDuration(be.imgn.json.JsonStreamReader)" class="member-name-link">readDuration(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readDuration(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readDuration(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a duration, in ISO-8601: <code>PT1M30S</code>.</div>
 </dd>
@@ -642,73 +723,73 @@ member, wherever the member is among the others; the reader stays at the object.
 <dd>
 <div class="block">Returns a reader of a document, which is validated whole first.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readFloat()" class="member-name-link">readFloat()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readFloat()" class="member-name-link">readFloat()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
-<div class="block">Reads a number, as the nearest <code>float</code>.</div>
+<div class="block">Reads a number, as the nearest <code>float</code>, or <code>NaN</code> or an infinity of JSON5.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readInstant(be.imgn.json.JsonStreamReader)" class="member-name-link">readInstant(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readInstant(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readInstant(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads an instant, in ISO-8601: <code>2026-11-16T10:15:30Z</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readInt()" class="member-name-link">readInt()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readInt()" class="member-name-link">readInt()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a number whose value is an integer in the range of an <code>int</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readLocalDate(be.imgn.json.JsonStreamReader)" class="member-name-link">readLocalDate(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readLocalDate(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readLocalDate(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a date, in ISO-8601: <code>2026-11-16</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readLocalDateTime(be.imgn.json.JsonStreamReader)" class="member-name-link">readLocalDateTime(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readLocalDateTime(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readLocalDateTime(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a date-time, in ISO-8601: <code>2026-11-16T10:15:30</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readLocalTime(be.imgn.json.JsonStreamReader)" class="member-name-link">readLocalTime(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readLocalTime(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readLocalTime(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a time, in ISO-8601: <code>10:15:30</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readLong()" class="member-name-link">readLong()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readLong()" class="member-name-link">readLong()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a number whose value is an integer in the range of a <code>long</code>, such as <code>12</code>, <code>1.0</code> or <code>1e2</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readName()" class="member-name-link">readName()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readName()" class="member-name-link">readName()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a member name.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readNull()" class="member-name-link">readNull()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readNull()" class="member-name-link">readNull()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads the next value if it is <code>null</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readOffsetDateTime(be.imgn.json.JsonStreamReader)" class="member-name-link">readOffsetDateTime(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readOffsetDateTime(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readOffsetDateTime(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a date-time with an offset, in ISO-8601: <code>2026-11-16T10:15:30+01:00</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readShort()" class="member-name-link">readShort()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readShort()" class="member-name-link">readShort()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a number whose value is an integer in the range of a <code>short</code>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readString()" class="member-name-link">readString()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readString()" class="member-name-link">readString()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a string.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readUri(be.imgn.json.JsonStreamReader)" class="member-name-link">readUri(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readUri(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readUri(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a URI, as <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/net/URI.html#create(java.lang.String)" title="class or interface in java.net" class="external-link"><code>URI.create(String)</code></a> parses it.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readUuid(be.imgn.json.JsonStreamReader)" class="member-name-link">readUuid(JsonStreamReader)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readUuid(be.imgn.json.stream.JsonStreamReader)" class="member-name-link">readUuid(JsonStreamReader)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a UUID, in its canonical form: 36 characters, 32 hexadecimal digits in groups of 8, 4, 4, 4 and 12.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#readValue()" class="member-name-link">readValue()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#readValue()" class="member-name-link">readValue()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Reads a value of any type, as a <a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a>.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBindings.html#readValue(be.imgn.json.JsonStreamReader,java.lang.Class)" class="member-name-link">readValue(JsonStreamReader, Class)</a> - Static method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html#readValue(be.imgn.json.stream.JsonStreamReader,java.lang.Class)" class="member-name-link">readValue(JsonStreamReader, Class)</a> - Static method in class be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></dt>
 <dd>
 <div class="block">Reads a value of a <a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a> type.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT" class="member-name-link">REJECT</a> - Enum constant in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#REJECT" class="member-name-link">REJECT</a> - Enum constant in enum class be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a></dt>
 <dd>
-<div class="block">Throws a <a href="be.imgn.json/be/imgn/json/JsonMappingException.html" title="class in be.imgn.json"><code>JsonMappingException</code></a>.</div>
+<div class="block">Throws a <a href="be.imgn.json/be/imgn/json/JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a>.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonDocument.html#root()" class="member-name-link">root()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonDocument.html" title="class in be.imgn.json">JsonDocument</a></dt>
 <dd>
@@ -725,20 +806,20 @@ member, wherever the member is among the others; the reader stays at the object.
 <dd>
 <div class="block">Returns the number of elements.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonNames.html#size()" class="member-name-link">size()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNames.html" title="class in be.imgn.json">JsonNames</a></dt>
-<dd>
-<div class="block">Returns the number of names.</div>
-</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonObject.html#size()" class="member-name-link">size()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonObject.html" title="class in be.imgn.json">JsonObject</a></dt>
 <dd>
 <div class="block">Returns the number of members.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#skipUnknownMember(be.imgn.json.JsonNames)" class="member-name-link">skipUnknownMember(JsonNames)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonNames.html#size()" class="member-name-link">size()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a></dt>
 <dd>
-<div class="block">Skips the value of a member whose name <a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#name(be.imgn.json.JsonNames)"><code>JsonStreamReader.name(JsonNames)</code></a> did not know, or rejects it if the parser was built
-with <a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT"><code>UnknownMembers.REJECT</code></a>.</div>
+<div class="block">Returns the number of names.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#skipValue()" class="member-name-link">skipValue()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#skipUnknownMember(be.imgn.json.stream.JsonNames)" class="member-name-link">skipUnknownMember(JsonNames)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
+<dd>
+<div class="block">Skips the value of a member whose name <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#name(be.imgn.json.stream.JsonNames)"><code>JsonStreamReader.name(JsonNames)</code></a> did not know, or rejects it if the parser was built
+with <a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#REJECT"><code>UnknownMembers.REJECT</code></a>.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#skipValue()" class="member-name-link">skipValue()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></dt>
 <dd>
 <div class="block">Skips a value of any type, at a cost that does not depend on its size.</div>
 </dd>
@@ -753,7 +834,7 @@ with <a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT"><code>Unknow
 </dl>
 <h2 class="title" id="I:T">T</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#toByteArray()" class="member-name-link">toByteArray()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#toByteArray()" class="member-name-link">toByteArray()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Returns the document written.</div>
 </dd>
@@ -763,15 +844,13 @@ with <a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT"><code>Unknow
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#toBytesAs(java.lang.Class,T)" class="member-name-link">toBytesAs(Class, T)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
 <dd>
-<div class="block">Returns a value of a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8.</div>
+<div class="block">Returns a value of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonArray.html#toString()" class="member-name-link">toString()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonArray.html" title="class in be.imgn.json">JsonArray</a></dt>
 <dd>
 <div class="block">Returns this array as compact JSON.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#toString()" class="member-name-link">toString()</a> - Method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonNames.html#toString()" class="member-name-link">toString()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNames.html" title="class in be.imgn.json">JsonNames</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonNull.html#toString()" class="member-name-link">toString()</a> - Method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNull.html" title="enum class in be.imgn.json">JsonNull</a></dt>
 <dd>&nbsp;</dd>
@@ -791,16 +870,14 @@ with <a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT"><code>Unknow
 <dd>
 <div class="block">Returns the string as JSON, quoted and escaped.</div>
 </dd>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonNames.html#toString()" class="member-name-link">toString()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#TRUE" class="member-name-link">TRUE</a> - Enum constant in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
 <dd>
 <div class="block"><code>true</code>.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonArray.html#type()" class="member-name-link">type()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonArray.html" title="class in be.imgn.json">JsonArray</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonBinder.html#type()" class="member-name-link">type()</a> - Method in interface be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBinder.html" title="interface in be.imgn.json">JsonBinder</a></dt>
-<dd>
-<div class="block">Returns the type.</div>
-</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#type()" class="member-name-link">type()</a> - Method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonNull.html#type()" class="member-name-link">type()</a> - Method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNull.html" title="enum class in be.imgn.json">JsonNull</a></dt>
@@ -815,69 +892,81 @@ with <a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT"><code>Unknow
 <dd>
 <div class="block">Returns the type of this value.</div>
 </dd>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html#type()" class="member-name-link">type()</a> - Method in interface be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html" title="interface in be.imgn.json.spi">JsonBinder</a></dt>
+<dd>
+<div class="block">Returns the type.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:U">U</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html#unknownMembers(be.imgn.json.UnknownMembers)" class="member-name-link">unknownMembers(UnknownMembers)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html#unknownMembers(be.imgn.json.bind.UnknownMembers)" class="member-name-link">unknownMembers(UnknownMembers)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></dt>
 <dd>
 <div class="block">Sets what binding does with a member that no component of a record takes.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/UnknownMembers.html" class="type-name-link" title="enum class in be.imgn.json">UnknownMembers</a> - Enum Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" class="type-name-link" title="enum class in be.imgn.json.bind">UnknownMembers</a> - Enum Class in <a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a></dt>
 <dd>
 <div class="block">What binding does with a member of an object that no component of the record takes.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:V">V</h2>
 <dl class="index">
+<dt><a href="be.imgn.json/be/imgn/json/bind/JsonName.html#value()" class="member-name-link">value()</a> - Element in annotation interface be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/JsonName.html" title="annotation interface in be.imgn.json.bind">JsonName</a></dt>
+<dd>
+<div class="block">Returns the name, taken as it is.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/bind/JsonTagMember.html#value()" class="member-name-link">value()</a> - Element in annotation interface be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/JsonTagMember.html" title="annotation interface in be.imgn.json.bind">JsonTagMember</a></dt>
+<dd>
+<div class="block">Returns the name of the tag member.</div>
+</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#value()" class="member-name-link">value()</a> - Method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
 <dd>
 <div class="block">Returns the value of this boolean.</div>
-</dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonName.html#value()" class="member-name-link">value()</a> - Element in annotation interface be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonName.html" title="annotation interface in be.imgn.json">JsonName</a></dt>
-<dd>
-<div class="block">Returns the name, taken as it is.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonString.html#value()" class="member-name-link">value()</a> - Method in record class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonString.html" title="class in be.imgn.json">JsonString</a></dt>
 <dd>
 <div class="block">Returns the value of the <a href="./be.imgn.json/be/imgn/json/JsonString.html#param-value"><code>value</code></a> record component.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonTagMember.html#value()" class="member-name-link">value()</a> - Element in annotation interface be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonTagMember.html" title="annotation interface in be.imgn.json">JsonTagMember</a></dt>
-<dd>
-<div class="block">Returns the name of the tag member.</div>
-</dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(boolean)" class="member-name-link">value(boolean)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(boolean)" class="member-name-link">value(boolean)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a boolean.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(double)" class="member-name-link">value(double)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(double)" class="member-name-link">value(double)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a <code>double</code>, in its shortest form that reads back to the same value.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(float)" class="member-name-link">value(float)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(float)" class="member-name-link">value(float)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a <code>float</code>, in its shortest form that reads back to the same value.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(long)" class="member-name-link">value(long)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(long)" class="member-name-link">value(long)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes an integer.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(be.imgn.json.JsonValue)" class="member-name-link">value(JsonValue)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(be.imgn.json.JsonValue)" class="member-name-link">value(JsonValue)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a value of any type.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(java.lang.String)" class="member-name-link">value(String)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(java.lang.String)" class="member-name-link">value(String)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a string.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(java.math.BigDecimal)" class="member-name-link">value(BigDecimal)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(java.math.BigDecimal)" class="member-name-link">value(BigDecimal)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes a decimal number.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#value(java.math.BigInteger)" class="member-name-link">value(BigInteger)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#value(java.math.BigInteger)" class="member-name-link">value(BigInteger)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes an integer.</div>
 </dd>
+<dt><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
@@ -889,11 +978,17 @@ with <a href="be.imgn.json/be/imgn/json/UnknownMembers.html#REJECT"><code>Unknow
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/UnknownMembers.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#values()" class="member-name-link">values()</a> - Static method in enum class be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a></dt>
 <dd>
-<div class="block">Returns the enum constant of this class with the specified name.</div>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#values()" class="member-name-link">values()</a> - Static method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html#values()" class="member-name-link">values()</a> - Static method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
@@ -908,18 +1003,9 @@ the order they are declared.</div>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/UnknownMembers.html#values()" class="member-name-link">values()</a> - Static method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a></dt>
-<dd>
-<div class="block">Returns an array containing the constants of this enum class, in
-the order they are declared.</div>
-</dd>
 </dl>
 <h2 class="title" id="I:W">W</h2>
 <dl class="index">
-<dt><a href="be.imgn.json/be/imgn/json/JsonBinder.html#write(be.imgn.json.JsonStreamWriter,T)" class="member-name-link">write(JsonStreamWriter, T)</a> - Method in interface be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBinder.html" title="interface in be.imgn.json">JsonBinder</a></dt>
-<dd>
-<div class="block">Writes a value of the type.</div>
-</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#write(be.imgn.json.JsonValue,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">write(JsonValue, ByteSink)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
 <dd>
 <div class="block">Writes a value as JSON, in UTF-8, to a sink.</div>
@@ -928,25 +1014,49 @@ the order they are declared.</div>
 <dd>
 <div class="block">Writes a value as JSON, in UTF-8, to a stream.</div>
 </dd>
+<dt><a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html#write(be.imgn.json.stream.JsonStreamWriter,T)" class="member-name-link">write(JsonStreamWriter, T)</a> - Method in interface be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html" title="interface in be.imgn.json.spi">JsonBinder</a></dt>
+<dd>
+<div class="block">Writes a value of the type.</div>
+</dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeAs(java.lang.Class,T,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">writeAs(Class, T, ByteSink)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
 <dd>
-<div class="block">Writes a value of a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8, to a sink.</div>
+<div class="block">Writes a value of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8, to a sink.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeAs(java.lang.Class,T,java.io.OutputStream)" class="member-name-link">writeAs(Class, T, OutputStream)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
 <dd>
-<div class="block">Writes a value of a <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8, to a stream.</div>
+<div class="block">Writes a value of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8, to a stream.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeLines(java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">writeLines(Iterable, ByteSink)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
+<dd>
+<div class="block">Writes values as <a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a sink, as <a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatLines(java.lang.Iterable)"><code>JsonWriter.formatLines(Iterable)</code></a> does.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeLines(java.lang.Iterable,java.io.OutputStream)" class="member-name-link">writeLines(Iterable, OutputStream)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
+<dd>
+<div class="block">Writes values as <a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a stream, as <a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatLines(java.lang.Iterable)"><code>JsonWriter.formatLines(Iterable)</code></a>
+does.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeLinesAs(java.lang.Class,java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">writeLinesAs(Class, Iterable, ByteSink)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
+<dd>
+<div class="block">Writes values of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as
+<a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a sink, as <a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeLines(java.lang.Iterable,java.io.OutputStream)"><code>JsonWriter.writeLines(Iterable, OutputStream)</code></a> does.</div>
+</dd>
+<dt><a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeLinesAs(java.lang.Class,java.lang.Iterable,java.io.OutputStream)" class="member-name-link">writeLinesAs(Class, Iterable, OutputStream)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></dt>
+<dd>
+<div class="block">Writes values of a <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as
+<a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a stream, as <a href="be.imgn.json/be/imgn/json/JsonWriter.html#writeLines(java.lang.Iterable,java.io.OutputStream)"><code>JsonWriter.writeLines(Iterable, OutputStream)</code></a>
+does.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html#writeNullMembers()" class="member-name-link">writeNullMembers()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html" title="class in be.imgn.json">JsonWriter.Builder</a></dt>
 <dd>
 <div class="block">Makes the writer write a record component that is <code>null</code> as a member whose value is <code>null</code>, rather than
 omit it.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#writesNullMembers()" class="member-name-link">writesNullMembers()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#writesNullMembers()" class="member-name-link">writesNullMembers()</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Returns whether a record component that is <code>null</code> is written as <code>null</code>, rather than omitted, as the
-<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> that created this writer says.</div>
+<a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a> that created this writer says.</div>
 </dd>
-<dt><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#writeTo(java.io.OutputStream)" class="member-name-link">writeTo(OutputStream)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></dt>
+<dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#writeTo(java.io.OutputStream)" class="member-name-link">writeTo(OutputStream)</a> - Method in class be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></dt>
 <dd>
 <div class="block">Writes the document written to a stream.</div>
 </dd>

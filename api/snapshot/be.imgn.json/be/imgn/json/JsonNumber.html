@@ -99,8 +99,11 @@ implements <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue<
 <div class="block"><p>A JSON number, kept exactly as written: it is converted only when one of the <code>as</code> methods is called.</p>
 <p>The exact conversions, <a href="#asInt()"><code>asInt()</code></a>, <a href="#asLong()"><code>asLong()</code></a>, <a href="#asShort()"><code>asShort()</code></a>, <a href="#asByte()"><code>asByte()</code></a> and <a href="#asBigInteger()"><code>asBigInteger()</code></a>, accept any
 number whose value is an integer in their range, such as <code>1.0</code> or <code>1e2</code>, and throw an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ArithmeticException.html" title="class or interface in java.lang" class="external-link"><code>ArithmeticException</code></a>
-otherwise. <a href="#asDouble()"><code>asDouble()</code></a> and <a href="#asFloat()"><code>asFloat()</code></a> return the nearest value. <a href="#asBigDecimal()"><code>asBigDecimal()</code></a> is always exact.</p>
-<p>Two numbers are equal when their values are: <code>1</code>, <code>1.0</code> and <code>1e0</code> are equal. <a href="#toString()"><code>toString()</code></a> returns the number as
+otherwise. <a href="#asDouble()"><code>asDouble()</code></a> and <a href="#asFloat()"><code>asFloat()</code></a> return the nearest value. <a href="#asBigDecimal()"><code>asBigDecimal()</code></a> is exact.</p>
+<p>JSON5 also has <code>NaN</code>, <code>Infinity</code> and <code>-Infinity</code>: <a href="#asDouble()"><code>asDouble()</code></a> and <a href="#asFloat()"><code>asFloat()</code></a> return them, the exact conversions
+throw an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ArithmeticException.html" title="class or interface in java.lang" class="external-link"><code>ArithmeticException</code></a>, and writing them as JSON is an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link"><code>IllegalArgumentException</code></a>.</p>
+<p>Two numbers are equal when their values are: <code>1</code>, <code>1.0</code> and <code>1e0</code> are equal, and so are two <code>NaN</code>. <a href="#toString()"><code>toString()</code></a>
+returns the number as
 written.</p>
 </div>
 <dl class="notes">
@@ -140,12 +143,12 @@ written.</p>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asDouble()" class="member-name-link">asDouble</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the <code>double</code> nearest this number.</div>
+<div class="block">Returns the <code>double</code> nearest this number, or <code>NaN</code> or an infinity of JSON5.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>float</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asFloat()" class="member-name-link">asFloat</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the <code>float</code> nearest this number.</div>
+<div class="block">Returns the <code>float</code> nearest this number, or <code>NaN</code> or an infinity of JSON5.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#asInt()" class="member-name-link">asInt</a>()</code></div>
@@ -384,6 +387,8 @@ take too long and too much memory to compute (<code>1e1000000000</code> is a sho
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ArithmeticException.html" title="class or interface in java.lang" class="external-link">ArithmeticException</a></code> - if the number is <code>NaN</code> or an infinity</dd>
 </dl>
 </div>
 </section>
@@ -393,7 +398,7 @@ take too long and too much memory to compute (<code>1e1000000000</code> is a sho
 <h3>asDouble</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">asDouble</span>()</div>
-<div class="block">Returns the <code>double</code> nearest this number.</div>
+<div class="block">Returns the <code>double</code> nearest this number, or <code>NaN</code> or an infinity of JSON5.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value</dd>
@@ -408,7 +413,7 @@ take too long and too much memory to compute (<code>1e1000000000</code> is a sho
 <h3>asFloat</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="element-name">asFloat</span>()</div>
-<div class="block">Returns the <code>float</code> nearest this number.</div>
+<div class="block">Returns the <code>float</code> nearest this number, or <code>NaN</code> or an infinity of JSON5.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value</dd>

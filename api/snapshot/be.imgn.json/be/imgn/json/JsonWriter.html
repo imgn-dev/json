@@ -74,6 +74,12 @@ loadScripts(document, 'script');</script>
 <li><a href="#toBytesAs(java.lang.Class,T)" tabindex="0">toBytesAs(Class, T)</a></li>
 <li><a href="#writeAs(java.lang.Class,T,java.io.OutputStream)" tabindex="0">writeAs(Class, T, OutputStream)</a></li>
 <li><a href="#writeAs(java.lang.Class,T,be.imgn.gaia.core.io.ByteSink)" tabindex="0">writeAs(Class, T, ByteSink)</a></li>
+<li><a href="#formatLines(java.lang.Iterable)" tabindex="0">formatLines(Iterable)</a></li>
+<li><a href="#writeLines(java.lang.Iterable,java.io.OutputStream)" tabindex="0">writeLines(Iterable, OutputStream)</a></li>
+<li><a href="#writeLines(java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)" tabindex="0">writeLines(Iterable, ByteSink)</a></li>
+<li><a href="#formatLinesAs(java.lang.Class,java.lang.Iterable)" tabindex="0">formatLinesAs(Class, Iterable)</a></li>
+<li><a href="#writeLinesAs(java.lang.Class,java.lang.Iterable,java.io.OutputStream)" tabindex="0">writeLinesAs(Class, Iterable, OutputStream)</a></li>
+<li><a href="#writeLinesAs(java.lang.Class,java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)" tabindex="0">writeLinesAs(Class, Iterable, ByteSink)</a></li>
 <li><a href="#streamWriter()" tabindex="0">streamWriter()</a></li>
 </ol>
 </li>
@@ -166,14 +172,28 @@ created.</p>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#formatAs(java.lang.Class,T)" class="member-name-link">formatAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  T&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, through the code the annotation processor generated.</div>
+<div class="block">Returns a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, through the code the
+annotation processor generated.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#formatLines(java.lang.Iterable)" class="member-name-link">formatLines</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&gt;&nbsp;values)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns values as <a href="https://jsonlines.org">JSON Lines</a>: each value compact, whatever the indentation of this
+writer, followed by <code>\n</code>, the last one included.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#formatLinesAs(java.lang.Class,java.lang.Iterable)" class="member-name-link">formatLinesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends T&gt;&nbsp;values)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns values of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as <a href="https://jsonlines.org">JSON Lines</a>, as
+<a href="#formatLines(java.lang.Iterable)"><code>formatLines(Iterable)</code></a> does.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pretty()" class="member-name-link">pretty</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns a writer of pretty JSON: indented with 2 spaces, with a space after each colon.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#streamWriter()" class="member-name-link">streamWriter</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a writer of a document, value by value, with the settings of this writer.</div>
@@ -187,7 +207,7 @@ created.</p>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toBytesAs(java.lang.Class,T)" class="member-name-link">toBytesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  T&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8.</div>
+<div class="block">Returns a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#write(be.imgn.json.JsonValue,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">write</a><wbr>(<a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&nbsp;value,
@@ -206,14 +226,44 @@ created.</p>
  T&nbsp;value,
  be.imgn.gaia.core.io.ByteSink&nbsp;sink)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Writes a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8, to a sink.</div>
+<div class="block">Writes a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8, to a sink.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeAs(java.lang.Class,T,java.io.OutputStream)" class="member-name-link">writeAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  T&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;out)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Writes a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8, to a stream.</div>
+<div class="block">Writes a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8, to a stream.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeLines(java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">writeLines</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&gt;&nbsp;values,
+ be.imgn.gaia.core.io.ByteSink&nbsp;sink)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Writes values as <a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a sink, as <a href="#formatLines(java.lang.Iterable)"><code>formatLines(Iterable)</code></a> does.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeLines(java.lang.Iterable,java.io.OutputStream)" class="member-name-link">writeLines</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&gt;&nbsp;values,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;out)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Writes values as <a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a stream, as <a href="#formatLines(java.lang.Iterable)"><code>formatLines(Iterable)</code></a>
+does.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeLinesAs(java.lang.Class,java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)" class="member-name-link">writeLinesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends T&gt;&nbsp;values,
+ be.imgn.gaia.core.io.ByteSink&nbsp;sink)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Writes values of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as
+<a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a sink, as <a href="#writeLines(java.lang.Iterable,java.io.OutputStream)"><code>writeLines(Iterable, OutputStream)</code></a> does.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeLinesAs(java.lang.Class,java.lang.Iterable,java.io.OutputStream)" class="member-name-link">writeLinesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends T&gt;&nbsp;values,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;out)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Writes values of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as
+<a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a stream, as <a href="#writeLines(java.lang.Iterable,java.io.OutputStream)"><code>writeLines(Iterable, OutputStream)</code></a>
+does.</div>
 </div>
 </div>
 </div>
@@ -353,7 +403,8 @@ created.</p>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">formatAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  T&nbsp;value)</span></div>
-<div class="block">Returns a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, through the code the annotation processor generated.</div>
+<div class="block">Returns a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, through the code the
+annotation processor generated.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="formatAs(java.lang.Class,T)-type-param-T"><code>T</code> - the type</span></dd>
@@ -364,8 +415,8 @@ created.</p>
 <dd>the JSON</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a component of <code>value</code> that is not <code>@Nullable</code> is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a>), or a string of
-<code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of <code>value</code> has an unpaired surrogate</dd>
 </dl>
 </div>
 </section>
@@ -376,7 +427,7 @@ created.</p>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">toBytesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  T&nbsp;value)</span></div>
-<div class="block">Returns a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8.</div>
+<div class="block">Returns a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="toBytesAs(java.lang.Class,T)-type-param-T"><code>T</code> - the type</span></dd>
@@ -387,8 +438,8 @@ created.</p>
 <dd>the JSON</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a component of <code>value</code> that is not <code>@Nullable</code> is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a>), or a string of
-<code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of <code>value</code> has an unpaired surrogate</dd>
 </dl>
 </div>
 </section>
@@ -401,7 +452,7 @@ created.</p>
  T&nbsp;value,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;out)</span>
                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Writes a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8, to a stream.</div>
+<div class="block">Writes a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8, to a stream.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="writeAs(java.lang.Class,T,java.io.OutputStream)-type-param-T"><code>T</code> - the type</span></dd>
@@ -411,8 +462,8 @@ created.</p>
 <dd><code>out</code> - the stream, which is not closed</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a component of <code>value</code> that is not <code>@Nullable</code> is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a>), or a string of
-<code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of <code>value</code> has an unpaired surrogate</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the stream cannot be written</dd>
 </dl>
 </div>
@@ -426,7 +477,7 @@ created.</p>
  T&nbsp;value,
  be.imgn.gaia.core.io.ByteSink&nbsp;sink)</span>
                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Writes a value of a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type as JSON, in UTF-8, to a sink.</div>
+<div class="block">Writes a value of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as JSON, in UTF-8, to a sink.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="writeAs(java.lang.Class,T,be.imgn.gaia.core.io.ByteSink)-type-param-T"><code>T</code> - the type</span></dd>
@@ -436,8 +487,145 @@ created.</p>
 <dd><code>sink</code> - the sink</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a component of <code>value</code> that is not <code>@Nullable</code> is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a>), or a string of
-<code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of <code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the sink cannot be written</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="formatLines(java.lang.Iterable)">
+<h3>formatLines</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">formatLines</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&gt;&nbsp;values)</span></div>
+<div class="block">Returns values as <a href="https://jsonlines.org">JSON Lines</a>: each value compact, whatever the indentation of this
+writer, followed by <code>\n</code>, the last one included.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>values</code> - the values</dd>
+<dt>Returns:</dt>
+<dd>the lines</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="writeLines(java.lang.Iterable,java.io.OutputStream)">
+<h3>writeLines</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeLines</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&gt;&nbsp;values,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;out)</span>
+                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Writes values as <a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a stream, as <a href="#formatLines(java.lang.Iterable)"><code>formatLines(Iterable)</code></a>
+does. The lines are written as they come, not held in memory.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>values</code> - the values</dd>
+<dd><code>out</code> - the stream, which is not closed</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the stream cannot be written</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="writeLines(java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)">
+<h3>writeLines</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeLines</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends <a href="JsonValue.html" title="interface in be.imgn.json">JsonValue</a>&gt;&nbsp;values,
+ be.imgn.gaia.core.io.ByteSink&nbsp;sink)</span>
+                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Writes values as <a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a sink, as <a href="#formatLines(java.lang.Iterable)"><code>formatLines(Iterable)</code></a> does.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>values</code> - the values</dd>
+<dd><code>sink</code> - the sink</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the sink cannot be written</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="formatLinesAs(java.lang.Class,java.lang.Iterable)">
+<h3>formatLinesAs</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">formatLinesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends T&gt;&nbsp;values)</span></div>
+<div class="block">Returns values of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as <a href="https://jsonlines.org">JSON Lines</a>, as
+<a href="#formatLines(java.lang.Iterable)"><code>formatLines(Iterable)</code></a> does.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="formatLinesAs(java.lang.Class,java.lang.Iterable)-type-param-T"><code>T</code> - the type</span></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the type, which may be a sealed interface of the record</dd>
+<dd><code>values</code> - the values</dd>
+<dt>Returns:</dt>
+<dd>the lines</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value, or a component of a value that is not <code>@Nullable</code>, is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of a value has an unpaired surrogate</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="writeLinesAs(java.lang.Class,java.lang.Iterable,java.io.OutputStream)">
+<h3>writeLinesAs</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeLinesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends T&gt;&nbsp;values,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;out)</span>
+                      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Writes values of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as
+<a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a stream, as <a href="#writeLines(java.lang.Iterable,java.io.OutputStream)"><code>writeLines(Iterable, OutputStream)</code></a>
+does.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="writeLinesAs(java.lang.Class,java.lang.Iterable,java.io.OutputStream)-type-param-T"><code>T</code> - the type</span></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the type, which may be a sealed interface of the record</dd>
+<dd><code>values</code> - the values</dd>
+<dd><code>out</code> - the stream, which is not closed</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value, or a component of a value that is not <code>@Nullable</code>, is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of a value has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the stream cannot be written</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="writeLinesAs(java.lang.Class,java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)">
+<h3>writeLinesAs</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeLinesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;? extends T&gt;&nbsp;values,
+ be.imgn.gaia.core.io.ByteSink&nbsp;sink)</span>
+                      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Writes values of a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type as
+<a href="https://jsonlines.org">JSON Lines</a>, in UTF-8, to a sink, as <a href="#writeLines(java.lang.Iterable,java.io.OutputStream)"><code>writeLines(Iterable, OutputStream)</code></a> does.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="writeLinesAs(java.lang.Class,java.lang.Iterable,be.imgn.gaia.core.io.ByteSink)-type-param-T"><code>T</code> - the type</span></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the type, which may be a sealed interface of the record</dd>
+<dd><code>values</code> - the values</dd>
+<dd><code>sink</code> - the sink</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value, or a component of a value that is not <code>@Nullable</code>, is null</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type (see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a>), or a string of a value has an unpaired surrogate</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the sink cannot be written</dd>
 </dl>
 </div>
@@ -447,7 +635,7 @@ created.</p>
 <section class="detail" id="streamWriter()">
 <h3>streamWriter</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></span>&nbsp;<span class="element-name">streamWriter</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></span>&nbsp;<span class="element-name">streamWriter</span>()</div>
 <div class="block">Returns a writer of a document, value by value, with the settings of this writer.</div>
 <dl class="notes">
 <dt>Returns:</dt>

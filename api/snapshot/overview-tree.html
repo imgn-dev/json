@@ -51,7 +51,10 @@ loadScripts(document, 'script');</script>
 </div>
 <span class="package-hierarchy-label">Package Hierarchies:</span>
 <ul class="horizontal contents-list">
-<li><a href="be.imgn.json/be/imgn/json/package-tree.html">be.imgn.json</a></li>
+<li><a href="be.imgn.json/be/imgn/json/package-tree.html">be.imgn.json</a>, </li>
+<li><a href="be.imgn.json/be/imgn/json/bind/package-tree.html">be.imgn.json.bind</a>, </li>
+<li><a href="be.imgn.json/be/imgn/json/spi/package-tree.html">be.imgn.json.spi</a>, </li>
+<li><a href="be.imgn.json/be/imgn/json/stream/package-tree.html">be.imgn.json.stream</a></li>
 </ul>
 <section class="hierarchy">
 <h2 title="Class Hierarchy">Class Hierarchy</h2>
@@ -59,16 +62,16 @@ loadScripts(document, 'script');</script>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" class="type-name-link external-link" title="class or interface in java.lang">Object</a>
 <ul>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonArray.html" class="type-name-link" title="class in be.imgn.json">JsonArray</a> (implements be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a>)</li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBindings.html" class="type-name-link" title="class in be.imgn.json">JsonBindings</a></li>
+<li class="circle">be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" class="type-name-link" title="class in be.imgn.json.spi">JsonBindings</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonDocument.html" class="type-name-link" title="class in be.imgn.json">JsonDocument</a></li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNames.html" class="type-name-link" title="class in be.imgn.json">JsonNames</a></li>
+<li class="circle">be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" class="type-name-link" title="class in be.imgn.json.stream">JsonNames</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNumber.html" class="type-name-link" title="class in be.imgn.json">JsonNumber</a> (implements be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a>)</li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonObject.html" class="type-name-link" title="class in be.imgn.json">JsonObject</a> (implements be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a>)</li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonObject.Builder.html" class="type-name-link" title="class in be.imgn.json">JsonObject.Builder</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.html" class="type-name-link" title="class in be.imgn.json">JsonParser</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" class="type-name-link" title="class in be.imgn.json">JsonParser.Builder</a></li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" class="type-name-link" title="class in be.imgn.json">JsonStreamReader</a></li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" class="type-name-link" title="class in be.imgn.json">JsonStreamWriter</a></li>
+<li class="circle">be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" class="type-name-link" title="class in be.imgn.json.stream">JsonStreamReader</a></li>
+<li class="circle">be.imgn.json.stream.<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" class="type-name-link" title="class in be.imgn.json.stream">JsonStreamWriter</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.html" class="type-name-link" title="class in be.imgn.json">JsonWriter</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html" class="type-name-link" title="class in be.imgn.json">JsonWriter.Builder</a></li>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Throwable.html" class="type-name-link external-link" title="class or interface in java.lang">Throwable</a> (implements java.io.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
@@ -96,17 +99,17 @@ loadScripts(document, 'script');</script>
 <section class="hierarchy">
 <h2 title="Interface Hierarchy">Interface Hierarchy</h2>
 <ul>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBinder.html" class="type-name-link" title="interface in be.imgn.json">JsonBinder</a>&lt;T&gt;</li>
+<li class="circle">be.imgn.json.spi.<a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html" class="type-name-link" title="interface in be.imgn.json.spi">JsonBinder</a>&lt;T&gt;</li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonValue.html" class="type-name-link" title="interface in be.imgn.json">JsonValue</a></li>
 </ul>
 </section>
 <section class="hierarchy">
 <h2 title="Annotation Interface Hierarchy">Annotation Interface Hierarchy</h2>
 <ul>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonName.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonName</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonRecord.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonRecord</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonTagMember.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonTagMember</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWrapper.html" class="type-name-link" title="annotation interface in be.imgn.json">JsonWrapper</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
+<li class="circle">be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/JsonName.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonName</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
+<li class="circle">be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonRecord</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
+<li class="circle">be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/JsonTagMember.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonTagMember</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
+<li class="circle">be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/JsonWrapper.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonWrapper</a> (implements java.lang.annotation.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Annotation.html" title="class or interface in java.lang.annotation" class="external-link">Annotation</a>)</li>
 </ul>
 </section>
 <section class="hierarchy">
@@ -117,9 +120,10 @@ loadScripts(document, 'script');</script>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Enum.html" class="type-name-link external-link" title="class or interface in java.lang">Enum</a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;T&gt;, java.lang.constant.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a>, java.io.<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>)
 <ul>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" class="type-name-link" title="enum class in be.imgn.json">JsonBoolean</a> (implements be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a>)</li>
+<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonFormat.html" class="type-name-link" title="enum class in be.imgn.json">JsonFormat</a></li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonNull.html" class="type-name-link" title="enum class in be.imgn.json">JsonNull</a> (implements be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a>)</li>
 <li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonType.html" class="type-name-link" title="enum class in be.imgn.json">JsonType</a></li>
-<li class="circle">be.imgn.json.<a href="be.imgn.json/be/imgn/json/UnknownMembers.html" class="type-name-link" title="enum class in be.imgn.json">UnknownMembers</a></li>
+<li class="circle">be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" class="type-name-link" title="enum class in be.imgn.json.bind">UnknownMembers</a></li>
 </ul>
 </li>
 </ul>

@@ -75,6 +75,12 @@ loadScripts(document, 'script');</script>
 <li><a href="#parseAs(java.lang.Class,java.lang.String)" tabindex="0">parseAs(Class, String)</a></li>
 <li><a href="#parseAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)" tabindex="0">parseAs(Class, ByteSource)</a></li>
 <li><a href="#parseAs(java.lang.Class,be.imgn.gaia.core.io.CharSource)" tabindex="0">parseAs(Class, CharSource)</a></li>
+<li><a href="#parseLines(byte%5B%5D)" tabindex="0">parseLines(byte[])</a></li>
+<li><a href="#parseLines(java.lang.String)" tabindex="0">parseLines(String)</a></li>
+<li><a href="#parseLines(be.imgn.gaia.core.io.ByteSource)" tabindex="0">parseLines(ByteSource)</a></li>
+<li><a href="#parseLinesAs(java.lang.Class,byte%5B%5D)" tabindex="0">parseLinesAs(Class, byte[])</a></li>
+<li><a href="#parseLinesAs(java.lang.Class,java.lang.String)" tabindex="0">parseLinesAs(Class, String)</a></li>
+<li><a href="#parseLinesAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)" tabindex="0">parseLinesAs(Class, ByteSource)</a></li>
 </ol>
 </li>
 </ol>
@@ -93,7 +99,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">JsonParser</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block"><p>Parses <a href="https://www.rfc-editor.org/rfc/rfc8259">RFC 8259</a> JSON strictly: a document that is not valid JSON, has an
-object with two members of the same name, or exceeds a limit, is rejected with a <a href="JsonParseException.html" title="class in be.imgn.json"><code>JsonParseException</code></a>.</p>
+object with two members of the same name, or exceeds a limit, is rejected with a <a href="JsonParseException.html" title="class in be.imgn.json"><code>JsonParseException</code></a>. Set to
+another <a href="JsonFormat.html" title="enum class in be.imgn.json"><code>JsonFormat</code></a>, it parses JSONC or JSON5 as strictly.</p>
 <pre><code class="language-java">JsonDocument document = new JsonParser().parse(bytes);
 JsonParser strict = JsonParser.builder().maxDepth(64).unknownMembers(UnknownMembers.REJECT).build();
 </code></pre>
@@ -181,32 +188,70 @@ is encoded first. A byte order mark is rejected.</p>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseAs(java.lang.Class,byte%5B%5D)" class="member-name-link">parseAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  byte[]&nbsp;input)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parses a document and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type, through the code the annotation processor generated.</div>
+<div class="block">Parses a document and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type, through the code
+the annotation processor generated.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)" class="member-name-link">parseAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  be.imgn.gaia.core.io.ByteSource&nbsp;source)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parses a document, read whole, and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type.</div>
+<div class="block">Parses a document, read whole, and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseAs(java.lang.Class,be.imgn.gaia.core.io.CharSource)" class="member-name-link">parseAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  be.imgn.gaia.core.io.CharSource&nbsp;source)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parses a document, read whole, and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type.</div>
+<div class="block">Parses a document, read whole, and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseAs(java.lang.Class,java.lang.String)" class="member-name-link">parseAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Parses a document and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type, through the code the annotation processor generated.</div>
+<div class="block">Parses a document and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type, through the code
+the annotation processor generated.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;<a href="JsonDocument.html" title="class in be.imgn.json">JsonDocument</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseLines(byte%5B%5D)" class="member-name-link">parseLines</a><wbr>(byte[]&nbsp;input)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>: one JSON value per line, each a document of its own.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;<a href="JsonDocument.html" title="class in be.imgn.json">JsonDocument</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseLines(be.imgn.gaia.core.io.ByteSource)" class="member-name-link">parseLines</a><wbr>(be.imgn.gaia.core.io.ByteSource&nbsp;source)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does, read as the stream is consumed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;<a href="JsonDocument.html" title="class in be.imgn.json">JsonDocument</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseLines(java.lang.String)" class="member-name-link">parseLines</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseLinesAs(java.lang.Class,byte%5B%5D)" class="member-name-link">parseLinesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ byte[]&nbsp;input)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does, and binds each line to a
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;T&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseLinesAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)" class="member-name-link">parseLinesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ be.imgn.gaia.core.io.ByteSource&nbsp;source)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(be.imgn.gaia.core.io.ByteSource)"><code>parseLines(ByteSource)</code></a> does, and binds each line to a
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a><wbr>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseLinesAs(java.lang.Class,java.lang.String)" class="member-name-link">parseLinesAs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does, and binds each line to a
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reader(byte%5B%5D)" class="member-name-link">reader</a><wbr>(byte[]&nbsp;input)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a reader of a document, which is validated whole first.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reader(java.lang.String)" class="member-name-link">reader</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a reader of a document, which is validated whole first.</div>
@@ -334,7 +379,7 @@ is encoded first. A byte order mark is rejected.</p>
 <section class="detail" id="reader(byte[])">
 <h3>reader</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></span>&nbsp;<span class="element-name">reader</span><wbr><span class="parameters">(byte[]&nbsp;input)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></span>&nbsp;<span class="element-name">reader</span><wbr><span class="parameters">(byte[]&nbsp;input)</span></div>
 <div class="block">Returns a reader of a document, which is validated whole first.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -351,7 +396,7 @@ is encoded first. A byte order mark is rejected.</p>
 <section class="detail" id="reader(java.lang.String)">
 <h3>reader</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></span>&nbsp;<span class="element-name">reader</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></span>&nbsp;<span class="element-name">reader</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</span></div>
 <div class="block">Returns a reader of a document, which is validated whole first.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -370,7 +415,8 @@ is encoded first. A byte order mark is rejected.</p>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">parseAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  byte[]&nbsp;input)</span></div>
-<div class="block">Parses a document and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type, through the code the annotation processor generated.</div>
+<div class="block">Parses a document and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type, through the code
+the annotation processor generated.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="parseAs(java.lang.Class,byte[])-type-param-T"><code>T</code> - the type</span></dd>
@@ -382,7 +428,8 @@ is encoded first. A byte order mark is rejected.</p>
 <dt>Throws:</dt>
 <dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
 </dl>
 </div>
 </section>
@@ -393,7 +440,8 @@ is encoded first. A byte order mark is rejected.</p>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">parseAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</span></div>
-<div class="block">Parses a document and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type, through the code the annotation processor generated.</div>
+<div class="block">Parses a document and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type, through the code
+the annotation processor generated.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="parseAs(java.lang.Class,java.lang.String)-type-param-T"><code>T</code> - the type</span></dd>
@@ -405,7 +453,8 @@ is encoded first. A byte order mark is rejected.</p>
 <dt>Throws:</dt>
 <dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
 </dl>
 </div>
 </section>
@@ -417,7 +466,7 @@ is encoded first. A byte order mark is rejected.</p>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">parseAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  be.imgn.gaia.core.io.ByteSource&nbsp;source)</span>
               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Parses a document, read whole, and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type.</div>
+<div class="block">Parses a document, read whole, and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="parseAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)-type-param-T"><code>T</code> - the type</span></dd>
@@ -429,7 +478,8 @@ is encoded first. A byte order mark is rejected.</p>
 <dt>Throws:</dt>
 <dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the source cannot be read</dd>
 </dl>
 </div>
@@ -442,7 +492,7 @@ is encoded first. A byte order mark is rejected.</p>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">parseAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
  be.imgn.gaia.core.io.CharSource&nbsp;source)</span>
               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Parses a document, read whole, and binds it to a <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> type.</div>
+<div class="block">Parses a document, read whole, and binds it to a <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="parseAs(java.lang.Class,be.imgn.gaia.core.io.CharSource)-type-param-T"><code>T</code> - the type</span></dd>
@@ -454,8 +504,142 @@ is encoded first. A byte order mark is rejected.</p>
 <dt>Throws:</dt>
 <dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see <a href="JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the source cannot be read</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseLines(byte[])">
+<h3>parseLines</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="JsonDocument.html" title="class in be.imgn.json">JsonDocument</a>&gt;</span>&nbsp;<span class="element-name">parseLines</span><wbr><span class="parameters">(byte[]&nbsp;input)</span></div>
+<div class="block"><p>Parses <a href="https://jsonlines.org">JSON Lines</a>: one JSON value per line, each a document of its own.</p>
+<p>Lines end with <code>\n</code>, the last one optionally; the <code>\r</code> of a <code>\r\n</code> is whitespace. A blank line, or a value
+that does not end on its line, is an error, thrown when the stream reaches that line. The limits apply to
+each line, and positions are those in the whole input.</p>
+</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>input</code> - the lines, in UTF-8; it is not copied, and must not change while the documents are used</dd>
+<dt>Returns:</dt>
+<dd>the documents, one per line, parsed as the stream is consumed</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if this parser reads JSONC or JSON5: JSON Lines are JSON only</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseLines(java.lang.String)">
+<h3>parseLines</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="JsonDocument.html" title="class in be.imgn.json">JsonDocument</a>&gt;</span>&nbsp;<span class="element-name">parseLines</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</span></div>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>input</code> - the lines</dd>
+<dt>Returns:</dt>
+<dd>the documents, one per line, parsed as the stream is consumed</dd>
+<dt>Throws:</dt>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the input has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if this parser reads JSONC or JSON5: JSON Lines are JSON only</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseLines(be.imgn.gaia.core.io.ByteSource)">
+<h3>parseLines</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="JsonDocument.html" title="class in be.imgn.json">JsonDocument</a>&gt;</span>&nbsp;<span class="element-name">parseLines</span><wbr><span class="parameters">(be.imgn.gaia.core.io.ByteSource&nbsp;source)</span>
+                                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block"><p>Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does, read as the stream is consumed.</p>
+<p>The source stays open until the stream is closed: close it, with a <code>try</code>-with-resources statement. An error
+reading the source is an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/UncheckedIOException.html" title="class or interface in java.io" class="external-link"><code>UncheckedIOException</code></a>, thrown by the stream.</p>
+</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>source</code> - the lines, in UTF-8</dd>
+<dt>Returns:</dt>
+<dd>the documents, one per line, parsed as the stream is consumed</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if this parser reads JSONC or JSON5: JSON Lines are JSON only</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the source cannot be opened</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseLinesAs(java.lang.Class,byte[])">
+<h3>parseLinesAs</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;T&gt;</span>&nbsp;<span class="element-name">parseLinesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ byte[]&nbsp;input)</span></div>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does, and binds each line to a
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="parseLinesAs(java.lang.Class,byte[])-type-param-T"><code>T</code> - the type</span></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the type</dd>
+<dd><code>input</code> - the lines, in UTF-8; it is not copied, and must not change while the values are used</dd>
+<dt>Returns:</dt>
+<dd>the values, one per line, parsed and bound as the stream is consumed: a line that does not bind is
+a <a href="JsonMappingException.html" title="class in be.imgn.json"><code>JsonMappingException</code></a>, thrown by the stream</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if this parser reads JSONC or JSON5: JSON Lines are JSON only</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseLinesAs(java.lang.Class,java.lang.String)">
+<h3>parseLinesAs</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;T&gt;</span>&nbsp;<span class="element-name">parseLinesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</span></div>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(byte%5B%5D)"><code>parseLines(byte[])</code></a> does, and binds each line to a
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="parseLinesAs(java.lang.Class,java.lang.String)-type-param-T"><code>T</code> - the type</span></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the type</dd>
+<dd><code>input</code> - the lines</dd>
+<dt>Returns:</dt>
+<dd>the values, one per line, parsed and bound as the stream is consumed: a line that does not bind is
+a <a href="JsonMappingException.html" title="class in be.imgn.json"><code>JsonMappingException</code></a>, thrown by the stream</dd>
+<dt>Throws:</dt>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the input has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if this parser reads JSONC or JSON5: JSON Lines are JSON only</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseLinesAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)">
+<h3>parseLinesAs</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;T&gt;</span>&nbsp;<span class="element-name">parseLinesAs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;type,
+ be.imgn.gaia.core.io.ByteSource&nbsp;source)</span>
+                           throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Parses <a href="https://jsonlines.org">JSON Lines</a>, as <a href="#parseLines(be.imgn.gaia.core.io.ByteSource)"><code>parseLines(ByteSource)</code></a> does, and binds each line to a
+<a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> type.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><span id="parseLinesAs(java.lang.Class,be.imgn.gaia.core.io.ByteSource)-type-param-T"><code>T</code> - the type</span></dd>
+<dt>Parameters:</dt>
+<dd><code>type</code> - the type</dd>
+<dd><code>source</code> - the lines, in UTF-8</dd>
+<dt>Returns:</dt>
+<dd>the values, one per line, parsed and bound as the stream is consumed: a line that does not bind is
+a <a href="JsonMappingException.html" title="class in be.imgn.json"><code>JsonMappingException</code></a>, thrown by the stream; close it, as it holds the source open</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if this parser reads JSONC or JSON5: JSON Lines are JSON only</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the source cannot be opened</dd>
 </dl>
 </div>
 </section>

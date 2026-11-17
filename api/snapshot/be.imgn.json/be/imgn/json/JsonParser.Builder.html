@@ -58,11 +58,12 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
+<li><a href="#format(be.imgn.json.JsonFormat)" tabindex="0">format(JsonFormat)</a></li>
 <li><a href="#maxDepth(int)" tabindex="0">maxDepth(int)</a></li>
 <li><a href="#maxDocumentLength(int)" tabindex="0">maxDocumentLength(int)</a></li>
 <li><a href="#maxStringLength(int)" tabindex="0">maxStringLength(int)</a></li>
 <li><a href="#maxNumberLength(int)" tabindex="0">maxNumberLength(int)</a></li>
-<li><a href="#unknownMembers(be.imgn.json.UnknownMembers)" tabindex="0">unknownMembers(UnknownMembers)</a></li>
+<li><a href="#unknownMembers(be.imgn.json.bind.UnknownMembers)" tabindex="0">unknownMembers(UnknownMembers)</a></li>
 <li><a href="#build()" tabindex="0">build()</a></li>
 </ol>
 </li>
@@ -85,7 +86,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public static final class </span><span class="element-name type-name-label">JsonParser.Builder</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Builds a parser. Its defaults: a depth of 1 000 nested objects and arrays, no limit on the length of a
+<div class="block">Builds a parser. Its defaults: JSON, a depth of 1 000 nested objects and arrays, no limit on the length of a
 document besides that of an array, strings of up to 20 000 000 bytes, numbers of up to 1 000 bytes, and
 unknown members ignored by binding.</div>
 <dl class="notes">
@@ -113,28 +114,33 @@ unknown members ignored by binding.</div>
 <div class="block">Builds the parser.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxDepth(int)" class="member-name-link">maxDepth</a><wbr>(int&nbsp;maxDepth)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#format(be.imgn.json.JsonFormat)" class="member-name-link">format</a><wbr>(<a href="JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a>&nbsp;format)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the syntax of the documents.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxDepth(int)" class="member-name-link">maxDepth</a><wbr>(int&nbsp;maxDepth)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the maximum number of nested objects and arrays.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxDocumentLength(int)" class="member-name-link">maxDocumentLength</a><wbr>(int&nbsp;maxDocumentLength)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxDocumentLength(int)" class="member-name-link">maxDocumentLength</a><wbr>(int&nbsp;maxDocumentLength)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the maximum length of a document, in bytes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxNumberLength(int)" class="member-name-link">maxNumberLength</a><wbr>(int&nbsp;maxNumberLength)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxNumberLength(int)" class="member-name-link">maxNumberLength</a><wbr>(int&nbsp;maxNumberLength)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the maximum length of a number, in bytes, as written.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxStringLength(int)" class="member-name-link">maxStringLength</a><wbr>(int&nbsp;maxStringLength)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxStringLength(int)" class="member-name-link">maxStringLength</a><wbr>(int&nbsp;maxStringLength)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the maximum length of a string or a member name, in bytes, as written between its quotes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unknownMembers(be.imgn.json.UnknownMembers)" class="member-name-link">unknownMembers</a><wbr>(<a href="UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a>&nbsp;unknownMembers)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unknownMembers(be.imgn.json.bind.UnknownMembers)" class="member-name-link">unknownMembers</a><wbr>(<a href="bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a>&nbsp;unknownMembers)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets what binding does with a member that no component of a record takes.</div>
 </div>
 </div>
@@ -154,6 +160,21 @@ unknown members ignored by binding.</div>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="format(be.imgn.json.JsonFormat)">
+<h3>format</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></span>&nbsp;<span class="element-name">format</span><wbr><span class="parameters">(<a href="JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a>&nbsp;format)</span></div>
+<div class="block">Sets the syntax of the documents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>format</code> - <a href="JsonFormat.html#JSON"><code>JsonFormat.JSON</code></a>, <a href="JsonFormat.html#JSONC"><code>JsonFormat.JSONC</code></a> or <a href="JsonFormat.html#JSON5"><code>JsonFormat.JSON5</code></a></dd>
+<dt>Returns:</dt>
+<dd>this builder</dd>
+</dl>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="maxDepth(int)">
 <h3>maxDepth</h3>
@@ -225,14 +246,14 @@ also bounds the stack it uses.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="unknownMembers(be.imgn.json.UnknownMembers)">
+<section class="detail" id="unknownMembers(be.imgn.json.bind.UnknownMembers)">
 <h3>unknownMembers</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></span>&nbsp;<span class="element-name">unknownMembers</span><wbr><span class="parameters">(<a href="UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a>&nbsp;unknownMembers)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></span>&nbsp;<span class="element-name">unknownMembers</span><wbr><span class="parameters">(<a href="bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a>&nbsp;unknownMembers)</span></div>
 <div class="block">Sets what binding does with a member that no component of a record takes.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>unknownMembers</code> - <a href="UnknownMembers.html#IGNORE"><code>UnknownMembers.IGNORE</code></a> or <a href="UnknownMembers.html#REJECT"><code>UnknownMembers.REJECT</code></a></dd>
+<dd><code>unknownMembers</code> - <a href="bind/UnknownMembers.html#IGNORE"><code>UnknownMembers.IGNORE</code></a> or <a href="bind/UnknownMembers.html#REJECT"><code>UnknownMembers.REJECT</code></a></dd>
 <dt>Returns:</dt>
 <dd>this builder</dd>
 </dl>

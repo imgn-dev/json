@@ -1,3 +1,6 @@
 module:be.imgn.json
 be.imgn.json
+be.imgn.json.bind
+be.imgn.json.spi
+be.imgn.json.stream
 module:be.imgn.json.processor

@@ -59,14 +59,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A JSON array: values, in order.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="be.imgn.json/be/imgn/json/JsonBinder.html" title="interface in be.imgn.json">JsonBinder&lt;T&gt;</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="be.imgn.json/be/imgn/json/spi/JsonBinder.html" title="interface in be.imgn.json.spi">JsonBinder&lt;T&gt;</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Reads a type from a stream and writes it to one.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonBindings.html" title="class in be.imgn.json">JsonBindings</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/spi/JsonBindings.html" title="class in be.imgn.json.spi">JsonBindings</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">Reads the values that the code generated for <a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json"><code>JsonRecord</code></a> types binds from strings, and checks the type of a
-<a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a>.</div>
+<div class="block">Reads the values that the code generated for <a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a> types binds from
+strings, and checks the type of a <a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a>.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
@@ -80,99 +80,106 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
 <div class="block">Thrown when a document cannot be read: it is not valid JSON, or it does not bind to the type it is read as.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="be.imgn.json/be/imgn/json/JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab5">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="block">The syntax a <a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json"><code>JsonParser</code></a> reads, each strictly: a document is rejected as soon as it steps outside its
+format.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="be.imgn.json/be/imgn/json/JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
 <div class="block">Thrown when a valid document does not bind to the type it is read as: a value of the wrong type, a number out of
 range, a missing or unknown member, or a value the type rejects.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/JsonName.html" title="annotation interface in be.imgn.json">JsonName</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab6">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/bind/JsonName.html" title="annotation interface in be.imgn.json.bind">JsonName</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab6">
 <div class="block">Gives the name of a record component's member, the string of an enum constant, or the tag that names a record in a
 sealed interface, in place of its Java name.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonNames.html" title="class in be.imgn.json">JsonNames</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">Member names known in advance, for <a href="be.imgn.json/be/imgn/json/JsonStreamReader.html#name(be.imgn.json.JsonNames)"><code>JsonStreamReader.name(JsonNames)</code></a> to match without creating a <code>String</code>, and for
-<a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html#name(be.imgn.json.JsonNames,int)"><code>JsonStreamWriter.name(JsonNames, int)</code></a> to write already encoded.</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/stream/JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Member names known in advance, for <a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html#name(be.imgn.json.stream.JsonNames)"><code>JsonStreamReader.name(JsonNames)</code></a> to match without creating a <code>String</code>, and for
+<a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html#name(be.imgn.json.stream.JsonNames,int)"><code>JsonStreamWriter.name(JsonNames, int)</code></a> to write already encoded.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonNull.html" title="enum class in be.imgn.json">JsonNull</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonNull.html" title="enum class in be.imgn.json">JsonNull</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The JSON <code>null</code>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonNumber.html" title="class in be.imgn.json">JsonNumber</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonNumber.html" title="class in be.imgn.json">JsonNumber</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A JSON number, kept exactly as written: it is converted only when one of the <code>as</code> methods is called.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonObject.html" title="class in be.imgn.json">JsonObject</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonObject.html" title="class in be.imgn.json">JsonObject</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A JSON object: members with distinct names, in the order of the document or of their insertion.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonObject.Builder.html" title="class in be.imgn.json">JsonObject.Builder</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonObject.Builder.html" title="class in be.imgn.json">JsonObject.Builder</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Builds an object, keeping the order of the members.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="be.imgn.json/be/imgn/json/JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="be.imgn.json/be/imgn/json/JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab5">
 <div class="block">Thrown when a document is not valid JSON, or exceeds a limit of the parser.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Parses <a href="https://www.rfc-editor.org/rfc/rfc8259">RFC 8259</a> JSON strictly: a document that is not valid JSON, has an
 object with two members of the same name, or exceeds a limit, is rejected with a <a href="be.imgn.json/be/imgn/json/JsonParseException.html" title="class in be.imgn.json"><code>JsonParseException</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonParser.Builder.html" title="class in be.imgn.json">JsonParser.Builder</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Builds a parser.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab4"><a href="be.imgn.json/be/imgn/json/JsonPosition.html" title="class in be.imgn.json">JsonPosition</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab4">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab4"><a href="be.imgn.json/be/imgn/json/JsonPosition.html" title="class in be.imgn.json">JsonPosition</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab4">
 <div class="block">A position in a document: a line and a column.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/JsonRecord.html" title="annotation interface in be.imgn.json">JsonRecord</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab6">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab6">
 <div class="block">Marks a record, or a sealed interface of records, that documents bind to, with
-[JsonParser#parseAs(Class, byte[])], and that <a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)"><code>JsonWriter.formatAs(Class, Object)</code></a> writes.</div>
+[JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+<a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)">JsonWriter#formatAs(Class, Object)</a> writes.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonStreamReader.html" title="class in be.imgn.json">JsonStreamReader</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Reads a document value by value, as typed reads.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonStreamWriter.html" title="class in be.imgn.json">JsonStreamWriter</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
-<div class="block">Writes a document value by value, as UTF-8, compact or pretty as the <a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> that created it.</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/stream/JsonStreamWriter.html" title="class in be.imgn.json.stream">JsonStreamWriter</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Writes a document value by value, as UTF-8, compact or pretty as the <a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a>
+that created it.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab4"><a href="be.imgn.json/be/imgn/json/JsonString.html" title="class in be.imgn.json">JsonString</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab4">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab4"><a href="be.imgn.json/be/imgn/json/JsonString.html" title="class in be.imgn.json">JsonString</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab4">
 <div class="block">A JSON string.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/JsonTagMember.html" title="annotation interface in be.imgn.json">JsonTagMember</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab6">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/bind/JsonTagMember.html" title="annotation interface in be.imgn.json.bind">JsonTagMember</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab6">
 <div class="block">Lays out a sealed interface as an object of its record whose tag member names the record, wherever it is among the
 members: <code>{&quot;type&quot;: &quot;circle&quot;, &quot;radius&quot;: 1}</code>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonType.html" title="enum class in be.imgn.json">JsonType</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonType.html" title="enum class in be.imgn.json">JsonType</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The type of a JSON value.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="be.imgn.json/be/imgn/json/JsonValue.html" title="interface in be.imgn.json">JsonValue</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">A JSON value.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/JsonWrapper.html" title="annotation interface in be.imgn.json">JsonWrapper</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab6">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/bind/JsonWrapper.html" title="annotation interface in be.imgn.json.bind">JsonWrapper</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab6">
 <div class="block">Lays out a sealed interface as an object with one member, named after the record, whose value is the record:
 <code>{&quot;circle&quot;: {&quot;radius&quot;: 1}}</code>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json">JsonWriter</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Writes values as JSON, in UTF-8: compact, the default, or pretty, indented with 2 spaces.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html" title="class in be.imgn.json">JsonWriter.Builder</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html" title="class in be.imgn.json">JsonWriter.Builder</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Builds a writer.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/UnknownMembers.html" title="enum class in be.imgn.json">UnknownMembers</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">What binding does with a member of an object that no component of the record takes.</div>
 </div>
 </div>

@@ -5,7 +5,7 @@ import be.imgn.json.stream.JsonStreamWriter;
 
 /// Reads a type from a stream and writes it to one. The annotation processor generates one for each
 /// [JsonRecord][be.imgn.json.bind.JsonRecord] type, and registers it as a service, which
-/// [JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])] and
+/// [JsonParser#parseAs(Class, byte\[\])][be.imgn.json.JsonParser#parseAs(Class, byte\[\])] and
 /// [JsonWriter#formatAs(Class, Object)][be.imgn.json.JsonWriter#formatAs(Class, Object)] load with
 /// [java.util.ServiceLoader].
 ///

@@ -8,7 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /// Marks a record, or a sealed interface of records, that documents bind to, with
-/// [JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+/// [JsonParser#parseAs(Class, byte\[\])][be.imgn.json.JsonParser#parseAs(Class, byte\[\])], and that
 /// [JsonWriter#formatAs(Class, Object)][be.imgn.json.JsonWriter#formatAs(Class, Object)] writes.
 ///
 /// ```java

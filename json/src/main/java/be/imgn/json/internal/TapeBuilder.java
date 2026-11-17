@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 /// Validates a document and builds its [Tape], in one pass.
 ///
 /// Everything that makes a document invalid is found here: the grammar, the UTF-8 encoding, escape sequences, unpaired
-/// surrogates, numbers, duplicate member names, and the [Limits]. Once [#build(byte[], Limits)] returns, the document
+/// surrogates, numbers, duplicate member names, and the [Limits]. Once [#build(byte\[\], Limits)] returns, the document
 /// is known to be valid, and the tape can be read without checks.
 ///
 /// The grammar is parsed iteratively, with explicit stacks: no recursion, whatever the depth. Strings are scanned 8

@@ -33,7 +33,7 @@ public final class Numbers {
 
     private Numbers() {}
 
-    /// Returns whether a number is an integer of at most 18 digits, which [#parseLong(byte[], int, int)] converts.
+    /// Returns whether a number is an integer of at most 18 digits, which [#parseLong(byte\[\], int, int)] converts.
     ///
     /// @param flags the flags of the number on the tape
     public static boolean isSmallInteger(byte[] input, int from, int length, int flags) {

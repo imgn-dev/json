@@ -66,6 +66,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#skipUnknownMember(be.imgn.json.stream.JsonNames)" tabindex="0">skipUnknownMember(JsonNames)</a></li>
 <li><a href="#beginArray()" tabindex="0">beginArray()</a></li>
 <li><a href="#hasNextElement()" tabindex="0">hasNextElement()</a></li>
+<li><a href="#size()" tabindex="0">size()</a></li>
 <li><a href="#readString()" tabindex="0">readString()</a></li>
 <li><a href="#readLong()" tabindex="0">readLong()</a></li>
 <li><a href="#readInt()" tabindex="0">readInt()</a></li>
@@ -255,15 +256,21 @@ its tag member, wherever the member is among the others; the reader stays at the
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Reads a value of any type, as a <a href="../JsonValue.html" title="interface in be.imgn.json"><code>JsonValue</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skipUnknownMember(be.imgn.json.stream.JsonNames)" class="member-name-link">skipUnknownMember</a><wbr>(<a href="JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a>&nbsp;names)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the number of elements of the array, or members of the object, being read: all of them, those read
+and those left.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skipUnknownMember(be.imgn.json.stream.JsonNames)" class="member-name-link">skipUnknownMember</a><wbr>(<a href="JsonNames.html" title="class in be.imgn.json.stream">JsonNames</a>&nbsp;names)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Skips the value of a member whose name <a href="#name(be.imgn.json.stream.JsonNames)"><code>name(JsonNames)</code></a> did not know, or rejects it if the parser was built
 with <a href="../bind/UnknownMembers.html#REJECT"><code>UnknownMembers.REJECT</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skipValue()" class="member-name-link">skipValue</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skipValue()" class="member-name-link">skipValue</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Skips a value of any type, at a cost that does not depend on its size.</div>
 </div>
 </div>
@@ -429,6 +436,24 @@ array, reads it and returns <code>false</code>.</div>
 <dd>whether an element follows</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if the reader is not in an array</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="size()">
+<h3>size</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">size</span>()</div>
+<div class="block">Returns the number of elements of the array, or members of the object, being read: all of them, those read
+and those left. Code that collects them can size its collection once, before reading them.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the number of elements or members</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if the reader is not in an array or an object</dd>
+<dt>Since:</dt>
+<dd>0.1.0</dd>
 </dl>
 </div>
 </section>

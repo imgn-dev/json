@@ -849,7 +849,8 @@ with <a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#REJECT"><code>U
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonArray.html#toString()" class="member-name-link">toString()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonArray.html" title="class in be.imgn.json">JsonArray</a></dt>
 <dd>
-<div class="block">Returns this array as compact JSON.</div>
+<div class="block">Returns this array as compact JSON, except for JSON5's <code>NaN</code> and infinities, which JSON has no way
+to write: they are written <code>NaN</code>, <code>Infinity</code> and <code>-Infinity</code>, where <a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> rejects them.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonBoolean.html#toString()" class="member-name-link">toString()</a> - Method in enum class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonBoolean.html" title="enum class in be.imgn.json">JsonBoolean</a></dt>
 <dd>&nbsp;</dd>
@@ -861,7 +862,8 @@ with <a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#REJECT"><code>U
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonObject.html#toString()" class="member-name-link">toString()</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonObject.html" title="class in be.imgn.json">JsonObject</a></dt>
 <dd>
-<div class="block">Returns this object as compact JSON.</div>
+<div class="block">Returns this object as compact JSON, except for JSON5's <code>NaN</code> and infinities, which JSON has no way
+to write: they are written <code>NaN</code>, <code>Infinity</code> and <code>-Infinity</code>, where <a href="be.imgn.json/be/imgn/json/JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> rejects them.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonPosition.html#toString()" class="member-name-link">toString()</a> - Method in record class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonPosition.html" title="class in be.imgn.json">JsonPosition</a></dt>
 <dd>

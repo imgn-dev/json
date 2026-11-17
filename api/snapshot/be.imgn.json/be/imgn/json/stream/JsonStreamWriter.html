@@ -461,7 +461,8 @@ byte[] json = writer.toByteArray();
 <dt>Returns:</dt>
 <dd>this writer</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - if a value cannot come here</dd>
 </dl>
 </div>

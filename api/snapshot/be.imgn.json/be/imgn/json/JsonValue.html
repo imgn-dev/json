@@ -79,7 +79,9 @@ loadScripts(document, 'script');</script>
 <div class="block"><p>A JSON value. Values are immutable and thread-safe.</p>
 <p>Two values are equal when they are of the same type and hold equal contents: objects with the same members,
 whatever their order; arrays with the same elements, in the same order; numbers with the same numeric value, so
-that <code>1</code>, <code>1.0</code> and <code>1e0</code> are equal. <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link"><code>Object.toString()</code></a> returns the value as compact JSON.</p>
+that <code>1</code>, <code>1.0</code> and <code>1e0</code> are equal. <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link"><code>Object.toString()</code></a> returns the value as compact JSON, except for
+JSON5's <code>NaN</code> and infinities, which JSON has no way to write: <code>toString()</code> writes them <code>NaN</code>, <code>Infinity</code> and
+<code>-Infinity</code>, where <a href="JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> rejects them.</p>
 </div>
 <dl class="notes">
 <dt>Since:</dt>

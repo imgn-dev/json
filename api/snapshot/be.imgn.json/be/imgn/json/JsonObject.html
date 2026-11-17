@@ -183,7 +183,8 @@ arrays do not either.</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns this object as compact JSON.</div>
+<div class="block">Returns this object as compact JSON, except for JSON5's <code>NaN</code> and infinities, which JSON has no way
+to write: they are written <code>NaN</code>, <code>Infinity</code> and <code>-Infinity</code>, where <a href="JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> rejects them.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JsonType.html" title="enum class in be.imgn.json">JsonType</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type()" class="member-name-link">type</a>()</code></div>
@@ -366,10 +367,13 @@ it holds</dd>
 <h3>toString</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">Returns this object as compact JSON.</div>
+<div class="block">Returns this object as compact JSON, except for JSON5's <code>NaN</code> and infinities, which JSON has no way
+to write: they are written <code>NaN</code>, <code>Infinity</code> and <code>-Infinity</code>, where <a href="JsonWriter.html" title="class in be.imgn.json"><code>JsonWriter</code></a> rejects them.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of this object has an unpaired surrogate</dd>
 </dl>
 </div>
 </section>

@@ -337,7 +337,8 @@ does.</div>
 <dt>Returns:</dt>
 <dd>the JSON</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 </dl>
 </div>
 </section>
@@ -354,7 +355,8 @@ does.</div>
 <dt>Returns:</dt>
 <dd>the JSON</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 </dl>
 </div>
 </section>
@@ -372,7 +374,8 @@ does.</div>
 <dd><code>value</code> - the value</dd>
 <dd><code>out</code> - the stream, which is not closed</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the stream cannot be written</dd>
 </dl>
 </div>
@@ -391,7 +394,8 @@ does.</div>
 <dd><code>value</code> - the value</dd>
 <dd><code>sink</code> - the sink</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of <code>value</code> has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the sink cannot be written</dd>
 </dl>
 </div>
@@ -508,7 +512,8 @@ writer, followed by <code>\n</code>, the last one included.</div>
 <dd>the lines</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 </dl>
 </div>
 </section>
@@ -528,7 +533,8 @@ does. The lines are written as they come, not held in memory.</div>
 <dd><code>out</code> - the stream, which is not closed</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the stream cannot be written</dd>
 </dl>
 </div>
@@ -548,7 +554,8 @@ does. The lines are written as they come, not held in memory.</div>
 <dd><code>sink</code> - the sink</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if a value is null</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if a string of a value has an unpaired surrogate, or a number of it is
+JSON5's <code>NaN</code> or an infinity</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the sink cannot be written</dd>
 </dl>
 </div>

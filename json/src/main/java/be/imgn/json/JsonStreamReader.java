@@ -5,7 +5,6 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.util.Objects.requireNonNull;
 
 import be.imgn.json.internal.Numbers;
-import be.imgn.json.internal.Positions;
 import be.imgn.json.internal.Strings;
 import be.imgn.json.internal.Tape;
 import java.math.BigDecimal;
@@ -150,14 +149,14 @@ public final class JsonStreamReader {
         }
         throw new JsonMappingException(
                 "missing member \"" + member.get(0) + "\" naming the type, as one of " + quoted(tags),
-                Positions.of(input, tape.valueOffset(index)),
+                tape.position(tape.valueOffset(index)),
                 path());
     }
 
     private JsonMappingException tagError(String message, int value, JsonNames member, JsonNames tags) {
         var at = path() + "/" + member.get(0).replace("~", "~0").replace("/", "~1");
         return new JsonMappingException(
-                message + ", expected one of " + quoted(tags), Positions.of(input, tape.valueOffset(value)), at);
+                message + ", expected one of " + quoted(tags), tape.position(tape.valueOffset(value)), at);
     }
 
     /// Returns the index among names of the string or name at a tape index, or -1.
@@ -197,7 +196,7 @@ public final class JsonStreamReader {
         if (unknownMembers == UnknownMembers.REJECT) {
             throw new JsonMappingException(
                     "unknown member \"" + Strings.decode(tape, index - 1) + "\", expected one of " + quoted(names),
-                    Positions.of(input, Tape.offset(entries[index - 1])),
+                    tape.position(Tape.offset(entries[index - 1])),
                     path());
         }
         skipValue();
@@ -278,7 +277,7 @@ public final class JsonStreamReader {
         return (byte) readInteger(Byte.MIN_VALUE, Byte.MAX_VALUE, "a byte");
     }
 
-    /// Reads a number, as the nearest `double`.
+    /// Reads a number, as the nearest `double`, or `NaN` or an infinity of JSON5.
     ///
     /// @return the value
     /// @throws JsonMappingException if the next value is not a number, or is too large for a `double`
@@ -286,14 +285,14 @@ public final class JsonStreamReader {
     public double readDouble() {
         var entry = numberEntry("a double");
         var value = Numbers.parseDouble(input, Tape.offset(entry), tape.length(index));
-        if (Double.isInfinite(value)) {
+        if (Double.isInfinite(value) && (Tape.flags(entry) & Tape.NON_FINITE) == 0) {
             throw outOfRange("a double");
         }
         index++;
         return value;
     }
 
-    /// Reads a number, as the nearest `float`.
+    /// Reads a number, as the nearest `float`, or `NaN` or an infinity of JSON5.
     ///
     /// @return the value
     /// @throws JsonMappingException if the next value is not a number, or is too large for a `float`
@@ -301,7 +300,7 @@ public final class JsonStreamReader {
     public float readFloat() {
         var entry = numberEntry("a float");
         var value = Numbers.parseFloat(input, Tape.offset(entry), tape.length(index));
-        if (Float.isInfinite(value)) {
+        if (Float.isInfinite(value) && (Tape.flags(entry) & Tape.NON_FINITE) == 0) {
             throw outOfRange("a float");
         }
         index++;
@@ -327,13 +326,17 @@ public final class JsonStreamReader {
     /// Reads a number, exactly.
     ///
     /// @return the value
-    /// @throws JsonMappingException if the next value is not a number
+    /// @throws JsonMappingException if the next value is not a number, or is `NaN` or an infinity of JSON5
     /// @throws IllegalStateException if the reader is not at a value
     public BigDecimal readBigDecimal() {
         var entry = numberEntry("a BigDecimal");
-        var value = Numbers.toBigDecimal(input, Tape.offset(entry), tape.length(index));
-        index++;
-        return value;
+        try {
+            var value = Numbers.toBigDecimal(input, Tape.offset(entry), tape.length(index));
+            index++;
+            return value;
+        } catch (ArithmeticException e) {
+            throw outOfRange("a BigDecimal");
+        }
     }
 
     /// Reads a boolean.
@@ -402,7 +405,7 @@ public final class JsonStreamReader {
         if (mark < 0 || mark >= tape.size()) {
             throw new IllegalArgumentException("not a mark of this reader: " + mark);
         }
-        return new JsonMappingException(message, Positions.of(input, tape.valueOffset(mark)), path());
+        return new JsonMappingException(message, tape.position(tape.valueOffset(mark)), path());
     }
 
     /// Returns an error about a value, caused by an exception.
@@ -479,7 +482,7 @@ public final class JsonStreamReader {
     private JsonMappingException mismatch(String expected) {
         var found = TapeValues.type(entries[index]).description();
         return new JsonMappingException(
-                "expected " + expected + ", found " + found, Positions.of(input, tape.valueOffset(index)), path());
+                "expected " + expected + ", found " + found, tape.position(tape.valueOffset(index)), path());
     }
 
     private JsonMappingException outOfRange(String expected) {
@@ -487,8 +490,7 @@ public final class JsonStreamReader {
         var length = tape.length(index);
         var text =
                 new String(input, offset, Math.min(length, MAX_QUOTED), ISO_8859_1) + (length > MAX_QUOTED ? "…" : "");
-        return new JsonMappingException(
-                "expected " + expected + ", found " + text, Positions.of(input, offset), path());
+        return new JsonMappingException("expected " + expected + ", found " + text, tape.position(offset), path());
     }
 
     /// Returns the path of the reader, as a JSON Pointer.

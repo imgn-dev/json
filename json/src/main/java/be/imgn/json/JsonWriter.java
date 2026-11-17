@@ -25,6 +25,8 @@ import java.io.OutputStream;
 public final class JsonWriter {
 
     private static final int PRETTY_INDENT = 2;
+    // The bytes of lines held before they are written to a stream.
+    private static final int LINES_FLUSHED = 1 << 16;
 
     private final int indent;
     private final boolean writeNullMembers;
@@ -162,6 +164,138 @@ public final class JsonWriter {
         }
     }
 
+    /// Returns values as [JSON Lines](https://jsonlines.org): each value compact, whatever the indentation of this
+    /// writer, followed by `\n`, the last one included.
+    ///
+    /// @param values the values
+    /// @return the lines
+    /// @throws NullPointerException if a value is null
+    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate
+    public String formatLines(Iterable<? extends JsonValue> values) {
+        requireNonNull(values, "values");
+        return lines(values, TreeWriter::write);
+    }
+
+    /// Writes values as [JSON Lines](https://jsonlines.org), in UTF-8, to a stream, as [#formatLines(Iterable)]
+    /// does. The lines are written as they come, not held in memory.
+    ///
+    /// @param values the values
+    /// @param out the stream, which is not closed
+    /// @throws NullPointerException if a value is null
+    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate
+    /// @throws IOException if the stream cannot be written
+    public void writeLines(Iterable<? extends JsonValue> values, OutputStream out) throws IOException {
+        requireNonNull(values, "values");
+        requireNonNull(out, "out");
+        lines(values, out, TreeWriter::write);
+    }
+
+    /// Writes values as [JSON Lines](https://jsonlines.org), in UTF-8, to a sink, as [#formatLines(Iterable)] does.
+    ///
+    /// @param values the values
+    /// @param sink the sink
+    /// @throws NullPointerException if a value is null
+    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate
+    /// @throws IOException if the sink cannot be written
+    public void writeLines(Iterable<? extends JsonValue> values, ByteSink sink) throws IOException {
+        requireNonNull(values, "values");
+        requireNonNull(sink, "sink");
+        try (var out = sink.openStream()) {
+            lines(values, out, TreeWriter::write);
+        }
+    }
+
+    /// Returns values of a [JsonRecord] type as [JSON Lines](https://jsonlines.org), as
+    /// [#formatLines(Iterable)] does.
+    ///
+    /// @param <T> the type
+    /// @param type the type, which may be a sealed interface of the record
+    /// @param values the values
+    /// @return the lines
+    /// @throws NullPointerException if a value, or a component of a value that is not `@Nullable`, is null
+    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
+    ///     a value has an unpaired surrogate
+    public <T> String formatLinesAs(Class<T> type, Iterable<? extends T> values) {
+        requireNonNull(type, "type");
+        requireNonNull(values, "values");
+        return lines(values, (output, value) -> writeRecord(type, output, value));
+    }
+
+    /// Writes values of a [JsonRecord] type as [JSON Lines](https://jsonlines.org), in UTF-8, to a stream, as
+    /// [#writeLines(Iterable, OutputStream)] does.
+    ///
+    /// @param <T> the type
+    /// @param type the type, which may be a sealed interface of the record
+    /// @param values the values
+    /// @param out the stream, which is not closed
+    /// @throws NullPointerException if a value, or a component of a value that is not `@Nullable`, is null
+    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
+    ///     a value has an unpaired surrogate
+    /// @throws IOException if the stream cannot be written
+    public <T> void writeLinesAs(Class<T> type, Iterable<? extends T> values, OutputStream out) throws IOException {
+        requireNonNull(type, "type");
+        requireNonNull(values, "values");
+        requireNonNull(out, "out");
+        lines(values, out, (output, value) -> writeRecord(type, output, value));
+    }
+
+    /// Writes values of a [JsonRecord] type as [JSON Lines](https://jsonlines.org), in UTF-8, to a sink, as
+    /// [#writeLines(Iterable, OutputStream)] does.
+    ///
+    /// @param <T> the type
+    /// @param type the type, which may be a sealed interface of the record
+    /// @param values the values
+    /// @param sink the sink
+    /// @throws NullPointerException if a value, or a component of a value that is not `@Nullable`, is null
+    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
+    ///     a value has an unpaired surrogate
+    /// @throws IOException if the sink cannot be written
+    public <T> void writeLinesAs(Class<T> type, Iterable<? extends T> values, ByteSink sink) throws IOException {
+        requireNonNull(type, "type");
+        requireNonNull(values, "values");
+        requireNonNull(sink, "sink");
+        try (var out = sink.openStream()) {
+            lines(values, out, (output, value) -> writeRecord(type, output, value));
+        }
+    }
+
+    private void writeRecord(Class<?> type, Output output, Object value) {
+        Binders.write(type, new JsonStreamWriter(output, writeNullMembers), value);
+    }
+
+    /// Writes values as lines to a pooled output, and returns them.
+    private static <E> String lines(Iterable<E> values, LineWriter<? super E> writer) {
+        var output = Output.pooled(0);
+        try {
+            for (var value : values) {
+                writer.write(output, requireNonNull(value, "value"));
+                output.endLine();
+            }
+            return output.toString();
+        } finally {
+            output.release();
+        }
+    }
+
+    /// Writes values as lines to a stream, through a pooled output emptied whenever it holds enough.
+    private static <E> void lines(Iterable<E> values, OutputStream out, LineWriter<? super E> writer)
+            throws IOException {
+        var output = Output.pooled(0);
+        try {
+            for (var value : values) {
+                writer.write(output, requireNonNull(value, "value"));
+                output.endLine();
+                if (output.size() >= LINES_FLUSHED) {
+                    output.writeTo(out);
+                    output.clear();
+                }
+            }
+            output.writeTo(out);
+        } finally {
+            output.release();
+        }
+    }
+
     /// Returns a writer of a document, value by value, with the settings of this writer.
     ///
     /// @return a new stream writer
@@ -185,6 +319,12 @@ public final class JsonWriter {
         try (var out = sink.openStream()) {
             return output.writeTo(out);
         }
+    }
+
+    /// Writes a value of a line.
+    @FunctionalInterface
+    private interface LineWriter<E> {
+        void write(Output output, E value);
     }
 
     /// What a writer does with an output once a value is written to it, before its buffer goes back to the pool.

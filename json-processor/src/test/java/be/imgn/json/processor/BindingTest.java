@@ -1,6 +1,7 @@
 package be.imgn.json.processor;
 
 import static be.imgn.gaia.processing.testing.CompilationAssert.assertThat;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -8,7 +9,11 @@ import be.imgn.json.JsonMappingException;
 import be.imgn.json.JsonParser;
 import be.imgn.json.JsonWriter;
 import be.imgn.json.UnknownMembers;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.assertj.core.api.ThrowableAssertAlternative;
@@ -228,6 +233,42 @@ class BindingTest {
                 "Wide",
                 "{" + members.replace(",\"c69\":69", "") + "}",
                 "line 1, column 1: missing member \"c69\" of Wide");
+    }
+
+    @Test
+    void bindsJsonLines() throws IOException {
+        var type = type("Positive");
+        var lines = "{\"value\": 1}\n{\"value\": 2}\n";
+
+        var values = new JsonParser().parseLinesAs(type, lines).toList();
+
+        assertThat(values).hasToString("[Positive[value=1], Positive[value=2]]");
+        assertThat(new JsonParser().parseLinesAs(type, lines.getBytes(UTF_8)).toList())
+                .isEqualTo(values);
+        assertThat(formatLines(type, values)).isEqualTo("{\"value\":1}\n{\"value\":2}\n");
+        var out = new ByteArrayOutputStream();
+        writeLines(type, values, out);
+        assertThat(out.toString(UTF_8)).isEqualTo("{\"value\":1}\n{\"value\":2}\n");
+    }
+
+    @Test
+    void reportsMappingErrorsAtTheirLine() {
+        var type = type("Positive");
+
+        assertThatExceptionOfType(JsonMappingException.class)
+                .isThrownBy(() -> new JsonParser()
+                        .parseLinesAs(type, "{\"value\": 1}\n {\"value\": 0}")
+                        .toList())
+                .withMessage("line 2, column 2: Positive rejects the members: not positive: 0");
+    }
+
+    private static <T> String formatLines(Class<T> type, List<?> values) {
+        return new JsonWriter()
+                .formatLinesAs(type, values.stream().map(type::cast).toList());
+    }
+
+    private static <T> void writeLines(Class<T> type, List<?> values, OutputStream out) throws IOException {
+        new JsonWriter().writeLinesAs(type, values.stream().map(type::cast).toList(), out);
     }
 
     private static Class<?> type(String simpleName) {

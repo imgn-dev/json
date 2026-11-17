@@ -1,5 +1,7 @@
 package be.imgn.json.benchmarks;
 
+import be.imgn.json.internal.Json5;
+import be.imgn.json.internal.Jsonc;
 import be.imgn.json.internal.Limits;
 import be.imgn.json.internal.Tape;
 import be.imgn.json.internal.TapeBuilder;
@@ -50,6 +52,18 @@ public class ValidateBenchmark {
     @Benchmark
     public Tape tapeBuilder() {
         return TapeBuilder.build(input, Limits.DEFAULTS);
+    }
+
+    /// Builds the tape of the document read as JSONC: translated first, comments becoming spaces.
+    @Benchmark
+    public Tape jsonc() {
+        return Jsonc.build(input, Limits.DEFAULTS);
+    }
+
+    /// Builds the tape of the document read as JSON5: translated first.
+    @Benchmark
+    public Tape json5() {
+        return Json5.build(input, Limits.DEFAULTS);
     }
 
     /// Reads every token with Jackson.

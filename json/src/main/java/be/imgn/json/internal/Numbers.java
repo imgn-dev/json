@@ -5,7 +5,8 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-/// Converts the text of validated numbers: these methods trust their input to follow the grammar of RFC 8259.
+/// Converts the text of validated numbers: these methods trust their input to follow the grammar of RFC 8259, or to be
+/// `NaN`, `Infinity` or `-Infinity`.
 public final class Numbers {
 
     // An integer of up to 18 digits always fits in a long.
@@ -67,7 +68,12 @@ public final class Numbers {
     }
 
     /// Returns the exact value of a number as a `BigDecimal`.
+    ///
+    /// @throws ArithmeticException if the number is `NaN` or an infinity
     public static BigDecimal toBigDecimal(byte[] input, int from, int length) {
+        if (isNonFinite(input, from, length)) {
+            throw new ArithmeticException("not finite");
+        }
         return new BigDecimal(new String(input, from, length, ISO_8859_1));
     }
 
@@ -85,8 +91,19 @@ public final class Numbers {
         return decimal.toBigIntegerExact();
     }
 
-    /// Returns the `double` nearest a number, which is infinite when the number is too large.
+    /// Returns whether a number is `NaN`, `Infinity` or `-Infinity`, which only JSON5 has: the only numbers that do
+    /// not end with a digit.
+    public static boolean isNonFinite(byte[] input, int from, int length) {
+        var last = input[from + length - 1];
+        return last == 'y' || last == 'N';
+    }
+
+    /// Returns the `double` nearest a number, which is infinite when the number is too large; `NaN` and the
+    /// infinities are themselves.
     public static double parseDouble(byte[] input, int from, int length) {
+        if (isNonFinite(input, from, length)) {
+            return Double.parseDouble(new String(input, from, length, ISO_8859_1));
+        }
         var parsed = new Decimal(input, from, length);
         if (parsed.digits <= MAX_DOUBLE_DIGITS && Math.abs(parsed.exponent) < DOUBLE_POWERS.length) {
             double value = parsed.mantissa;
@@ -107,8 +124,12 @@ public final class Numbers {
         return Double.parseDouble(new String(input, from, length, ISO_8859_1));
     }
 
-    /// Returns the `float` nearest a number, which is infinite when the number is too large.
+    /// Returns the `float` nearest a number, which is infinite when the number is too large; `NaN` and the
+    /// infinities are themselves.
     public static float parseFloat(byte[] input, int from, int length) {
+        if (isNonFinite(input, from, length)) {
+            return Float.parseFloat(new String(input, from, length, ISO_8859_1));
+        }
         var parsed = new Decimal(input, from, length);
         if (parsed.digits <= MAX_FLOAT_DIGITS && Math.abs(parsed.exponent) < FLOAT_POWERS.length) {
             float value = parsed.mantissa;

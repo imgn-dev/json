@@ -97,6 +97,22 @@ final class Utf8 {
         return (b & CONTINUATION_MASK) == CONTINUATION_TAG;
     }
 
+    /// Returns the offset after the UTF-8 sequence that starts with the non-ASCII byte at an offset, or -1 if it is not
+    /// a valid sequence that ends before `end`.
+    static int sequenceEnd(byte[] input, int p, int end) {
+        var info = info(Byte.toUnsignedInt(input[p]));
+        var length = length(info);
+        if (length == 0 || p + length > end || !isValidSecond(info, Byte.toUnsignedInt(input[p + 1]))) {
+            return -1;
+        }
+        for (var i = p + 2; i < p + length; i++) {
+            if (!isContinuation(input[i])) {
+                return -1;
+            }
+        }
+        return p + length;
+    }
+
     /// Returns the code point of a valid sequence.
     static int codePoint(byte[] input, int from, int length) {
         var codePoint = input[from] & LEAD_PAYLOAD[length];

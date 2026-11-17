@@ -10,8 +10,9 @@ A strict RFC 8259 JSON parser and writer for data exchange and APIs, in Java 25,
   processor generates.
 - A writer with compact and pretty output.
 
-Not included: lenient dialects (but the design leaves room for them, see [Leniency](#leniency)), the Vector API (planned,
-see [Vector API](#vector-api)), JSON Pointer, Patch, Path or Schema.
+Also read: JSONC, JSON5 and JSON Lines, each strictly (see [Formats](#formats)).
+
+Not included: the Vector API (planned, see [Vector API](#vector-api)), JSON Pointer, Patch, Path or Schema.
 
 ## Modules
 
@@ -111,8 +112,8 @@ One `long` per token:
   elements too, so lists and arrays are allocated at their final size. A count of 2²⁴−1 or more is saturated.
 - A string or number of 2²⁴−1 bytes or more stores that length as a marker, and its length is computed again from the
   document. A name holds its number: its length is that of the name of that number.
-- String flags: has escapes, has non-ASCII bytes. Number flags: integral (no `.` or exponent). Free flags are reserved
-  for lenient dialects (single quotes, unquoted names, `NaN`, …).
+- String flags: has escapes, has non-ASCII bytes. Number flags: integral (no `.` or exponent). Number flag: not finite
+  (`NaN` and the infinities of JSON5).
 - Every value keeps its offset, so positions and error locations cost nothing at parse time: line and column are
   computed from the input only when asked for.
 
@@ -268,7 +269,8 @@ Everything is parsed from a `byte[]` holding UTF-8:
 - `ByteSource`: read whole, up to `maxDocumentLength`;
 - `CharSource`: read as a `String`.
 
-A byte order mark is rejected (RFC 8259: implementations must not add one, and may ignore one).
+A byte order mark is rejected (RFC 8259: implementations must not add one, and may ignore one), except in JSON5, where
+U+FEFF is white space.
 
 ### Limits
 
@@ -345,15 +347,93 @@ sealed interface Event permits Created, Deleted {}
 - The tag-and-value layout (`{"type": "circle", "value": {...}}`) can be added later as a third annotation, without
   changing the others.
 
-## Leniency
+## Formats
 
-Not implemented. Room for it:
+Three syntaxes, chosen on the parser, each strict within its own specification, and one framing:
 
-- every dialect feature is a flag on `JsonParser.Builder`, read into `final` fields of the tape builder: the JIT folds
-  the disabled branches away, so strict parsing pays nothing;
-- comments and trailing commas only change stage 1 (the whitespace skipper and the separators), not the tape;
-- single-quoted strings, unquoted names, `NaN` and `Infinity`, hexadecimal numbers each get a tape flag (reserved), read
-  by the decoders.
+| Format     | Specification                                                    | On top of JSON                                 |
+|------------|------------------------------------------------------------------|------------------------------------------------|
+| JSON       | [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259), the default  |                                                |
+| JSONC      | [JSONC](https://jsonc-spec.codeberg.page)                        | `//` and `/* */` comments, where JSON has whitespace |
+| JSON5      | [JSON5 1.0.0](https://spec.json5.org)                            | see below                                      |
+| JSON Lines | [JSON Lines](https://jsonlines.org)                              | one JSON value per line                        |
+
+```java
+JsonDocument settings = JsonParser.builder().format(JsonFormat.JSONC).build().parse(bytes);
+try (Stream<Event> events = new JsonParser().parseLinesAs(Event.class, ByteSource.of(path))) { ... }
+```
+
+- One choice, `JsonParser.Builder.format(JsonFormat)`, rather than a flag per feature (`allowComments()`,
+  `allowTrailingCommas()`, …): a mix of flags is a format no specification defines, and "strict within the format"
+  stops meaning anything.
+- JSON ⊂ JSONC ⊂ JSON5: each accepts everything the previous one does.
+- The rules that are not grammar hold in every format: duplicate member names are rejected (JSON5, like RFC 8259, says
+  names should be unique), so are unpaired surrogates and invalid UTF-8, and the limits apply.
+- Trailing commas are not JSONC: its specification lets a parser accept them, and its reference parser rejects them by
+  default. JSON5 has them.
+- An error in strict JSON that another format would accept says so: `comments are not allowed in JSON (JsonFormat.JSONC
+  allows them)`, `a trailing comma is not allowed in JSON (JsonFormat.JSON5 allows it)`.
+
+### JSONC and JSON5: translated to JSON
+
+A JSONC or JSON5 document is translated to JSON first, in one pass, then built by the same tape builder as JSON:
+
+```
+ byte[] JSONC or JSON5 ──▶ Jsonc / Json5 ──▶ byte[] JSON + positions ──▶ TapeBuilder ──▶ Tape
+```
+
+- The tape builder, its tape and everything above them stay as they are: one validated core, and JSON pays nothing
+  measurable for the other formats (their cases sit in error branches, but for one predicted branch on numbers). The
+  price is a pass for JSONC (and a copy, once it has a comment), and a pass and a copy for JSON5, which are mostly
+  configuration files: stage 1 runs at 60–85% of its JSON speed on JSONC, 40% on JSON5.
+- The translator checks what is particular to its format (comments, quotes, identifiers, escapes, number forms) and
+  leaves the structure (brackets, commas, colons, duplicate names, nesting) to the tape builder.
+- Positions stay those of the source: the tape keeps a locator from the offsets of the translated document to the
+  lines and columns of the original. JSONC keeps every offset, comments becoming spaces; JSON5 records where the
+  translation shifts them.
+- A parsed tree is written as JSON, as it is copied from the translated document: no JSON5 syntax can leak into the
+  output.
+
+JSONC: comments become spaces of the same length, and nothing else changes.
+
+JSON5, translated as follows:
+
+| JSON5                                                      | JSON                                       |
+|------------------------------------------------------------|--------------------------------------------|
+| comments; whitespace beyond JSON's (U+00A0, U+FEFF, `Zs`, …) | dropped                                  |
+| a trailing comma in an object or array                     | dropped                                    |
+| `name: 1`, an ECMAScript 5.1 identifier                    | `"name": 1`                                |
+| `'it\'s'`, single quotes                                   | `"it's"`                                   |
+| `\v`, `\0`, `\xHH`, `\a` (any other character)             | `\u000B`, `\u0000`, `\u00HH`, `a`          |
+| a backslash before a line terminator                       | dropped, with the line terminator          |
+| control characters, unescaped in a string                  | escaped                                    |
+| `+1`, `.5`, `5.`, `0x1F`                                   | `1`, `0.5`, `5.0`, `31`                    |
+| `Infinity`, `-Infinity`, `NaN`, signed or not              | kept, and flagged on the tape              |
+
+- `NaN` and the infinities have no JSON form. The tape builder accepts them only behind a JSON5 option, and flags them
+  on the tape: `JsonNumber.asDouble()` and `asFloat()` return them, the exact conversions throw an
+  `ArithmeticException`, and writing them as JSON is an `IllegalArgumentException`, as for `JsonNumber.of(Double.NaN)`.
+- `maxNumberLength` applies to a number as written, a hexadecimal one before it is converted, and to its translation;
+  `maxStringLength` to a string as translated; `maxDocumentLength` to the source.
+- A leading U+FEFF is whitespace in JSON5, so it is accepted there; JSON and JSONC reject it.
+
+### JSON Lines
+
+One JSON value per line: a framing, not a syntax, so it is defined for JSON only, and a parser set to JSONC or JSON5
+refuses it.
+
+- `parseLines(…)` returns a `Stream<JsonDocument>`, and `parseLinesAs(type, …)` a `Stream<T>`, from a `byte[]`, a
+  `String` or a `ByteSource`. A stream on a `ByteSource` reads it as it goes, holds its input open until it is closed,
+  and wraps an `IOException` in an `UncheckedIOException`, as `Files.lines` does.
+- Strict: lines end with `\n` (the `\r` of `\r\n` is whitespace in JSON); the last `\n` is optional; a blank line is an
+  error; a value must end on the line it starts.
+- Each line is a document of its own, built from a range of the input: the tape builder takes a start and an end. Errors
+  give the line in the whole input, and say `the end of the line` rather than `the end of the document`.
+- The limits apply to each line; `maxDocumentLength` bounds the length of a line, checked before the line is read whole.
+- `JsonWriter.writeLines(…)`, `formatLines(…)` and their `…As(type, …)` forms write each value compact, followed by
+  `\n`, the last one included, whatever the indentation of the writer.
+- Reading a `ByteSource`: chunks of 64 KB, never reused, since a lazy document keeps its input; a line split between
+  two chunks is carried over to the next one.
 
 ## Vector API
 
@@ -375,7 +455,8 @@ JMH, in `json-benchmarks`, built and run with
 - Data: `twitter.json` (strings, non-ASCII text), `citm_catalog.json` (structure, integers), `canada.json` (doubles),
   and `status.json`, an API-sized payload of about 2 KB: the first status of `twitter.json`, written compact.
 - Comparisons: Jackson 3, Gson, fastjson2.
-- Cases: `ValidateBenchmark`, stage 1 alone against Jackson's streaming parser; `TreeBenchmark`, the lazy tree alone,
+- Cases: `ValidateBenchmark`, stage 1 alone against Jackson's streaming parser, and the same documents read as JSONC and
+  JSON5; `TreeBenchmark`, the lazy tree alone,
   and parsing then reading every value with each library; `WriteBenchmark`, a parsed tree (written from its document)
   and a built one, against the trees of the other libraries.
 - Binding is not in the module: compiling records with the processor under the parent's `-Xlint:all -Werror` fails
@@ -388,6 +469,11 @@ JMH, in `json-benchmarks`, built and run with
 - [JSONTestSuite](https://github.com/nst/JSONTestSuite): every `y_` parses, except the two with duplicate names, rejected
   by design; every `n_` is rejected; every `i_` has an expected outcome written down (rejected: BOM, unpaired surrogates,
   invalid UTF-8, UTF-16; accepted: huge numbers, and deep nesting within the limits).
+- [json5-tests](https://github.com/json5/json5-tests): every `.json` and `.json5` parses as JSON5, except the one with
+  duplicate names, rejected by design; every `.js` and `.txt` is rejected; its JSON documents read the same as JSON and
+  as JSON5. Every `y_` document of JSONTestSuite builds the same tape as JSONC and as JSON5.
+- JSON Lines: blank lines, values over two lines, positions in the whole input, a source read a few bytes at a time,
+  lines longer than a chunk, a line too long rejected before it is read whole, the source closed with the stream.
 - Every error message: position, path and text.
 - Round trips: parse, write, parse again, equal; written from the tape and from a copy, the same text.
 - The processor: compile errors on unsupported types, generated code without warnings under `-Xlint:all -Werror` (the

@@ -35,6 +35,8 @@ public final class TapeBuilder {
     private static final int NULL = 'n' | ('u' << 8) | ('l' << 16) | ('l' << 24);
 
     private static final byte[] BYTE_ORDER_MARK = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+    private static final byte[] INFINITY = "Infinity".getBytes(UTF_8);
+    private static final byte[] NAN = "NaN".getBytes(UTF_8);
     private static final int DELETE = 0x7F;
 
     // The initial capacities. A token takes 8 bytes of a document or more, except in arrays of one-digit numbers.
@@ -57,8 +59,11 @@ public final class TapeBuilder {
     private static final int MAX_WORD = 20;
 
     private final byte[] input;
+    private final int begin;
     private final int end;
     private final Limits limits;
+    private final Syntax syntax;
+    private final Locator locator;
     // The distinct member names, numbered.
     private final Names nameTable = new Names();
     // By number of name, the number plus 1 of the name that followed it last time; 0 when none did.
@@ -91,11 +96,16 @@ public final class TapeBuilder {
     private int[] names;
     private int namesTop;
 
-    private TapeBuilder(byte[] input, Limits limits, Scratch scratch) {
+    private TapeBuilder(
+            byte[] input, int from, int to, Limits limits, Syntax syntax, Locator locator, Scratch scratch) {
         this.input = input;
-        this.end = input.length;
+        this.begin = from;
+        this.end = to;
         this.limits = limits;
-        this.tape = new long[Math.max(MIN_TAPE, input.length / BYTES_PER_TOKEN)];
+        this.syntax = syntax;
+        this.locator = locator;
+        this.pos = from;
+        this.tape = new long[Math.max(MIN_TAPE, (to - from) / BYTES_PER_TOKEN)];
         this.scratch = scratch;
         this.nextNames = scratch.nextNames;
         this.starts = scratch.starts;
@@ -111,12 +121,23 @@ public final class TapeBuilder {
         Arrays.fill(firstNames, 0);
     }
 
-    /// Validates a document and builds its tape.
+    /// Validates a JSON document and builds its tape.
     ///
     /// @param input the document, in UTF-8; it is not copied, and must not change while the tape is used
     /// @throws TapeException if the document is not valid JSON, or exceeds a limit
     public static Tape build(byte[] input, Limits limits) {
-        var builder = new TapeBuilder(input, limits, Scratch.acquire());
+        return build(input, 0, input.length, limits, Syntax.JSON, Locator.of(input));
+    }
+
+    /// Validates a document, written between two offsets of an input, and builds its tape.
+    ///
+    /// @param input the input, in UTF-8; it is not copied, and must not change while the tape is used
+    /// @param from the offset where the document starts
+    /// @param to the offset where the document ends
+    /// @param locator the positions of the offsets of the input, for the errors that quote one
+    /// @throws TapeException if the document is not valid, or exceeds a limit
+    public static Tape build(byte[] input, int from, int to, Limits limits, Syntax syntax, Locator locator) {
+        var builder = new TapeBuilder(input, from, to, limits, syntax, locator, Scratch.acquire());
         try {
             return builder.buildTape();
         } finally {
@@ -144,24 +165,30 @@ public final class TapeBuilder {
     }
 
     private Tape buildTape() {
-        if (end > limits.maxDocumentLength()) {
+        if (end - begin > limits.maxDocumentLength()) {
+            var what = syntax == Syntax.JSON_LINE ? "the line" : "the document";
             throw error(
-                    limits.maxDocumentLength(),
-                    "the document is longer than the maximum of " + limits.maxDocumentLength() + " bytes");
+                    begin + limits.maxDocumentLength(),
+                    what + " is longer than the maximum of " + limits.maxDocumentLength() + " bytes");
         }
         if (Arrays.equals(
-                input, 0, Math.min(end, BYTE_ORDER_MARK.length), BYTE_ORDER_MARK, 0, BYTE_ORDER_MARK.length)) {
-            throw error(0, "a byte order mark is not allowed");
+                input,
+                begin,
+                Math.min(end, begin + BYTE_ORDER_MARK.length),
+                BYTE_ORDER_MARK,
+                0,
+                BYTE_ORDER_MARK.length)) {
+            throw error(begin, "a byte order mark is not allowed");
         }
         var more = true;
         while (more) {
             more = value() || next();
         }
         if (skipWhitespace() >= 0) {
-            throw error(pos, "expected the end of the document after the value, found " + describe(pos));
+            throw error(pos, "expected " + endOfInput() + " after the value, found " + describe(pos));
         }
         nameTable.share();
-        return new Tape(input, tape, size, nameTable);
+        return new Tape(input, tape, size, nameTable, locator);
     }
 
     // The grammar.
@@ -169,7 +196,8 @@ public final class TapeBuilder {
     /// Parses the start of a value: a whole scalar or empty container, or the opening of a container. Returns whether
     /// a value is expected next: the first element of an array, or the value of the first member of an object.
     private boolean value() {
-        switch (skipWhitespace()) {
+        var c = skipWhitespace();
+        switch (c) {
             case '{' -> {
                 return openObject();
             }
@@ -181,7 +209,12 @@ public final class TapeBuilder {
             case 'f' -> literal(ALSE, 1, Tape.FALSE, "false");
             case 'n' -> literal(NULL, 0, Tape.NULL, "null");
             case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> number();
-            default -> throw error(pos, "expected a value, found " + describeWord(pos));
+            default -> {
+                if (syntax != Syntax.JSON5 || (c != 'I' && c != 'N')) {
+                    throw error(pos, "expected a value, found " + describeWord(pos));
+                }
+                nonFinite(pos);
+            }
         }
         return false;
     }
@@ -240,7 +273,10 @@ public final class TapeBuilder {
 
     private boolean nextMember() {
         if (skipWhitespace() != '"') {
-            throw error(pos, "expected a member name after ',', found " + describe(pos));
+            throw error(
+                    pos,
+                    "expected a member name after ',', found " + describe(pos)
+                            + (pos < end && input[pos] == '}' ? trailingComma() : ""));
         }
         name();
         return true;
@@ -248,7 +284,7 @@ public final class TapeBuilder {
 
     private boolean nextElement() {
         if (skipWhitespace() == ']') {
-            throw error(pos, "expected a value after ',', found ']'");
+            throw error(pos, "expected a value after ',', found ']'" + trailingComma());
         }
         counts[depth]++;
         return true;
@@ -412,7 +448,7 @@ public final class TapeBuilder {
         var p = skipPlainBytes(quote + 1);
         while (p >= end || input[p] != '"') {
             if (p >= end) {
-                throw error(end, "expected '\"' to end the string, found the end of the document");
+                throw error(end, "expected '\"' to end the string, found " + endOfInput());
             }
             var b = Byte.toUnsignedInt(input[p]);
             if (b == '\\') {
@@ -472,7 +508,7 @@ public final class TapeBuilder {
     /// Validates the escape sequence at an offset, and returns the offset after it.
     private int escape(int backslash) {
         if (backslash + 1 >= end) {
-            throw error(end, "expected '\"' to end the string, found the end of the document");
+            throw error(end, "expected '\"' to end the string, found " + endOfInput());
         }
         return switch (input[backslash + 1]) {
             case '"', '\\', '/', 'b', 'f', 'n', 'r', 't' -> backslash + 2;
@@ -559,12 +595,17 @@ public final class TapeBuilder {
     }
 
     private TapeException invalidUtf8(int p, int length) {
+        return error(p, invalidUtf8(input, p, length));
+    }
+
+    /// Describes an invalid UTF-8 sequence, for an error message: `invalid UTF-8 sequence 0xE2 0x28`.
+    static String invalidUtf8(byte[] input, int p, int length) {
         var hex = HexFormat.of().withUpperCase();
         var bytes = new StringBuilder();
         for (var i = p; i < p + length; i++) {
             bytes.append(i == p ? "0x" : " 0x").append(hex.toHexDigits(input[i]));
         }
-        return error(p, "invalid UTF-8 sequence " + bytes);
+        return "invalid UTF-8 sequence " + bytes;
     }
 
     // Numbers and literals.
@@ -572,6 +613,10 @@ public final class TapeBuilder {
     private void number() {
         var start = pos;
         var p = integer(pos);
+        if (p < 0) {
+            nonFinite(start);
+            return;
+        }
         var integral = true;
         if (p < end && input[p] == '.') {
             integral = false;
@@ -593,12 +638,16 @@ public final class TapeBuilder {
         pos = p;
     }
 
-    /// Validates the sign and integer part of a number, and returns the offset after them.
+    /// Validates the sign and integer part of a number, and returns the offset after them, or -1 at the `-Infinity`
+    /// of JSON5.
     private int integer(int start) {
         var p = start;
         if (input[p] == '-') {
             p++;
             if (p >= end || !isDigit(input[p])) {
+                if (syntax == Syntax.JSON5 && startsWith(p, INFINITY)) {
+                    return -1;
+                }
                 throw error(p, "expected a digit after '-', found " + describe(p));
             }
         }
@@ -625,6 +674,24 @@ public final class TapeBuilder {
 
     private static boolean isDigit(byte b) {
         return b >= '0' && b <= '9';
+    }
+
+    /// Validates `NaN`, `Infinity` or `-Infinity`, which only JSON translated from JSON5 has.
+    private void nonFinite(int start) {
+        var p = input[start] == '-' ? start + 1 : start;
+        if (startsWith(p, INFINITY)) {
+            p += INFINITY.length;
+        } else if (p == start && startsWith(p, NAN)) {
+            p += NAN.length;
+        } else {
+            throw error(start, "expected a value, found " + describeWord(start));
+        }
+        append(Tape.entry(Tape.NUMBER, Tape.NON_FINITE, start, p - start));
+        pos = p;
+    }
+
+    private boolean startsWith(int p, byte[] word) {
+        return p + word.length <= end && Arrays.equals(input, p, p + word.length, word, 0, word.length);
     }
 
     /// Validates a literal: the 4 bytes after a skip of 0 or 1 byte (for the `f` of `false`) must be `expected`.
@@ -720,13 +787,34 @@ public final class TapeBuilder {
         return error(
                 Tape.offset(tape[second]),
                 "duplicate member name \"" + decodeName(first) + "\", first at "
-                        + Positions.of(input, Tape.offset(tape[first])));
+                        + locator.position(Tape.offset(tape[first])));
     }
 
     // Errors.
 
     private TapeException error(int offset, String message) {
-        return new TapeException(message, offset, path());
+        return new TapeException(message + commentHint(offset), offset, path(), locator);
+    }
+
+    /// Returns why a comment at an offset is an error, for a JSON document; nothing otherwise, as JSON Lines are
+    /// always JSON and JSONC and JSON5 have no comment left once translated.
+    private String commentHint(int offset) {
+        if (syntax == Syntax.JSON
+                && offset + 1 < end
+                && input[offset] == '/'
+                && (input[offset + 1] == '/' || input[offset + 1] == '*')) {
+            return ": comments are not allowed in JSON (JsonFormat.JSONC allows them)";
+        }
+        return "";
+    }
+
+    /// Returns why a trailing comma is an error, unless JSON Lines, where no other format could accept it.
+    private String trailingComma() {
+        return switch (syntax) {
+            case JSON -> ": a trailing comma is not allowed in JSON (JsonFormat.JSON5 allows it)";
+            case JSONC -> ": a trailing comma is not allowed in JSONC (JsonFormat.JSON5 allows it)";
+            case JSON_LINE, JSON5 -> "";
+        };
     }
 
     /// Returns the path of the value being parsed, as a JSON Pointer.
@@ -745,17 +833,24 @@ public final class TapeBuilder {
     /// Describes the byte at an offset, for an error message: `'x'`, `'é' (U+00E9)`, `the control character U+0000`,
     /// `the byte 0xFF`, `the end of the document`.
     private String describe(int p) {
+        return describe(input, p, end, endOfInput());
+    }
+
+    /// Describes the byte at an offset of an input, as [#describe(int)] does, `endOfInput` past its end.
+    static String describe(byte[] input, int p, int end, String endOfInput) {
         if (p >= end) {
-            return "the end of the document";
+            return endOfInput;
         }
         var b = Byte.toUnsignedInt(input[p]);
         var length = Utf8.sequenceLength(b);
         String description;
-        if (b >= ' ' && b < DELETE) {
+        if (b == '\'') {
+            description = "\"'\"";
+        } else if (b >= ' ' && b < DELETE) {
             description = "'" + (char) b + "'";
         } else if (b <= DELETE) {
             description = "the control character U+%04X".formatted(b);
-        } else if (length > 0 && p + length <= end && isValidSequence(p, length)) {
+        } else if (length > 0 && Utf8.sequenceEnd(input, p, end) == p + length) {
             var codePoint = Utf8.codePoint(input, p, length);
             description = "'%s' (U+%04X)".formatted(Character.toString(codePoint), codePoint);
         } else {
@@ -764,26 +859,24 @@ public final class TapeBuilder {
         return description;
     }
 
-    private boolean isValidSequence(int p, int length) {
-        if (!Utf8.isValidSecond(Utf8.info(Byte.toUnsignedInt(input[p])), Byte.toUnsignedInt(input[p + 1]))) {
-            return false;
-        }
-        for (var i = 2; i < length; i++) {
-            if (!Utf8.isContinuation(input[p + i])) {
-                return false;
-            }
-        }
-        return true;
+    /// Returns what ends the input: `the end of the document`, or `the end of the line` of JSON Lines.
+    private String endOfInput() {
+        return syntax == Syntax.JSON_LINE ? "the end of the line" : "the end of the document";
     }
 
     /// Describes the word at an offset, for an error message: `'tru'`, or as [#describe(int)] when the byte there is
     /// not an ASCII letter or digit.
     private String describeWord(int p) {
+        return describeWord(input, p, end, endOfInput());
+    }
+
+    /// Describes the word at an offset of an input, as [#describeWord(int)] does.
+    static String describeWord(byte[] input, int p, int end, String endOfInput) {
         var q = p;
         while (q < end && q - p < MAX_WORD && input[q] >= 0 && Character.isLetterOrDigit(input[q])) {
             q++;
         }
-        return q == p ? describe(p) : "'" + new String(input, p, q - p, UTF_8) + "'";
+        return q == p ? describe(input, p, end, endOfInput) : "'" + new String(input, p, q - p, UTF_8) + "'";
     }
 
     /// The arrays a build uses and throws away, kept in a small pool, one slot per thread modulo its size: a build

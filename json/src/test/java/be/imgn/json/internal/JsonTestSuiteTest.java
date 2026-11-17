@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,6 +63,23 @@ class JsonTestSuiteTest {
         var input = read(name);
 
         assertThatCode(() -> TapeBuilder.build(input, Limits.DEFAULTS)).doesNotThrowAnyException();
+    }
+
+    /// JSONC and JSON5 accept all of JSON: their translations change nothing in it.
+    @ParameterizedTest
+    @MethodSource("accepted")
+    void acceptsAsJsoncAndJson5(String name) {
+        var input = read(name);
+        var json = TapeBuilder.build(input, Limits.DEFAULTS).toString();
+
+        assertThat(Jsonc.build(input, Limits.DEFAULTS).toString()).isEqualTo(json);
+        assertThat(normalized(Json5.build(input, Limits.DEFAULTS).toString())).isEqualTo(normalized(json));
+    }
+
+    /// Returns a tape as JSON5 translates it: without the whitespace of JSON, its offsets differ, so they are left
+    /// out.
+    private static String normalized(String tape) {
+        return tape.lines().map(line -> line.replaceFirst("^(\\w+) \\d+", "$1")).collect(Collectors.joining("\n"));
     }
 
     @ParameterizedTest

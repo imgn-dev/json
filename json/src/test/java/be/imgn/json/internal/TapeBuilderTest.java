@@ -15,6 +15,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class TapeBuilderTest {
 
+    private static final String TRAILING_COMMA =
+            ": a trailing comma is not allowed in JSON (JsonFormat.JSON5 allows it)";
+
     @Test
     void buildsTapeOfScalars() {
         assertThat(tape("\"abc\"")).isEqualTo("STRING 0 3 abc");
@@ -131,9 +134,7 @@ class TapeBuilderTest {
             ''                   | 1 | 1 | ''        | expected a value, found the end of the document
             ' '                  | 1 | 2 | ''        | expected a value, found the end of the document
             '[1 2]'              | 1 | 4 | /0        | expected ',' or ']' after an element, found '2'
-            '[1,]'               | 1 | 4 | /0        | expected a value after ',', found ']'
             '{"a" 1}'            | 1 | 6 | /a        | expected ':' after a member name, found '1'
-            '{"a": 1,}'          | 1 | 9 | /a        | expected a member name after ',', found '}'
             '{"a": 1 "b": 2}'    | 1 | 9 | /a        | expected ',' or '}' after a member, found '"'
             '{1: 2}'             | 1 | 2 | ''        | expected a member name or '}', found '1'
             '[tru]'              | 1 | 2 | /0        | expected true, found 'tru'
@@ -162,6 +163,22 @@ class TapeBuilderTest {
                     assertThat(Positions.of(input, e.offset())).isEqualTo(new JsonPosition(line, column));
                     assertThat(e.path()).isEqualTo(path);
                 });
+    }
+
+    @Test
+    void reportsTrailingCommaAsJson5() {
+        assertError("[1,]", 1, 4, "/0", "expected a value after ',', found ']'" + TRAILING_COMMA);
+        assertError("{\"a\": 1,}", 1, 9, "/a", "expected a member name after ',', found '}'" + TRAILING_COMMA);
+    }
+
+    @Test
+    void reportsCommentAsJsonc() {
+        assertError(
+                "[1, /* one */ 2]",
+                1,
+                5,
+                "/1",
+                "expected a value, found '/': comments are not allowed in JSON (JsonFormat.JSONC allows them)");
     }
 
     @Test

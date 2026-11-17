@@ -216,6 +216,22 @@ public final class Output {
         writeAscii("null");
     }
 
+    /// Ends a line of JSON Lines, after a whole value.
+    public void endLine() {
+        ensure(1);
+        buffer[size++] = '\n';
+    }
+
+    /// Returns the number of bytes written.
+    public int size() {
+        return size;
+    }
+
+    /// Forgets the bytes written, once they were written somewhere else.
+    public void clear() {
+        size = 0;
+    }
+
     /// Returns the bytes written.
     public byte[] toByteArray() {
         return Arrays.copyOf(buffer, size);

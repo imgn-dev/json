@@ -13,6 +13,7 @@ dependency besides [gaia-core](https://github.com/imgn-dev/gaia).
 - Binds documents to records, sealed interfaces and enums through code an annotation processor generates: no
   reflection.
 - Writes compact or pretty JSON, in UTF-8.
+- Reads JSONC, JSON5 and JSON Lines too, each as strictly.
 
 API documentation: [snapshot](https://imgn-dev.github.io/json/api/snapshot/), or
 [every published version](https://imgn-dev.github.io/json/api/). The design, its trade-offs and how it is tested are
@@ -80,6 +81,32 @@ byte[] json = writer.toByteArray();
 
 Skipping a value costs the same whatever its size. A value of the wrong type is a `JsonMappingException` at its
 position; a call out of order, an `IllegalStateException`.
+
+### JSONC, JSON5 and JSON Lines
+
+The parser reads [JSONC](https://jsonc.org) and [JSON5](https://spec.json5.org) as strictly as JSON: each is a choice
+of format, not a set of leniencies, and a document is rejected as soon as it steps outside its format. Whatever the
+format, duplicate names are rejected and the document is read as JSON, which the writer writes back.
+
+```java
+JsonParser jsonc = JsonParser.builder().format(JsonFormat.JSONC).build(); // comments
+JsonParser json5 = JsonParser.builder().format(JsonFormat.JSON5).build(); // comments, trailing commas, 'quotes', ...
+JsonDocument settings = json5.parse("{name: 'app', retries: 3, timeout: Infinity,}");
+```
+
+An error that another format would accept says so: `expected a value after ',', found ']': a trailing comma is not
+allowed in JSON (JsonFormat.JSON5 allows it)`. `NaN` and the infinities of JSON5 are read by `asDouble()`, but have no
+JSON form: writing them is an `IllegalArgumentException`.
+
+[JSON Lines](https://jsonlines.org), one JSON value per line, are read as a stream, each line a document of its own;
+positions are those in the whole input, and a blank line is an error:
+
+```java
+try (Stream<Event> events = new JsonParser().parseLinesAs(Event.class, ByteSource.of(path))) {
+    events.forEach(this::handle);
+}
+String lines = new JsonWriter().formatLines(values); // each value compact, then '\n'
+```
 
 ### Limits
 

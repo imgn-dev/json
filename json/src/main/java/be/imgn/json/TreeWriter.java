@@ -1,8 +1,10 @@
 package be.imgn.json;
 
+import be.imgn.json.internal.Numbers;
 import be.imgn.json.internal.Output;
 import be.imgn.json.internal.Strings;
 import be.imgn.json.internal.Tape;
+import java.nio.charset.StandardCharsets;
 
 /// Writes values to an output. A parsed object or array is written from its tape, without creating its values: strings
 /// without escape sequences and numbers are copied as they were written.
@@ -28,6 +30,7 @@ final class TreeWriter {
         if (text == null) {
             out.number(number.value());
         } else {
+            checkFinite(text, 0, text.length);
             out.raw(text, 0, text.length);
         }
     }
@@ -57,6 +60,14 @@ final class TreeWriter {
             write(out, array.get(i));
         }
         out.endArray();
+    }
+
+    /// Rejects `NaN` and the infinities of JSON5, which JSON has no way to write.
+    private static void checkFinite(byte[] text, int from, int length) {
+        if (Numbers.isNonFinite(text, from, length)) {
+            throw new IllegalArgumentException(
+                    new String(text, from, length, StandardCharsets.ISO_8859_1) + " is not a JSON number");
+        }
     }
 
     /// Writes the value at an index of a tape, and returns the index after it.
@@ -98,7 +109,12 @@ final class TreeWriter {
                     out.string(Strings.decode(tape, index));
                 }
             }
-            case Tape.NUMBER -> out.raw(input, Tape.offset(entry), tape.length(index));
+            case Tape.NUMBER -> {
+                if ((Tape.flags(entry) & Tape.NON_FINITE) != 0) {
+                    checkFinite(input, Tape.offset(entry), tape.length(index));
+                }
+                out.raw(input, Tape.offset(entry), tape.length(index));
+            }
             case Tape.TRUE, Tape.FALSE -> out.bool(tag == Tape.TRUE);
             default -> out.nullValue();
         }

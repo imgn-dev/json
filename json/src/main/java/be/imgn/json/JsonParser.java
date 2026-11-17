@@ -1,20 +1,35 @@
 package be.imgn.json;
 
 import static be.imgn.gaia.core.base.Preconditions.checkArgument;
+import static be.imgn.gaia.core.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import be.imgn.gaia.core.io.ByteSource;
 import be.imgn.gaia.core.io.CharSource;
+import be.imgn.json.internal.Json5;
+import be.imgn.json.internal.Jsonc;
 import be.imgn.json.internal.Limits;
-import be.imgn.json.internal.Positions;
+import be.imgn.json.internal.Lines;
+import be.imgn.json.internal.Locator;
+import be.imgn.json.internal.Syntax;
 import be.imgn.json.internal.Tape;
 import be.imgn.json.internal.TapeBuilder;
 import be.imgn.json.internal.TapeException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /// Parses [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) JSON strictly: a document that is not valid JSON, has an
-/// object with two members of the same name, or exceeds a limit, is rejected with a [JsonParseException].
+/// object with two members of the same name, or exceeds a limit, is rejected with a [JsonParseException]. Set to
+/// another [JsonFormat], it parses JSONC or JSON5 as strictly.
 ///
 /// ```java
 /// JsonDocument document = new JsonParser().parse(bytes);
@@ -32,6 +47,7 @@ public final class JsonParser {
     private static final int MAX_ARRAY = Integer.MAX_VALUE - 8;
 
     private final Limits limits;
+    private final JsonFormat format;
     private final UnknownMembers unknownMembers;
 
     /// Creates a parser with the default settings: see [Builder].
@@ -42,6 +58,7 @@ public final class JsonParser {
     private JsonParser(Builder builder) {
         this.limits = new Limits(
                 builder.maxDepth, builder.maxDocumentLength, builder.maxStringLength, builder.maxNumberLength);
+        this.format = builder.format;
         this.unknownMembers = builder.unknownMembers;
     }
 
@@ -163,12 +180,148 @@ public final class JsonParser {
         return parseAs(type, requireNonNull(source, "source").read());
     }
 
+    /// Parses [JSON Lines](https://jsonlines.org): one JSON value per line, each a document of its own.
+    ///
+    /// Lines end with `\n`, the last one optionally; the `\r` of a `\r\n` is whitespace. A blank line, or a value
+    /// that does not end on its line, is an error, thrown when the stream reaches that line. The limits apply to
+    /// each line, and positions are those in the whole input.
+    ///
+    /// @param input the lines, in UTF-8; it is not copied, and must not change while the documents are used
+    /// @return the documents, one per line, parsed as the stream is consumed
+    /// @throws IllegalStateException if this parser reads JSONC or JSON5: JSON Lines are JSON only
+    public Stream<JsonDocument> parseLines(byte[] input) {
+        requireNonNull(input, "input");
+        checkLines();
+        return lines(Lines.of(input, limits), JsonDocument::new);
+    }
+
+    /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(byte\[\])] does.
+    ///
+    /// @param input the lines
+    /// @return the documents, one per line, parsed as the stream is consumed
+    /// @throws JsonParseException if the input has an unpaired surrogate
+    /// @throws IllegalStateException if this parser reads JSONC or JSON5: JSON Lines are JSON only
+    public Stream<JsonDocument> parseLines(String input) {
+        checkLines();
+        return parseLines(utf8(input));
+    }
+
+    /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(byte\[\])] does, read as the stream is consumed.
+    ///
+    /// The source stays open until the stream is closed: close it, with a `try`-with-resources statement. An error
+    /// reading the source is an [UncheckedIOException], thrown by the stream.
+    ///
+    /// @param source the lines, in UTF-8
+    /// @return the documents, one per line, parsed as the stream is consumed
+    /// @throws IllegalStateException if this parser reads JSONC or JSON5: JSON Lines are JSON only
+    /// @throws IOException if the source cannot be opened
+    public Stream<JsonDocument> parseLines(ByteSource source) throws IOException {
+        requireNonNull(source, "source");
+        checkLines();
+        var in = source.openStream();
+        return lines(Lines.of(in, limits), JsonDocument::new).onClose(() -> close(in));
+    }
+
+    /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(byte\[\])] does, and binds each line to a
+    /// [JsonRecord] type.
+    ///
+    /// @param <T> the type
+    /// @param type the type
+    /// @param input the lines, in UTF-8; it is not copied, and must not change while the values are used
+    /// @return the values, one per line, parsed and bound as the stream is consumed: a line that does not bind is
+    ///     a [JsonMappingException], thrown by the stream
+    /// @throws IllegalStateException if this parser reads JSONC or JSON5: JSON Lines are JSON only
+    public <T> Stream<T> parseLinesAs(Class<T> type, byte[] input) {
+        requireNonNull(type, "type");
+        requireNonNull(input, "input");
+        checkLines();
+        return lines(Lines.of(input, limits), tape -> bind(type, tape));
+    }
+
+    /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(byte\[\])] does, and binds each line to a
+    /// [JsonRecord] type.
+    ///
+    /// @param <T> the type
+    /// @param type the type
+    /// @param input the lines
+    /// @return the values, one per line, parsed and bound as the stream is consumed: a line that does not bind is
+    ///     a [JsonMappingException], thrown by the stream
+    /// @throws JsonParseException if the input has an unpaired surrogate
+    /// @throws IllegalStateException if this parser reads JSONC or JSON5: JSON Lines are JSON only
+    public <T> Stream<T> parseLinesAs(Class<T> type, String input) {
+        requireNonNull(type, "type");
+        checkLines();
+        return parseLinesAs(type, utf8(input));
+    }
+
+    /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(ByteSource)] does, and binds each line to a
+    /// [JsonRecord] type.
+    ///
+    /// @param <T> the type
+    /// @param type the type
+    /// @param source the lines, in UTF-8
+    /// @return the values, one per line, parsed and bound as the stream is consumed: a line that does not bind is
+    ///     a [JsonMappingException], thrown by the stream; close it, as it holds the source open
+    /// @throws IllegalStateException if this parser reads JSONC or JSON5: JSON Lines are JSON only
+    /// @throws IOException if the source cannot be opened
+    public <T> Stream<T> parseLinesAs(Class<T> type, ByteSource source) throws IOException {
+        requireNonNull(type, "type");
+        requireNonNull(source, "source");
+        checkLines();
+        var in = source.openStream();
+        return lines(Lines.of(in, limits), tape -> bind(type, tape)).onClose(() -> close(in));
+    }
+
+    private void checkLines() {
+        checkState(format == JsonFormat.JSON, "JSON Lines are JSON only, and this parser reads %s", format);
+    }
+
+    private <T> T bind(Class<T> type, Tape tape) {
+        return Binders.read(type, new JsonStreamReader(tape, unknownMembers));
+    }
+
+    /// Returns the values of lines, as a stream that turns the errors of the tape builder into parse errors.
+    private static <T> Stream<T> lines(Lines lines, Function<Tape, T> value) {
+        var values = new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                try {
+                    return lines.hasNext();
+                } catch (TapeException e) {
+                    throw new JsonParseException(e.description(), e.position(), e.path());
+                }
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return value.apply(lines.next());
+            }
+        };
+        return StreamSupport.stream(
+                Spliterators.spliteratorUnknownSize(values, Spliterator.ORDERED | Spliterator.NONNULL), false);
+    }
+
+    private static void close(InputStream in) {
+        try {
+            in.close();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     Tape tape(byte[] input) {
         requireNonNull(input, "input");
         try {
-            return TapeBuilder.build(input, limits);
+            return switch (format) {
+                case JSON -> TapeBuilder.build(input, 0, input.length, limits, Syntax.JSON, Locator.of(input));
+                case JSONC -> Jsonc.build(input, limits);
+                case JSON5 -> Json5.build(input, limits);
+            };
         } catch (TapeException e) {
-            throw new JsonParseException(e.description(), Positions.of(input, e.offset()), e.path());
+            throw new JsonParseException(e.description(), e.position(), e.path());
         }
     }
 
@@ -206,7 +359,7 @@ public final class JsonParser {
         return input.getBytes(UTF_8);
     }
 
-    /// Builds a parser. Its defaults: a depth of 1 000 nested objects and arrays, no limit on the length of a
+    /// Builds a parser. Its defaults: JSON, a depth of 1 000 nested objects and arrays, no limit on the length of a
     /// document besides that of an array, strings of up to 20 000 000 bytes, numbers of up to 1 000 bytes, and
     /// unknown members ignored by binding.
     ///
@@ -217,9 +370,19 @@ public final class JsonParser {
         private int maxDocumentLength = Limits.DEFAULTS.maxDocumentLength();
         private int maxStringLength = Limits.DEFAULTS.maxStringLength();
         private int maxNumberLength = Limits.DEFAULTS.maxNumberLength();
+        private JsonFormat format = JsonFormat.JSON;
         private UnknownMembers unknownMembers = UnknownMembers.IGNORE;
 
         private Builder() {}
+
+        /// Sets the syntax of the documents.
+        ///
+        /// @param format [JsonFormat#JSON], [JsonFormat#JSONC] or [JsonFormat#JSON5]
+        /// @return this builder
+        public Builder format(JsonFormat format) {
+            this.format = requireNonNull(format, "format");
+            return this;
+        }
 
         /// Sets the maximum number of nested objects and arrays. Binding recurses with the document, so this limit
         /// also bounds the stack it uses.

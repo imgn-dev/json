@@ -18,9 +18,13 @@ import org.jspecify.annotations.Nullable;
 ///
 /// The exact conversions, [#asInt()], [#asLong()], [#asShort()], [#asByte()] and [#asBigInteger()], accept any
 /// number whose value is an integer in their range, such as `1.0` or `1e2`, and throw an [ArithmeticException]
-/// otherwise. [#asDouble()] and [#asFloat()] return the nearest value. [#asBigDecimal()] is always exact.
+/// otherwise. [#asDouble()] and [#asFloat()] return the nearest value. [#asBigDecimal()] is exact.
 ///
-/// Two numbers are equal when their values are: `1`, `1.0` and `1e0` are equal. [#toString()] returns the number as
+/// JSON5 also has `NaN`, `Infinity` and `-Infinity`: [#asDouble()] and [#asFloat()] return them, the exact conversions
+/// throw an [ArithmeticException], and writing them as JSON is an [IllegalArgumentException].
+///
+/// Two numbers are equal when their values are: `1`, `1.0` and `1e0` are equal, and so are two `NaN`. [#toString()]
+/// returns the number as
 /// written.
 ///
 /// @since 0.1.0
@@ -158,11 +162,19 @@ public final class JsonNumber implements JsonValue {
     /// Returns the exact value of this number as a `BigDecimal`.
     ///
     /// @return the value
+    /// @throws ArithmeticException if the number is `NaN` or an infinity
     public BigDecimal asBigDecimal() {
-        return text == null ? BigDecimal.valueOf(value) : Numbers.toBigDecimal(text, 0, text.length);
+        if (text == null) {
+            return BigDecimal.valueOf(value);
+        }
+        try {
+            return Numbers.toBigDecimal(text, 0, text.length);
+        } catch (ArithmeticException e) {
+            throw new ArithmeticException(this + " is not a BigDecimal: " + e.getMessage());
+        }
     }
 
-    /// Returns the `double` nearest this number.
+    /// Returns the `double` nearest this number, or `NaN` or an infinity of JSON5.
     ///
     /// @return the value
     /// @throws ArithmeticException if the number is too large for a `double`
@@ -171,13 +183,13 @@ public final class JsonNumber implements JsonValue {
             return value;
         }
         var result = Numbers.parseDouble(text, 0, text.length);
-        if (Double.isInfinite(result)) {
+        if (Double.isInfinite(result) && !isNonFinite()) {
             throw new ArithmeticException(this + " is too large for a double");
         }
         return result;
     }
 
-    /// Returns the `float` nearest this number.
+    /// Returns the `float` nearest this number, or `NaN` or an infinity of JSON5.
     ///
     /// @return the value
     /// @throws ArithmeticException if the number is too large for a `float`
@@ -186,7 +198,7 @@ public final class JsonNumber implements JsonValue {
             return value;
         }
         var result = Numbers.parseFloat(text, 0, text.length);
-        if (Float.isInfinite(result)) {
+        if (Float.isInfinite(result) && !isNonFinite()) {
             throw new ArithmeticException(this + " is too large for a float");
         }
         return result;
@@ -205,12 +217,17 @@ public final class JsonNumber implements JsonValue {
         if (text == null && number.text == null) {
             return value == number.value;
         }
+        if (isNonFinite() || number.isNonFinite()) {
+            return isNonFinite() && number.isNonFinite() && Double.compare(asDouble(), number.asDouble()) == 0;
+        }
         return asBigDecimal().compareTo(number.asBigDecimal()) == 0;
     }
 
     @Override
     public int hashCode() {
-        return asBigDecimal().stripTrailingZeros().hashCode();
+        return isNonFinite()
+                ? Double.hashCode(asDouble())
+                : asBigDecimal().stripTrailingZeros().hashCode();
     }
 
     /// Returns the number as written.
@@ -242,7 +259,14 @@ public final class JsonNumber implements JsonValue {
         }
     }
 
+    private boolean isNonFinite() {
+        return text != null && Numbers.isNonFinite(text, 0, text.length);
+    }
+
     private int integralFlag() {
+        if (isNonFinite()) {
+            return 0;
+        }
         for (var b : requireNonNull(text)) {
             if (b == '.' || b == 'e' || b == 'E') {
                 return 0;

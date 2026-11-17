@@ -12,11 +12,20 @@ public final class Positions {
     ///
     /// @param offset the offset, from 0 to the length of the document
     public static JsonPosition of(byte[] input, int offset) {
-        var line = 1;
-        var lineStart = 0;
-        for (var i = 0; i < offset; i++) {
+        return of(input, 0, 1, offset);
+    }
+
+    /// Returns the line and column of an offset of an input, counting lines from an offset where a line starts.
+    ///
+    /// @param from the offset where the line numbered `line` starts
+    /// @param line the number of that line
+    /// @param offset the offset, from `from` to the length of the input
+    public static JsonPosition of(byte[] input, int from, int line, int offset) {
+        var lineStart = from;
+        var lines = line;
+        for (var i = from; i < offset; i++) {
             if (input[i] == '\n') {
-                line++;
+                lines++;
                 lineStart = i + 1;
             }
         }
@@ -27,6 +36,6 @@ public final class Positions {
                 column += Utf8.sequenceLength(b) == Utf8.MAX_LENGTH ? 2 : 1;
             }
         }
-        return new JsonPosition(line, column);
+        return new JsonPosition(lines, column);
     }
 }

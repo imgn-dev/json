@@ -2,6 +2,7 @@ package be.imgn.json.internal;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import be.imgn.json.JsonPosition;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public final class Tape {
     public static final int NON_ASCII = 2;
     /// The flag of a number with neither a fraction nor an exponent.
     public static final int INTEGRAL = 1;
+    /// The flag of `NaN`, `Infinity` or `-Infinity`, which only JSON5 has.
+    public static final int NON_FINITE = 2;
 
     /// The largest length or count an entry holds: larger ones are stored as this value.
     public static final int SATURATED = 0xFF_FFFF;
@@ -79,9 +82,11 @@ public final class Tape {
     private final long[] entries;
     private final int size;
     private final Names names;
+    private final Locator locator;
 
-    Tape(byte[] input, long[] entries, int size, Names names) {
+    Tape(byte[] input, long[] entries, int size, Names names, Locator locator) {
         this.input = input;
+        this.locator = locator;
         this.entries = entries;
         this.size = size;
         this.names = names;
@@ -90,6 +95,11 @@ public final class Tape {
     /// Returns the distinct member names of the document, which the low field of a name entry numbers.
     public Names names() {
         return names;
+    }
+
+    /// Returns the position in the source of an offset of the document.
+    public JsonPosition position(int offset) {
+        return locator.position(offset);
     }
 
     /// Returns the document, in UTF-8.
@@ -234,7 +244,10 @@ public final class Tape {
                 }
                 yield list;
             }
-            case NUMBER -> (flags & INTEGRAL) != 0 ? List.of("INTEGRAL") : List.of();
+            case NUMBER ->
+                (flags & INTEGRAL) != 0
+                        ? List.of("INTEGRAL")
+                        : (flags & NON_FINITE) != 0 ? List.of("NON_FINITE") : List.of();
             default -> List.of();
         };
         names.forEach(name -> text.append(' ').append(name));

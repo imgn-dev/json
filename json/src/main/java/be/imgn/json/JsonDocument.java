@@ -4,7 +4,6 @@ import static be.imgn.gaia.core.base.Preconditions.checkArgument;
 import static java.util.Objects.checkIndex;
 import static java.util.Objects.requireNonNull;
 
-import be.imgn.json.internal.Positions;
 import be.imgn.json.internal.Tape;
 
 /// A parsed document: its root value, and where each of its values is written.
@@ -67,6 +66,6 @@ public final class JsonDocument {
     }
 
     private JsonPosition position(int index) {
-        return Positions.of(tape.input(), tape.valueOffset(index));
+        return tape.position(tape.valueOffset(index));
     }
 }

@@ -1,4 +1,4 @@
-import be.imgn.json.JsonBinder;
+import be.imgn.json.spi.JsonBinder;
 
 /// A fast, strict JSON parser and writer: a streaming API, an immutable tree, and binding to records through generated
 /// code.
@@ -9,6 +9,9 @@ module be.imgn.json {
     requires static org.jspecify;
 
     exports be.imgn.json;
+    exports be.imgn.json.bind;
+    exports be.imgn.json.spi;
+    exports be.imgn.json.stream;
 
     // JsonParser.parseAs and JsonWriter.formatAs load the binders that the annotation processor generates.
     uses JsonBinder;

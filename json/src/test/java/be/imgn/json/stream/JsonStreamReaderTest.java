@@ -1,9 +1,14 @@
-package be.imgn.json;
+package be.imgn.json.stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
+import be.imgn.json.JsonMappingException;
+import be.imgn.json.JsonObject;
+import be.imgn.json.JsonParser;
+import be.imgn.json.JsonType;
+import be.imgn.json.bind.UnknownMembers;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;

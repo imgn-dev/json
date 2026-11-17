@@ -1,7 +1,17 @@
-package be.imgn.json;
+package be.imgn.json.spi;
 
 import static java.util.Objects.requireNonNull;
 
+import be.imgn.json.JsonArray;
+import be.imgn.json.JsonBoolean;
+import be.imgn.json.JsonNull;
+import be.imgn.json.JsonNumber;
+import be.imgn.json.JsonObject;
+import be.imgn.json.JsonString;
+import be.imgn.json.JsonType;
+import be.imgn.json.JsonValue;
+import be.imgn.json.internal.Access;
+import be.imgn.json.stream.JsonStreamReader;
 import java.net.URI;
 import java.time.DateTimeException;
 import java.time.Duration;
@@ -15,9 +25,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
-/// Reads the values that the code generated for [JsonRecord] types binds from strings, and checks the type of a
-/// [JsonValue]. Each method reads the next value, and throws a [JsonMappingException] at its position if it does not
-/// bind.
+/// Reads the values that the code generated for [JsonRecord][be.imgn.json.bind.JsonRecord] types binds from
+/// strings, and checks the type of a [JsonValue]. Each method reads the next value, and throws a
+/// [JsonMappingException][be.imgn.json.JsonMappingException] at its position if it does not bind.
 ///
 /// @since 0.1.0
 public final class JsonBindings {
@@ -36,7 +46,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the instant
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static Instant readInstant(JsonStreamReader reader) {
         return parse(reader, "an ISO-8601 instant", Instant::parse);
     }
@@ -45,7 +55,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the date-time
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static OffsetDateTime readOffsetDateTime(JsonStreamReader reader) {
         return parse(reader, "an ISO-8601 date-time with an offset", OffsetDateTime::parse);
     }
@@ -54,7 +64,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the date
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static LocalDate readLocalDate(JsonStreamReader reader) {
         return parse(reader, "an ISO-8601 date", LocalDate::parse);
     }
@@ -63,7 +73,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the time
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static LocalTime readLocalTime(JsonStreamReader reader) {
         return parse(reader, "an ISO-8601 time", LocalTime::parse);
     }
@@ -72,7 +82,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the date-time
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static LocalDateTime readLocalDateTime(JsonStreamReader reader) {
         return parse(reader, "an ISO-8601 date-time", LocalDateTime::parse);
     }
@@ -81,7 +91,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the duration
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static Duration readDuration(JsonStreamReader reader) {
         return parse(reader, "an ISO-8601 duration", Duration::parse);
     }
@@ -90,7 +100,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the UUID
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static UUID readUuid(JsonStreamReader reader) {
         return parse(reader, "a UUID", text -> {
             var uuid = UUID.fromString(text);
@@ -106,7 +116,7 @@ public final class JsonBindings {
     ///
     /// @param reader the reader
     /// @return the URI
-    /// @throws JsonMappingException if the next value is not such a string
+    /// @throws be.imgn.json.JsonMappingException if the next value is not such a string
     public static URI readUri(JsonStreamReader reader) {
         return parse(reader, "a URI", URI::create);
     }
@@ -117,15 +127,15 @@ public final class JsonBindings {
     /// @param reader the reader
     /// @param type the type: [JsonValue], or one of its subtypes
     /// @return the value
-    /// @throws JsonMappingException if the next value is not of that type
+    /// @throws be.imgn.json.JsonMappingException if the next value is not of that type
     public static <T extends JsonValue> T readValue(JsonStreamReader reader, Class<T> type) {
         requireNonNull(type, "type");
         var mark = reader.mark();
         var value = reader.readValue();
         if (!type.isInstance(value)) {
-            var expected = requireNonNull(VALUE_TYPES.get(type), type.getName()).description();
+            var expected = Access.trees().description(requireNonNull(VALUE_TYPES.get(type), type.getName()));
             throw reader.mappingError(
-                    mark, "expected " + expected + ", found " + value.type().description());
+                    mark, "expected " + expected + ", found " + Access.trees().description(value.type()));
         }
         return type.cast(value);
     }

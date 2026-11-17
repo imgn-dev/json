@@ -1,6 +1,6 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonRecord;
+import be.imgn.json.bind.JsonRecord;
 import org.jspecify.annotations.Nullable;
 
 /// A record of more than 64 components, whose presence takes two words of bits.

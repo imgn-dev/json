@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import be.imgn.gaia.core.io.ByteSource;
 import be.imgn.gaia.core.io.CharSource;
+import be.imgn.json.bind.UnknownMembers;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 

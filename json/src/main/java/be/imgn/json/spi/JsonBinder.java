@@ -1,8 +1,13 @@
-package be.imgn.json;
+package be.imgn.json.spi;
 
-/// Reads a type from a stream and writes it to one. The annotation processor generates one for each [JsonRecord]
-/// type, and registers it as a service, which [JsonParser#parseAs(Class, byte[])] and
-/// [JsonWriter#formatAs(Class, Object)] load with [java.util.ServiceLoader].
+import be.imgn.json.stream.JsonStreamReader;
+import be.imgn.json.stream.JsonStreamWriter;
+
+/// Reads a type from a stream and writes it to one. The annotation processor generates one for each
+/// [JsonRecord][be.imgn.json.bind.JsonRecord] type, and registers it as a service, which
+/// [JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])] and
+/// [JsonWriter#formatAs(Class, Object)][be.imgn.json.JsonWriter#formatAs(Class, Object)] load with
+/// [java.util.ServiceLoader].
 ///
 /// @param <T> the type
 /// @since 0.1.0
@@ -17,7 +22,7 @@ public interface JsonBinder<T> {
     ///
     /// @param reader the reader, at the value
     /// @return the value
-    /// @throws JsonMappingException if the value does not bind to the type
+    /// @throws be.imgn.json.JsonMappingException if the value does not bind to the type
     T read(JsonStreamReader reader);
 
     /// Writes a value of the type.

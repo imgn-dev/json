@@ -61,6 +61,8 @@ A parsed object or array keeps its document in memory while it is referenced. `J
 
 ### Streaming
 
+`JsonStreamReader`, `JsonStreamWriter` and `JsonNames` are in `be.imgn.json.stream`.
+
 ```java
 private static final JsonNames NAMES = JsonNames.of("id", "tags");
 
@@ -124,7 +126,7 @@ Parsers and writers are immutable and thread-safe, and hold nothing but their se
 
 ## Binding to records
 
-Annotate the root type with `@JsonRecord`:
+Annotate the root type with `@JsonRecord`, from `be.imgn.json.bind`:
 
 ```java
 @JsonRecord
@@ -176,7 +178,7 @@ Add the processor to the compiler:
 ```
 
 The processor registers each binder as a service. On the module path, the module of the records must declare it, as
-the processor reminds you: `provides be.imgn.json.JsonBinder with ...`.
+the processor reminds you: `provides be.imgn.json.spi.JsonBinder with ...`.
 
 The processor does not claim the annotations it processes, as Error Prone requires: a build with
 `-Xlint:processing -Werror` fails on javac's warning that no processor claimed them.

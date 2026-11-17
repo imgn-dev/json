@@ -1,4 +1,4 @@
-package be.imgn.json;
+package be.imgn.json.bind;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.RECORD_COMPONENT;

@@ -4,7 +4,9 @@ import static be.imgn.gaia.core.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 import be.imgn.gaia.core.io.ByteSink;
+import be.imgn.json.internal.Access;
 import be.imgn.json.internal.Output;
+import be.imgn.json.stream.JsonStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -95,56 +97,57 @@ public final class JsonWriter {
         written(value, output -> writeTo(output, sink));
     }
 
-    /// Returns a value of a [JsonRecord] type as JSON, through the code the annotation processor generated.
+    /// Returns a value of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as JSON, through the code the
+    /// annotation processor generated.
     ///
     /// @param <T> the type
     /// @param type the type, which may be a sealed interface of the record
     /// @param value the value
     /// @return the JSON
     /// @throws NullPointerException if a component of `value` that is not `@Nullable` is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of `value` has an unpaired surrogate
     public <T> String formatAs(Class<T> type, T value) {
         return writtenAs(type, value, Output::toString);
     }
 
-    /// Returns a value of a [JsonRecord] type as JSON, in UTF-8.
+    /// Returns a value of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as JSON, in UTF-8.
     ///
     /// @param <T> the type
     /// @param type the type, which may be a sealed interface of the record
     /// @param value the value
     /// @return the JSON
     /// @throws NullPointerException if a component of `value` that is not `@Nullable` is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of `value` has an unpaired surrogate
     public <T> byte[] toBytesAs(Class<T> type, T value) {
         return writtenAs(type, value, Output::toByteArray);
     }
 
-    /// Writes a value of a [JsonRecord] type as JSON, in UTF-8, to a stream.
+    /// Writes a value of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as JSON, in UTF-8, to a stream.
     ///
     /// @param <T> the type
     /// @param type the type, which may be a sealed interface of the record
     /// @param value the value
     /// @param out the stream, which is not closed
     /// @throws NullPointerException if a component of `value` that is not `@Nullable` is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of `value` has an unpaired surrogate
     /// @throws IOException if the stream cannot be written
     public <T> void writeAs(Class<T> type, T value, OutputStream out) throws IOException {
         requireNonNull(out, "out");
         writtenAs(type, value, output -> output.writeTo(out));
     }
 
-    /// Writes a value of a [JsonRecord] type as JSON, in UTF-8, to a sink.
+    /// Writes a value of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as JSON, in UTF-8, to a sink.
     ///
     /// @param <T> the type
     /// @param type the type, which may be a sealed interface of the record
     /// @param value the value
     /// @param sink the sink
     /// @throws NullPointerException if a component of `value` that is not `@Nullable` is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of `value` has an unpaired surrogate
     /// @throws IOException if the sink cannot be written
     public <T> void writeAs(Class<T> type, T value, ByteSink sink) throws IOException {
         requireNonNull(sink, "sink");
@@ -157,7 +160,7 @@ public final class JsonWriter {
         requireNonNull(value, "value");
         var output = Output.pooled(indent);
         try {
-            Binders.write(type, new JsonStreamWriter(output, writeNullMembers), value);
+            Binders.write(type, Access.streams().writer(output, writeNullMembers), value);
             return finisher.finish(output);
         } finally {
             output.release();
@@ -205,7 +208,7 @@ public final class JsonWriter {
         }
     }
 
-    /// Returns values of a [JsonRecord] type as [JSON Lines](https://jsonlines.org), as
+    /// Returns values of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as [JSON Lines](https://jsonlines.org), as
     /// [#formatLines(Iterable)] does.
     ///
     /// @param <T> the type
@@ -213,24 +216,25 @@ public final class JsonWriter {
     /// @param values the values
     /// @return the lines
     /// @throws NullPointerException if a value, or a component of a value that is not `@Nullable`, is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     a value has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of a value has an unpaired surrogate
     public <T> String formatLinesAs(Class<T> type, Iterable<? extends T> values) {
         requireNonNull(type, "type");
         requireNonNull(values, "values");
         return lines(values, (output, value) -> writeRecord(type, output, value));
     }
 
-    /// Writes values of a [JsonRecord] type as [JSON Lines](https://jsonlines.org), in UTF-8, to a stream, as
-    /// [#writeLines(Iterable, OutputStream)] does.
+    /// Writes values of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as
+    /// [JSON Lines](https://jsonlines.org), in UTF-8, to a stream, as [#writeLines(Iterable, OutputStream)]
+    /// does.
     ///
     /// @param <T> the type
     /// @param type the type, which may be a sealed interface of the record
     /// @param values the values
     /// @param out the stream, which is not closed
     /// @throws NullPointerException if a value, or a component of a value that is not `@Nullable`, is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     a value has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of a value has an unpaired surrogate
     /// @throws IOException if the stream cannot be written
     public <T> void writeLinesAs(Class<T> type, Iterable<? extends T> values, OutputStream out) throws IOException {
         requireNonNull(type, "type");
@@ -239,16 +243,16 @@ public final class JsonWriter {
         lines(values, out, (output, value) -> writeRecord(type, output, value));
     }
 
-    /// Writes values of a [JsonRecord] type as [JSON Lines](https://jsonlines.org), in UTF-8, to a sink, as
-    /// [#writeLines(Iterable, OutputStream)] does.
+    /// Writes values of a [JsonRecord][be.imgn.json.bind.JsonRecord] type as
+    /// [JSON Lines](https://jsonlines.org), in UTF-8, to a sink, as [#writeLines(Iterable, OutputStream)] does.
     ///
     /// @param <T> the type
     /// @param type the type, which may be a sealed interface of the record
     /// @param values the values
     /// @param sink the sink
     /// @throws NullPointerException if a value, or a component of a value that is not `@Nullable`, is null
-    /// @throws IllegalArgumentException if no binder is registered for the type (see [JsonRecord]), or a string of
-    ///     a value has an unpaired surrogate
+    /// @throws IllegalArgumentException if no binder is registered for the type (see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]), or a string of a value has an unpaired surrogate
     /// @throws IOException if the sink cannot be written
     public <T> void writeLinesAs(Class<T> type, Iterable<? extends T> values, ByteSink sink) throws IOException {
         requireNonNull(type, "type");
@@ -260,7 +264,7 @@ public final class JsonWriter {
     }
 
     private void writeRecord(Class<?> type, Output output, Object value) {
-        Binders.write(type, new JsonStreamWriter(output, writeNullMembers), value);
+        Binders.write(type, Access.streams().writer(output, writeNullMembers), value);
     }
 
     /// Writes values as lines to a pooled output, and returns them.
@@ -300,7 +304,7 @@ public final class JsonWriter {
     ///
     /// @return a new stream writer
     public JsonStreamWriter streamWriter() {
-        return new JsonStreamWriter(indent, writeNullMembers);
+        return Access.streams().writer(indent, writeNullMembers);
     }
 
     /// Writes a value to a pooled output, finishes with it, and gives its buffer back.

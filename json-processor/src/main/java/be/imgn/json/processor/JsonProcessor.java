@@ -5,7 +5,8 @@ import be.imgn.gaia.processing.Step;
 import be.imgn.gaia.processing.StepProcessor;
 import java.util.List;
 
-/// Generates a `be.imgn.json.JsonBinder` for each type annotated `be.imgn.json.JsonRecord`, and registers it as a
+/// Generates a `be.imgn.json.spi.JsonBinder` for each type annotated `be.imgn.json.bind.JsonRecord`, and registers it
+/// as a
 /// service.
 public final class JsonProcessor extends StepProcessor {
 

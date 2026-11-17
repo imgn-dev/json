@@ -38,10 +38,10 @@ final class SourceWriter {
     SourceWriter(SourceScope scope, Binder binder) {
         this.scope = scope;
         this.binder = binder;
-        this.names = scope.name("be.imgn.json.JsonNames");
-        this.bindings = scope.name("be.imgn.json.JsonBindings");
-        this.reader = scope.name("be.imgn.json.JsonStreamReader");
-        this.writer = scope.name("be.imgn.json.JsonStreamWriter");
+        this.names = scope.name("be.imgn.json.stream.JsonNames");
+        this.bindings = scope.name("be.imgn.json.spi.JsonBindings");
+        this.reader = scope.name("be.imgn.json.stream.JsonStreamReader");
+        this.writer = scope.name("be.imgn.json.stream.JsonStreamWriter");
     }
 
     String write() {
@@ -79,7 +79,7 @@ final class SourceWriter {
                         root,
                         scope.generated(),
                         scope.simpleName(),
-                        scope.name("be.imgn.json.JsonBinder"),
+                        scope.name("be.imgn.json.spi.JsonBinder"),
                         constants,
                         reader,
                         readExpression(binder.codec()),

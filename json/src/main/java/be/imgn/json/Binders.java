@@ -1,5 +1,8 @@
 package be.imgn.json;
 
+import be.imgn.json.spi.JsonBinder;
+import be.imgn.json.stream.JsonStreamReader;
+import be.imgn.json.stream.JsonStreamWriter;
 import java.util.ServiceLoader;
 
 /// Finds the [JsonBinder] of a type, once per type.
@@ -19,7 +22,7 @@ final class Binders {
             throw new IllegalArgumentException("no JsonBinder is registered for " + type.getName()
                     + ": annotate it @JsonRecord, compile it with the annotation processor of"
                     + " be.imgn.json:json-processor, and on the module path, declare in its module:"
-                    + " provides be.imgn.json.JsonBinder with its binder");
+                    + " provides be.imgn.json.spi.JsonBinder with its binder");
         }
     };
 

@@ -1,6 +1,6 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonName;
+import be.imgn.json.bind.JsonName;
 import org.jspecify.annotations.Nullable;
 
 /// A deletion.

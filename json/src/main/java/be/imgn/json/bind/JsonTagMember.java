@@ -1,4 +1,4 @@
-package be.imgn.json;
+package be.imgn.json.bind;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.CLASS;
@@ -19,8 +19,9 @@ import java.lang.annotation.Target;
 /// record Circle(double radius) implements Shape {}
 /// ```
 ///
-/// The tag of a record is its [JsonName], or its simple name. No record may have a component named as the tag member.
-/// The tag member is written first. A missing or unknown tag is a [JsonMappingException].
+/// The tag of a record is its [JsonName], or its simple name. No record may have a component named as the tag
+/// member. The tag member is written first. A missing or unknown tag is a
+/// [JsonMappingException][be.imgn.json.JsonMappingException].
 ///
 /// @see JsonWrapper
 /// @since 0.1.0

@@ -1,7 +1,7 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonName;
-import be.imgn.json.JsonRecord;
+import be.imgn.json.bind.JsonRecord;
+import be.imgn.json.bind.JsonName;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;

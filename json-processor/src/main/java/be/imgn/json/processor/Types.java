@@ -10,10 +10,10 @@ import javax.lang.model.element.TypeElement;
 /// The names of the types of the runtime module, and checks of elements.
 final class Types {
 
-    static final String JSON_RECORD = "be.imgn.json.JsonRecord";
-    static final String JSON_NAME = "be.imgn.json.JsonName";
-    static final String JSON_TAG_MEMBER = "be.imgn.json.JsonTagMember";
-    static final String JSON_WRAPPER = "be.imgn.json.JsonWrapper";
+    static final String JSON_RECORD = "be.imgn.json.bind.JsonRecord";
+    static final String JSON_NAME = "be.imgn.json.bind.JsonName";
+    static final String JSON_TAG_MEMBER = "be.imgn.json.bind.JsonTagMember";
+    static final String JSON_WRAPPER = "be.imgn.json.bind.JsonWrapper";
     static final String JSON_VALUE = "be.imgn.json.JsonValue";
 
     private Types() {}

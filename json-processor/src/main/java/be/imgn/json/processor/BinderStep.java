@@ -13,7 +13,7 @@ import javax.lang.model.element.NestingKind;
 /// Generates the binder of each type annotated `JsonRecord`.
 final class BinderStep implements Step {
 
-    private static final ClassName JSON_BINDER = ClassName.of("be.imgn.json", "JsonBinder");
+    private static final ClassName JSON_BINDER = ClassName.of("be.imgn.json.spi", "JsonBinder");
 
     private final ProcessingContext context;
 

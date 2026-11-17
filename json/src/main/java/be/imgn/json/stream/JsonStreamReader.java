@@ -1,9 +1,14 @@
-package be.imgn.json;
+package be.imgn.json.stream;
 
 import static be.imgn.gaia.core.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.util.Objects.requireNonNull;
 
+import be.imgn.json.JsonMappingException;
+import be.imgn.json.JsonType;
+import be.imgn.json.JsonValue;
+import be.imgn.json.bind.UnknownMembers;
+import be.imgn.json.internal.Access;
 import be.imgn.json.internal.Numbers;
 import be.imgn.json.internal.Strings;
 import be.imgn.json.internal.Tape;
@@ -37,6 +42,10 @@ public final class JsonStreamReader {
     // The longest number an error message quotes.
     private static final int MAX_QUOTED = 40;
 
+    static {
+        Access.register(new StreamAccess());
+    }
+
     private final Tape tape;
     private final long[] entries;
     private final byte[] input;
@@ -61,7 +70,7 @@ public final class JsonStreamReader {
     /// @return the type of the next value
     /// @throws IllegalStateException if the reader is not at a value
     public JsonType peek() {
-        return TapeValues.type(valueEntry());
+        return Access.trees().type(valueEntry());
     }
 
     /// Reads the start of an object; [#hasNextMember()] then tells whether a member follows.
@@ -116,9 +125,10 @@ public final class JsonStreamReader {
         return cached;
     }
 
-    /// Returns the index of the tag that names the type of the next value, an object, from the string value of its tag
-    /// member, wherever the member is among the others; the reader stays at the object. The code generated for a
-    /// sealed interface laid out with [JsonTagMember] reads the object as the record the tag names.
+    /// Returns the index of the tag that names the type of the next value, an object, from the string value of
+    /// its tag member, wherever the member is among the others; the reader stays at the object. The code
+    /// generated for a sealed interface laid out with [JsonTagMember][be.imgn.json.bind.JsonTagMember] reads
+    /// the object as the record the tag names.
     ///
     /// @param member the name of the tag member, the only one in its [JsonNames]
     /// @param tags the tags
@@ -147,16 +157,18 @@ public final class JsonStreamReader {
                 return found;
             }
         }
-        throw new JsonMappingException(
-                "missing member \"" + member.get(0) + "\" naming the type, as one of " + quoted(tags),
-                tape.position(tape.valueOffset(index)),
-                path());
+        throw Access.trees()
+                .mappingError(
+                        "missing member \"" + member.get(0) + "\" naming the type, as one of " + quoted(tags),
+                        tape.position(tape.valueOffset(index)),
+                        path());
     }
 
     private JsonMappingException tagError(String message, int value, JsonNames member, JsonNames tags) {
         var at = path() + "/" + member.get(0).replace("~", "~0").replace("/", "~1");
-        return new JsonMappingException(
-                message + ", expected one of " + quoted(tags), tape.position(tape.valueOffset(value)), at);
+        return Access.trees()
+                .mappingError(
+                        message + ", expected one of " + quoted(tags), tape.position(tape.valueOffset(value)), at);
     }
 
     /// Returns the index among names of the string or name at a tape index, or -1.
@@ -194,10 +206,12 @@ public final class JsonStreamReader {
                 depth > 0 && isObject(depth) && currents[depth] == index - 1,
                 "the reader is not at the value of a member");
         if (unknownMembers == UnknownMembers.REJECT) {
-            throw new JsonMappingException(
-                    "unknown member \"" + Strings.decode(tape, index - 1) + "\", expected one of " + quoted(names),
-                    tape.position(Tape.offset(entries[index - 1])),
-                    path());
+            throw Access.trees()
+                    .mappingError(
+                            "unknown member \"" + Strings.decode(tape, index - 1) + "\", expected one of "
+                                    + quoted(names),
+                            tape.position(Tape.offset(entries[index - 1])),
+                            path());
         }
         skipValue();
     }
@@ -371,7 +385,7 @@ public final class JsonStreamReader {
     /// @throws IllegalStateException if the reader is not at a value
     public JsonValue readValue() {
         valueEntry();
-        var value = TapeValues.at(tape, index);
+        var value = Access.trees().value(tape, index);
         index = tape.next(index);
         return value;
     }
@@ -405,7 +419,7 @@ public final class JsonStreamReader {
         if (mark < 0 || mark >= tape.size()) {
             throw new IllegalArgumentException("not a mark of this reader: " + mark);
         }
-        return new JsonMappingException(message, tape.position(tape.valueOffset(mark)), path());
+        return Access.trees().mappingError(message, tape.position(tape.valueOffset(mark)), path());
     }
 
     /// Returns an error about a value, caused by an exception.
@@ -480,9 +494,10 @@ public final class JsonStreamReader {
     }
 
     private JsonMappingException mismatch(String expected) {
-        var found = TapeValues.type(entries[index]).description();
-        return new JsonMappingException(
-                "expected " + expected + ", found " + found, tape.position(tape.valueOffset(index)), path());
+        var found = Access.trees().description(Access.trees().type(entries[index]));
+        return Access.trees()
+                .mappingError(
+                        "expected " + expected + ", found " + found, tape.position(tape.valueOffset(index)), path());
     }
 
     private JsonMappingException outOfRange(String expected) {
@@ -490,7 +505,7 @@ public final class JsonStreamReader {
         var length = tape.length(index);
         var text =
                 new String(input, offset, Math.min(length, MAX_QUOTED), ISO_8859_1) + (length > MAX_QUOTED ? "…" : "");
-        return new JsonMappingException("expected " + expected + ", found " + text, tape.position(offset), path());
+        return Access.trees().mappingError("expected " + expected + ", found " + text, tape.position(offset), path());
     }
 
     /// Returns the path of the reader, as a JSON Pointer.

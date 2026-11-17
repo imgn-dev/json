@@ -1,4 +1,4 @@
-package be.imgn.json;
+package be.imgn.json.bind;
 
 /// What binding does with a member of an object that no component of the record takes.
 ///
@@ -6,6 +6,6 @@ package be.imgn.json;
 public enum UnknownMembers {
     /// Skips the member; its value must still be valid JSON.
     IGNORE,
-    /// Throws a [JsonMappingException].
+    /// Throws a [JsonMappingException][be.imgn.json.JsonMappingException].
     REJECT
 }

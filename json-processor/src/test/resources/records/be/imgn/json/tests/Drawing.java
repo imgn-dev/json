@@ -1,7 +1,7 @@
 package be.imgn.json.tests;
 
+import be.imgn.json.bind.JsonRecord;
 import be.imgn.json.JsonObject;
-import be.imgn.json.JsonRecord;
 import be.imgn.json.JsonValue;
 import java.util.List;
 import org.jspecify.annotations.Nullable;

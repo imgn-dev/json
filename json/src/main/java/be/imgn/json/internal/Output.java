@@ -8,7 +8,8 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /// Writes JSON as UTF-8 bytes into a growing buffer, compact or indented. It places the commas, line breaks and
-/// indentation, but trusts its caller with the grammar: [be.imgn.json.JsonStreamWriter] checks it for the public API.
+/// indentation, but trusts its caller with the grammar: [be.imgn.json.stream.JsonStreamWriter] checks it for the public
+/// API.
 public final class Output {
 
     private static final int INITIAL_CAPACITY = 256;

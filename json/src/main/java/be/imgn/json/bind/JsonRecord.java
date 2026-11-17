@@ -1,4 +1,4 @@
-package be.imgn.json;
+package be.imgn.json.bind;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.CLASS;
@@ -8,7 +8,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /// Marks a record, or a sealed interface of records, that documents bind to, with
-/// [JsonParser#parseAs(Class, byte[])], and that [JsonWriter#formatAs(Class, Object)] writes.
+/// [JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+/// [JsonWriter#formatAs(Class, Object)][be.imgn.json.JsonWriter#formatAs(Class, Object)] writes.
 ///
 /// ```java
 /// @JsonRecord
@@ -19,17 +20,18 @@ import java.lang.annotation.Target;
 /// Order order = new JsonParser().parseAs(Order.class, body);
 /// ```
 ///
-/// The annotation processor of the `be.imgn.json:json-processor` artifact generates the code that reads and writes the
-/// type straight from and to the stream, without reflection, and registers it as a [JsonBinder] service; on the module
-/// path, the module of the type must declare it: `provides be.imgn.json.JsonBinder with ...`. The processor rejects at
-/// compile time a type it cannot bind. The records, sealed interfaces and enums the type refers to are bound the same
-/// way, without the annotation.
+/// The annotation processor of the `be.imgn.json:json-processor` artifact generates the code that reads and
+/// writes the type straight from and to the stream, without reflection, and registers it as a
+/// [JsonBinder][be.imgn.json.spi.JsonBinder] service; on the module path, the module of the type must declare
+/// it: `provides be.imgn.json.spi.JsonBinder with ...`. The processor rejects at compile time a type it cannot
+/// bind. The records, sealed interfaces and enums the type refers to are bound the same way, without the
+/// annotation.
 ///
 /// Each component of a record is a member of an object, named as the component, or as its [JsonName]. A missing member
 /// is an error, unless the component is annotated `@Nullable` (any annotation of that simple name), which makes it
 /// `null`, as does a `null` member. A member that no component takes is skipped, or rejected with
 /// [UnknownMembers#REJECT]. When written, a `null` component is omitted, unless the writer
-/// [writes it][JsonWriter.Builder#writeNullMembers()].
+/// [writes it][be.imgn.json.JsonWriter.Builder#writeNullMembers()].
 ///
 /// The types bound, anything else being a compile error:
 ///
@@ -46,8 +48,8 @@ import java.lang.annotation.Target;
 /// - a sealed interface of records, from an object naming the record, as [JsonTagMember] or [JsonWrapper] lay it out;
 /// - `List<T>` and `Set<T>`, from an array of values that bind to `T`, a set rejecting duplicates;
 /// - `Map<String, T>`, from an object of values that bind to `T`;
-/// - [JsonValue] and its subtypes, as they are: a `@Nullable JsonValue` component is `null` for a missing member, and
-///   [JsonNull#INSTANCE] for a `null` one.
+/// - [JsonValue][be.imgn.json.JsonValue] and its subtypes, as they are: a `@Nullable JsonValue` component is
+///   `null` for a missing member, and [JsonNull#INSTANCE][be.imgn.json.JsonNull#INSTANCE] for a `null` one.
 ///
 /// Lists, sets and maps keep the order of the document, and cannot be modified. A record whose constructor throws is
 /// an error at the position of its object, with the exception as its cause.

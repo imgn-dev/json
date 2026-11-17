@@ -1,6 +1,7 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonRecord;
+import be.imgn.json.bind.JsonRecord;
+
 
 /// A record whose constructor rejects some values.
 ///

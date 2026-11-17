@@ -1,6 +1,6 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonRecord;
+import be.imgn.json.bind.JsonRecord;
 import java.util.List;
 
 /// A tree: a record that refers to itself.

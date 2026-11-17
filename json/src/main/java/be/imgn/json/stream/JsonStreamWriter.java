@@ -1,10 +1,12 @@
-package be.imgn.json;
+package be.imgn.json.stream;
 
 import static be.imgn.gaia.core.base.Preconditions.checkArgument;
 import static be.imgn.gaia.core.base.Preconditions.checkState;
 import static java.util.Objects.checkIndex;
 import static java.util.Objects.requireNonNull;
 
+import be.imgn.json.JsonValue;
+import be.imgn.json.internal.Access;
 import be.imgn.json.internal.Output;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,9 +14,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-/// Writes a document value by value, as UTF-8, compact or pretty as the [JsonWriter] that created it. It checks the
-/// grammar: a value where a member name is expected, a second root value, or an end that does not match its start, is
-/// an [IllegalStateException].
+/// Writes a document value by value, as UTF-8, compact or pretty as the [JsonWriter][be.imgn.json.JsonWriter]
+/// that created it. It checks the grammar: a value where a member name is expected, a second root value, or an
+/// end that does not match its start, is an [IllegalStateException].
 ///
 /// ```java
 /// var writer = new JsonWriter().streamWriter();
@@ -213,7 +215,7 @@ public final class JsonStreamWriter {
     public JsonStreamWriter value(JsonValue value) {
         requireNonNull(value, "value");
         beforeValue();
-        TreeWriter.write(output, value);
+        Access.trees().write(output, value);
         return afterScalar();
     }
 
@@ -228,7 +230,7 @@ public final class JsonStreamWriter {
     }
 
     /// Returns whether a record component that is `null` is written as `null`, rather than omitted, as the
-    /// [JsonWriter] that created this writer says.
+    /// [JsonWriter][be.imgn.json.JsonWriter] that created this writer says.
     ///
     /// @return whether `null` components are written
     public boolean writesNullMembers() {

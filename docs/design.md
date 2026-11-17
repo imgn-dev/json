@@ -18,7 +18,7 @@ Not included: the Vector API (planned, see [Vector API](#vector-api)), JSON Poin
 
 | Module            | Contents                                                                    | Published |
 |-------------------|-----------------------------------------------------------------------------|-----------|
-| `json`            | `be.imgn.json` (exported), `be.imgn.json.internal` (not exported: the core) | yes       |
+| `json`            | `be.imgn.json`, `.stream`, `.bind`, `.spi` (exported: see [Packages](#packages)), `.internal` | yes       |
 | `json-processor`  | the annotation processor, on gaia-processing                                | yes       |
 | `json-benchmarks` | JMH benchmarks                                                              | no        |
 
@@ -172,6 +172,26 @@ builder; each builder's `build()` uses that constructor too. The default writer 
 shortcut for the pretty one. A parser or writer holds only its settings, and every cache (the binders, per record type)
 is static, so creating one per call costs nothing.
 
+### Packages
+
+Split by who uses them, not by layer:
+
+| Package                 | Contents                                                                               | For                                |
+|-------------------------|----------------------------------------------------------------------------------------|------------------------------------|
+| `be.imgn.json`          | `JsonParser`, `JsonWriter`, `JsonFormat`, `JsonDocument`, `JsonPosition`, the exceptions, the tree (`JsonValue` and its subtypes, `JsonType`) | everyone: parse, navigate, write, with one import |
+| `be.imgn.json.stream`   | `JsonStreamReader`, `JsonStreamWriter`, `JsonNames`                                     | streaming, and generated code      |
+| `be.imgn.json.bind`     | `JsonRecord`, `JsonName`, `JsonTagMember`, `JsonWrapper`, `UnknownMembers`              | annotating records                 |
+| `be.imgn.json.spi`      | `JsonBinder`, `JsonBindings`                                                            | generated code only                |
+| `be.imgn.json.internal` | the tape builder, the translations, the output (not exported)                         | the module itself                  |
+
+- The tree stays in the root package: `JsonValue` is what `parse()` returns, and most users need nothing else.
+- The sealed hierarchies (`JsonValue`, `JsonException`) do not hold the packages together: in a named module, their
+  permitted subclasses may live in other packages.
+- What one package keeps package-private from the others (a reader built from a tape, a tree value, a mapping error,
+  writing a value) goes through `internal.Access`, as the JDK's shared secrets do: `be.imgn.json` registers its side
+  when `JsonParser` is initialized, `be.imgn.json.stream` when `JsonStreamReader` is, and a side asked for before it is
+  registered has that class initialized first. It runs when objects are created, not per token.
+
 ### Tree
 
 - `JsonValue` is sealed: `JsonObject`, `JsonArray`, `JsonString` (record), `JsonNumber`, `JsonBoolean` (enum),
@@ -293,7 +313,7 @@ On `JsonParser.Builder`, all checked in stage 1, each failure a `JsonParseExcept
   gaia-processing (`StepProcessor`, `GeneratedSources`, `ServiceFiles`, `Diagnostics`) and rejects at compile time any
   type it cannot bind.
 - Discovery: `ServiceLoader`, cached per type in a `ClassValue`. On the class path, the processor writes
-  `META-INF/services`; on the module path, the record's module needs `provides be.imgn.json.JsonBinder with ...`, which
+  `META-INF/services`; on the module path, the record's module needs `provides be.imgn.json.spi.JsonBinder with ...`, which
   the processor reports when it is missing.
 - Generated reading: the loop shown above, a `long` bitmask of the components seen (several for more than 64), and a
   check that every required component was seen. No duplicate check: stage 1 already did it.

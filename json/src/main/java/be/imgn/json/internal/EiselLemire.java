@@ -2,8 +2,8 @@ package be.imgn.json.internal;
 
 import java.math.BigInteger;
 
-/// Converts a decimal `w × 10^q`, with `w` of up to 19 digits, to the nearest `double`, with the algorithm of Eisel and
-/// Lemire: one 64×128-bit multiplication by a truncated power of five, read from a table built once.
+/// Converts a decimal `w × 10^q`, with `w` of up to 19 digits, to the nearest `double`, with the algorithm of
+/// Eisel and Lemire: one 64×128-bit multiplication by a truncated power of five, read from a table built once.
 ///
 /// With `m`, the power of five truncated to 128 bits, the exact product `w × 5^q` lies in `[w × m, w × m + w)` once
 /// scaled: below the 64 low bits of the 192-bit product. The 64 high bits are therefore exact unless the 64 middle ones

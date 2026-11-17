@@ -1,4 +1,4 @@
-package be.imgn.json;
+package be.imgn.json.bind;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.CLASS;
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 /// ```
 ///
 /// The tag of a record is its [JsonName], or its simple name. An object without a member, with several members, or
-/// with an unknown tag, is a [JsonMappingException].
+/// with an unknown tag, is a [JsonMappingException][be.imgn.json.JsonMappingException].
 ///
 /// @see JsonTagMember
 /// @since 0.1.0

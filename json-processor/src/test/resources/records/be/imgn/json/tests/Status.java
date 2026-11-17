@@ -1,6 +1,7 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonName;
+import be.imgn.json.bind.JsonName;
+
 
 /// The status of an order.
 public enum Status {

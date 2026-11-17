@@ -30,7 +30,7 @@ class JsonProcessorTest {
                 .contains("private static final JsonNames ORDER = JsonNames.of(\"id\", \"customer\", \"lines\","
                         + " \"status\", \"shipped\", \"notes\", \"tags\", \"total-price\");");
         assertThat(compilation)
-                .generatedFile(StandardLocation.CLASS_OUTPUT, "META-INF/services/be.imgn.json.JsonBinder")
+                .generatedFile(StandardLocation.CLASS_OUTPUT, "META-INF/services/be.imgn.json.spi.JsonBinder")
                 .contains("be.imgn.json.tests.$Order$$JsonBinder")
                 .contains("be.imgn.json.tests.$Shape$$JsonBinder");
     }
@@ -96,10 +96,10 @@ class JsonProcessorTest {
         return Compiler.compile("example.Bad", """
                 package example;
 
-                import be.imgn.json.JsonName;
-                import be.imgn.json.JsonRecord;
-                import be.imgn.json.JsonTagMember;
-                import be.imgn.json.JsonWrapper;
+                import be.imgn.json.bind.JsonName;
+                import be.imgn.json.bind.JsonRecord;
+                import be.imgn.json.bind.JsonTagMember;
+                import be.imgn.json.bind.JsonWrapper;
 
                 @JsonRecord
                 %s

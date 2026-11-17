@@ -1,4 +1,4 @@
-package be.imgn.json;
+package be.imgn.json.stream;
 
 import static be.imgn.gaia.core.base.Preconditions.checkArgument;
 import static java.nio.charset.StandardCharsets.UTF_8;

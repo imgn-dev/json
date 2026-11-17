@@ -7,6 +7,8 @@ import static java.util.Objects.requireNonNull;
 
 import be.imgn.gaia.core.io.ByteSource;
 import be.imgn.gaia.core.io.CharSource;
+import be.imgn.json.bind.UnknownMembers;
+import be.imgn.json.internal.Access;
 import be.imgn.json.internal.Json5;
 import be.imgn.json.internal.Jsonc;
 import be.imgn.json.internal.Limits;
@@ -16,6 +18,7 @@ import be.imgn.json.internal.Syntax;
 import be.imgn.json.internal.Tape;
 import be.imgn.json.internal.TapeBuilder;
 import be.imgn.json.internal.TapeException;
+import be.imgn.json.stream.JsonStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -45,6 +48,10 @@ import java.util.stream.StreamSupport;
 public final class JsonParser {
 
     private static final int MAX_ARRAY = Integer.MAX_VALUE - 8;
+
+    static {
+        Access.register(new TreeAccess());
+    }
 
     private final Limits limits;
     private final JsonFormat format;
@@ -113,7 +120,7 @@ public final class JsonParser {
     /// @return the reader, at the root value
     /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
     public JsonStreamReader reader(byte[] input) {
-        return new JsonStreamReader(tape(input), unknownMembers);
+        return Access.streams().reader(tape(input), unknownMembers);
     }
 
     /// Returns a reader of a document, which is validated whole first.
@@ -125,7 +132,8 @@ public final class JsonParser {
         return reader(utf8(input));
     }
 
-    /// Parses a document and binds it to a [JsonRecord] type, through the code the annotation processor generated.
+    /// Parses a document and binds it to a [JsonRecord][be.imgn.json.bind.JsonRecord] type, through the code
+    /// the annotation processor generated.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -133,13 +141,15 @@ public final class JsonParser {
     /// @return the value
     /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
-    /// @throws IllegalArgumentException if no binder is registered for the type: see [JsonRecord]
+    /// @throws IllegalArgumentException if no binder is registered for the type: see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
     public <T> T parseAs(Class<T> type, byte[] input) {
         requireNonNull(type, "type");
         return Binders.read(type, reader(input));
     }
 
-    /// Parses a document and binds it to a [JsonRecord] type, through the code the annotation processor generated.
+    /// Parses a document and binds it to a [JsonRecord][be.imgn.json.bind.JsonRecord] type, through the code
+    /// the annotation processor generated.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -147,12 +157,13 @@ public final class JsonParser {
     /// @return the value
     /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
-    /// @throws IllegalArgumentException if no binder is registered for the type: see [JsonRecord]
+    /// @throws IllegalArgumentException if no binder is registered for the type: see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
     public <T> T parseAs(Class<T> type, String input) {
         return parseAs(type, utf8(input));
     }
 
-    /// Parses a document, read whole, and binds it to a [JsonRecord] type.
+    /// Parses a document, read whole, and binds it to a [JsonRecord][be.imgn.json.bind.JsonRecord] type.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -160,13 +171,14 @@ public final class JsonParser {
     /// @return the value
     /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
-    /// @throws IllegalArgumentException if no binder is registered for the type: see [JsonRecord]
+    /// @throws IllegalArgumentException if no binder is registered for the type: see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
     /// @throws IOException if the source cannot be read
     public <T> T parseAs(Class<T> type, ByteSource source) throws IOException {
         return parseAs(type, read(source));
     }
 
-    /// Parses a document, read whole, and binds it to a [JsonRecord] type.
+    /// Parses a document, read whole, and binds it to a [JsonRecord][be.imgn.json.bind.JsonRecord] type.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -174,7 +186,8 @@ public final class JsonParser {
     /// @return the value
     /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
-    /// @throws IllegalArgumentException if no binder is registered for the type: see [JsonRecord]
+    /// @throws IllegalArgumentException if no binder is registered for the type: see
+    ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
     /// @throws IOException if the source cannot be read
     public <T> T parseAs(Class<T> type, CharSource source) throws IOException {
         return parseAs(type, requireNonNull(source, "source").read());
@@ -223,7 +236,7 @@ public final class JsonParser {
     }
 
     /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(byte\[\])] does, and binds each line to a
-    /// [JsonRecord] type.
+    /// [JsonRecord][be.imgn.json.bind.JsonRecord] type.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -239,7 +252,7 @@ public final class JsonParser {
     }
 
     /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(byte\[\])] does, and binds each line to a
-    /// [JsonRecord] type.
+    /// [JsonRecord][be.imgn.json.bind.JsonRecord] type.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -255,7 +268,7 @@ public final class JsonParser {
     }
 
     /// Parses [JSON Lines](https://jsonlines.org), as [#parseLines(ByteSource)] does, and binds each line to a
-    /// [JsonRecord] type.
+    /// [JsonRecord][be.imgn.json.bind.JsonRecord] type.
     ///
     /// @param <T> the type
     /// @param type the type
@@ -277,7 +290,7 @@ public final class JsonParser {
     }
 
     private <T> T bind(Class<T> type, Tape tape) {
-        return Binders.read(type, new JsonStreamReader(tape, unknownMembers));
+        return Binders.read(type, Access.streams().reader(tape, unknownMembers));
     }
 
     /// Returns the values of lines, as a stream that turns the errors of the tape builder into parse errors.

@@ -1,7 +1,8 @@
 package be.imgn.json.tests;
 
-import be.imgn.json.JsonRecord;
-import be.imgn.json.JsonWrapper;
+import be.imgn.json.bind.JsonRecord;
+import be.imgn.json.bind.JsonWrapper;
+
 
 /// An event, laid out as a wrapper object.
 @JsonRecord

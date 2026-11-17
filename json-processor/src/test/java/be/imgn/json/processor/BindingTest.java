@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import be.imgn.json.JsonMappingException;
 import be.imgn.json.JsonParser;
 import be.imgn.json.JsonWriter;
-import be.imgn.json.UnknownMembers;
+import be.imgn.json.bind.UnknownMembers;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;

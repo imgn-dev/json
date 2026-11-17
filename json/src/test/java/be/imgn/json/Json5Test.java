@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -130,6 +131,18 @@ class Json5Test {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> WRITER.format(JsonArray.of(((JsonArray) document.root()).get(1))))
                 .withMessage("NaN is not a JSON number");
+    }
+
+    @Test
+    void writesNonFiniteNumbersAsWrittenInToString() {
+        var parsed = (JsonObject) PARSER.parse("{a: [NaN, -Infinity], b: {c: +Infinity, d: -NaN, e: +NaN}}")
+                .root();
+        var built = JsonObject.of(Map.of("a", JsonArray.of(parsed.get("a").orElseThrow(), JsonNumber.of(1))));
+
+        assertThat(parsed).hasToString("{\"a\":[NaN,-Infinity],\"b\":{\"c\":Infinity,\"d\":NaN,\"e\":NaN}}");
+        assertThat(built).hasToString("{\"a\":[[NaN,-Infinity],1]}");
+        assertThat(JsonArray.of(((JsonArray) parsed.get("a").orElseThrow()).get(0)))
+                .hasToString("[NaN]");
     }
 
     @Test

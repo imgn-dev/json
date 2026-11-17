@@ -24,8 +24,7 @@ import org.jspecify.annotations.Nullable;
 /// throw an [ArithmeticException], and writing them as JSON is an [IllegalArgumentException].
 ///
 /// Two numbers are equal when their values are: `1`, `1.0` and `1e0` are equal, and so are two `NaN`. [#toString()]
-/// returns the number as
-/// written.
+/// returns the number as written.
 ///
 /// @since 0.1.0
 public final class JsonNumber implements JsonValue {

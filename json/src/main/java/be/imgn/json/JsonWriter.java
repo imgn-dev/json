@@ -61,7 +61,8 @@ public final class JsonWriter {
     ///
     /// @param value the value
     /// @return the JSON
-    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     public String format(JsonValue value) {
         return written(value, Output::toString);
     }
@@ -70,7 +71,8 @@ public final class JsonWriter {
     ///
     /// @param value the value
     /// @return the JSON
-    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     public byte[] toBytes(JsonValue value) {
         return written(value, Output::toByteArray);
     }
@@ -79,7 +81,8 @@ public final class JsonWriter {
     ///
     /// @param value the value
     /// @param out the stream, which is not closed
-    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     /// @throws IOException if the stream cannot be written
     public void write(JsonValue value, OutputStream out) throws IOException {
         requireNonNull(out, "out");
@@ -90,7 +93,8 @@ public final class JsonWriter {
     ///
     /// @param value the value
     /// @param sink the sink
-    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     /// @throws IOException if the sink cannot be written
     public void write(JsonValue value, ByteSink sink) throws IOException {
         requireNonNull(sink, "sink");
@@ -173,7 +177,8 @@ public final class JsonWriter {
     /// @param values the values
     /// @return the lines
     /// @throws NullPointerException if a value is null
-    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     public String formatLines(Iterable<? extends JsonValue> values) {
         requireNonNull(values, "values");
         return lines(values, TreeWriter::write);
@@ -185,7 +190,8 @@ public final class JsonWriter {
     /// @param values the values
     /// @param out the stream, which is not closed
     /// @throws NullPointerException if a value is null
-    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     /// @throws IOException if the stream cannot be written
     public void writeLines(Iterable<? extends JsonValue> values, OutputStream out) throws IOException {
         requireNonNull(values, "values");
@@ -198,7 +204,8 @@ public final class JsonWriter {
     /// @param values the values
     /// @param sink the sink
     /// @throws NullPointerException if a value is null
-    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of a value has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     /// @throws IOException if the sink cannot be written
     public void writeLines(Iterable<? extends JsonValue> values, ByteSink sink) throws IOException {
         requireNonNull(values, "values");

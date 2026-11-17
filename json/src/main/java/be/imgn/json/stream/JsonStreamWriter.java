@@ -210,7 +210,8 @@ public final class JsonStreamWriter {
     ///
     /// @param value the value
     /// @return this writer
-    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     /// @throws IllegalStateException if a value cannot come here
     public JsonStreamWriter value(JsonValue value) {
         requireNonNull(value, "value");

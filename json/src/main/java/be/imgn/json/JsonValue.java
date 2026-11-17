@@ -4,7 +4,9 @@ package be.imgn.json;
 ///
 /// Two values are equal when they are of the same type and hold equal contents: objects with the same members,
 /// whatever their order; arrays with the same elements, in the same order; numbers with the same numeric value, so
-/// that `1`, `1.0` and `1e0` are equal. [Object#toString()] returns the value as compact JSON.
+/// that `1`, `1.0` and `1e0` are equal. [Object#toString()] returns the value as compact JSON, except for
+/// JSON5's `NaN` and infinities, which JSON has no way to write: `toString()` writes them `NaN`, `Infinity` and
+/// `-Infinity`, where [JsonWriter] rejects them.
 ///
 /// @since 0.1.0
 public sealed interface JsonValue permits JsonObject, JsonArray, JsonString, JsonNumber, JsonBoolean, JsonNull {

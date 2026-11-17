@@ -168,10 +168,13 @@ public final class JsonObject implements JsonValue {
         return hash;
     }
 
-    /// Returns this object as compact JSON.
+    /// Returns this object as compact JSON, except for JSON5's `NaN` and infinities, which JSON has no way
+    /// to write: they are written `NaN`, `Infinity` and `-Infinity`, where [JsonWriter] rejects them.
+    ///
+    /// @throws IllegalArgumentException if a string of this object has an unpaired surrogate
     @Override
     public String toString() {
-        return new JsonWriter().format(this);
+        return TreeWriter.toString(this);
     }
 
     @Nullable

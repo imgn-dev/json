@@ -133,10 +133,13 @@ public final class JsonArray implements JsonValue {
         return elements().hashCode();
     }
 
-    /// Returns this array as compact JSON.
+    /// Returns this array as compact JSON, except for JSON5's `NaN` and infinities, which JSON has no way
+    /// to write: they are written `NaN`, `Infinity` and `-Infinity`, where [JsonWriter] rejects them.
+    ///
+    /// @throws IllegalArgumentException if a string of this array has an unpaired surrogate
     @Override
     public String toString() {
-        return new JsonWriter().format(this);
+        return TreeWriter.toString(this);
     }
 
     @Nullable

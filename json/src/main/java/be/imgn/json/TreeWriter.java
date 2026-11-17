@@ -12,52 +12,77 @@ final class TreeWriter {
 
     private TreeWriter() {}
 
-    /// Writes a value. The type is told by a switch on [JsonValue#type()], a table jump, rather than by a pattern
-    /// switch, whose dynamic dispatch costs more for each value.
+    /// Returns a value as compact JSON, except for JSON5's `NaN` and infinities, which JSON has no way to
+    /// write: they are written `NaN`, `Infinity` and `-Infinity`, so that [Object#toString()] does not throw.
+    ///
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate
+    static String toString(JsonValue value) {
+        var output = Output.pooled(0);
+        try {
+            write(output, value, true);
+            return output.toString();
+        } finally {
+            output.release();
+        }
+    }
+
+    /// Writes a value as JSON.
+    ///
+    /// @throws IllegalArgumentException if a string of `value` has an unpaired surrogate, or a number of it is
+    ///     JSON5's `NaN` or an infinity
     static void write(Output out, JsonValue value) {
+        write(out, value, false);
+    }
+
+    /// Writes a value, its non-finite numbers as written when `nonFinite` is true, rejected otherwise. The
+    /// type is told by a switch on [JsonValue#type()], a table jump, rather than by a pattern switch, whose
+    /// dynamic dispatch costs more for each value.
+    private static void write(Output out, JsonValue value, boolean nonFinite) {
         switch (value.type()) {
             case STRING -> out.string(((JsonString) value).value());
-            case NUMBER -> writeNumber(out, (JsonNumber) value);
-            case OBJECT -> writeObject(out, (JsonObject) value);
-            case ARRAY -> writeArray(out, (JsonArray) value);
+            case NUMBER -> writeNumber(out, (JsonNumber) value, nonFinite);
+            case OBJECT -> writeObject(out, (JsonObject) value, nonFinite);
+            case ARRAY -> writeArray(out, (JsonArray) value, nonFinite);
             case BOOLEAN -> out.bool(((JsonBoolean) value).value());
             default -> out.nullValue();
         }
     }
 
-    private static void writeNumber(Output out, JsonNumber number) {
+    private static void writeNumber(Output out, JsonNumber number, boolean nonFinite) {
         var text = number.text();
         if (text == null) {
             out.number(number.value());
         } else {
-            checkFinite(text, 0, text.length);
+            if (!nonFinite) {
+                checkFinite(text, 0, text.length);
+            }
             out.raw(text, 0, text.length);
         }
     }
 
-    private static void writeObject(Output out, JsonObject object) {
+    private static void writeObject(Output out, JsonObject object, boolean nonFinite) {
         var tape = object.tape();
         if (tape != null) {
-            writeTape(out, tape, object.start());
+            writeTape(out, tape, object.start(), nonFinite);
             return;
         }
         out.beginObject();
         for (var i = 0; i < object.size(); i++) {
             out.name(object.name(i));
-            write(out, object.value(i));
+            write(out, object.value(i), nonFinite);
         }
         out.endObject();
     }
 
-    private static void writeArray(Output out, JsonArray array) {
+    private static void writeArray(Output out, JsonArray array, boolean nonFinite) {
         var tape = array.tape();
         if (tape != null) {
-            writeTape(out, tape, array.start());
+            writeTape(out, tape, array.start(), nonFinite);
             return;
         }
         out.beginArray();
         for (var i = 0; i < array.size(); i++) {
-            write(out, array.get(i));
+            write(out, array.get(i), nonFinite);
         }
         out.endArray();
     }
@@ -71,7 +96,7 @@ final class TreeWriter {
     }
 
     /// Writes the value at an index of a tape, and returns the index after it.
-    private static int writeTape(Output out, Tape tape, int index) {
+    private static int writeTape(Output out, Tape tape, int index, boolean nonFinite) {
         var entry = tape.entries()[index];
         var tag = Tape.tag(entry);
         var input = tape.input();
@@ -86,7 +111,7 @@ final class TreeWriter {
                     } else {
                         out.name(Strings.decode(tape, i));
                     }
-                    i = writeTape(out, tape, i + 1);
+                    i = writeTape(out, tape, i + 1, nonFinite);
                 }
                 out.endObject();
                 return i + 1;
@@ -95,7 +120,7 @@ final class TreeWriter {
                 out.beginArray();
                 var i = index + 1;
                 while (Tape.tag(tape.entries()[i]) != Tape.ARRAY_END) {
-                    i = writeTape(out, tape, i);
+                    i = writeTape(out, tape, i, nonFinite);
                 }
                 out.endArray();
                 return i + 1;
@@ -110,7 +135,7 @@ final class TreeWriter {
                 }
             }
             case Tape.NUMBER -> {
-                if ((Tape.flags(entry) & Tape.NON_FINITE) != 0) {
+                if (!nonFinite && (Tape.flags(entry) & Tape.NON_FINITE) != 0) {
                     checkFinite(input, Tape.offset(entry), tape.length(index));
                 }
                 out.raw(input, Tape.offset(entry), tape.length(index));

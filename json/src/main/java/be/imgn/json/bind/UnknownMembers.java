@@ -4,7 +4,7 @@ package be.imgn.json.bind;
 ///
 /// @since 0.1.0
 public enum UnknownMembers {
-    /// Skips the member; its value must still be valid JSON.
+    /// Skips the member; its value must still be valid.
     IGNORE,
     /// Throws a [JsonMappingException][be.imgn.json.JsonMappingException].
     REJECT

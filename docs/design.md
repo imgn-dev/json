@@ -138,7 +138,7 @@ line 7, column 3, at /user: missing member "name" of User
 ```
 
 - `JsonException` (sealed, unchecked) has `position()` and `path()`; its subclasses are `JsonParseException` (not valid
-  JSON, or a limit exceeded) and `JsonMappingException` (valid JSON that does not bind).
+  in the format of the parser, or a limit exceeded) and `JsonMappingException` (a valid document that does not bind).
 - What was found is named precisely: `'x'`, `U+00E9`, `the byte 0xFF`, `the end of the document`.
 - Stage 1 builds the path only when it throws, from its depth stack (the last name or the element count of each open
   container). The cursor does the same from the tape.

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /// Reads a document value by value, as typed reads. The parser validated the whole document before the first read, so
-/// reading never finds invalid JSON: it fails only on a value of a type other than the one read, with a
+/// reading never finds an invalid document: it fails only on a value of a type other than the one read, with a
 /// [JsonMappingException], or on a call out of order, with an [IllegalStateException].
 ///
 /// ```java

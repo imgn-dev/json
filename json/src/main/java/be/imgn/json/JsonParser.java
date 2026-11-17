@@ -40,7 +40,7 @@ import java.util.stream.StreamSupport;
 /// ```
 ///
 /// A document is validated whole before anything is read from it. Everything is parsed from UTF-8 bytes: a `String`
-/// is encoded first. A byte order mark is rejected.
+/// is encoded first. A byte order mark is rejected, except by JSON5, which reads it as white space.
 ///
 /// A parser is immutable and thread-safe, and holds nothing but its settings: creating one per call costs nothing.
 ///
@@ -80,7 +80,7 @@ public final class JsonParser {
     ///
     /// @param input the document, in UTF-8; it is not copied, and must not change while the document is used
     /// @return the document
-    /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, or exceeds a limit
     public JsonDocument parse(byte[] input) {
         return new JsonDocument(tape(input));
     }
@@ -89,7 +89,8 @@ public final class JsonParser {
     ///
     /// @param input the document
     /// @return the document
-    /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, has an unpaired
+    ///     surrogate, or exceeds a limit
     public JsonDocument parse(String input) {
         return parse(utf8(input));
     }
@@ -98,7 +99,7 @@ public final class JsonParser {
     ///
     /// @param source the document, in UTF-8
     /// @return the document
-    /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, or exceeds a limit
     /// @throws IOException if the source cannot be read
     public JsonDocument parse(ByteSource source) throws IOException {
         return parse(read(source));
@@ -108,7 +109,8 @@ public final class JsonParser {
     ///
     /// @param source the document
     /// @return the document
-    /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, has an unpaired
+    ///     surrogate, or exceeds a limit
     /// @throws IOException if the source cannot be read
     public JsonDocument parse(CharSource source) throws IOException {
         return parse(requireNonNull(source, "source").read());
@@ -118,7 +120,7 @@ public final class JsonParser {
     ///
     /// @param input the document, in UTF-8; it is not copied, and must not change while the reader is used
     /// @return the reader, at the root value
-    /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, or exceeds a limit
     public JsonStreamReader reader(byte[] input) {
         return Access.streams().reader(tape(input), unknownMembers);
     }
@@ -127,7 +129,8 @@ public final class JsonParser {
     ///
     /// @param input the document
     /// @return the reader, at the root value
-    /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, has an unpaired
+    ///     surrogate, or exceeds a limit
     public JsonStreamReader reader(String input) {
         return reader(utf8(input));
     }
@@ -139,7 +142,7 @@ public final class JsonParser {
     /// @param type the type
     /// @param input the document, in UTF-8
     /// @return the value
-    /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
     /// @throws IllegalArgumentException if no binder is registered for the type: see
     ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
@@ -155,7 +158,8 @@ public final class JsonParser {
     /// @param type the type
     /// @param input the document
     /// @return the value
-    /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, has an unpaired
+    ///     surrogate, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
     /// @throws IllegalArgumentException if no binder is registered for the type: see
     ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
@@ -169,7 +173,7 @@ public final class JsonParser {
     /// @param type the type
     /// @param source the document, in UTF-8
     /// @return the value
-    /// @throws JsonParseException if the document is not valid JSON, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
     /// @throws IllegalArgumentException if no binder is registered for the type: see
     ///     [JsonRecord][be.imgn.json.bind.JsonRecord]
@@ -184,7 +188,8 @@ public final class JsonParser {
     /// @param type the type
     /// @param source the document
     /// @return the value
-    /// @throws JsonParseException if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit
+    /// @throws JsonParseException if the document is not valid in the format of this parser, has an unpaired
+    ///     surrogate, or exceeds a limit
     /// @throws JsonMappingException if the document does not bind to the type
     /// @throws IllegalArgumentException if no binder is registered for the type: see
     ///     [JsonRecord][be.imgn.json.bind.JsonRecord]

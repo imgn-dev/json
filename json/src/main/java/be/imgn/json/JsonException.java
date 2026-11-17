@@ -2,7 +2,8 @@ package be.imgn.json;
 
 import java.io.Serial;
 
-/// Thrown when a document cannot be read: it is not valid JSON, or it does not bind to the type it is read as.
+/// Thrown when a document cannot be read: it is not valid in the format of the parser, or it does not bind to the
+/// type it is read as.
 ///
 /// The message starts with the position of the error and, below the root, its path, then states what was expected and
 /// what was found: `line 3, column 14, at /items/2: expected ',' or ']' after an element, found ':'`.

@@ -106,7 +106,7 @@ jobs:
             exit 1
           fi
 
-      # Every module, the benchmarks included, on the release version.
+      # Every module, the benchmarks and the guide included, on the release version.
       - name: Verify
         run: ./mvnw -B --no-transfer-progress clean verify
 
@@ -150,8 +150,8 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         # -Prelease (from be.imgn.parent:parent) rejects SNAPSHOT versions and
         # dependencies, attaches sources and javadoc, signs with GPG, and hands
-        # the bundle to central-publishing-maven-plugin. The benchmarks are
-        # never deployed. autoPublish is false, so the deployment waits in the
+        # the bundle to central-publishing-maven-plugin. The benchmarks and the
+        # guide are never deployed. autoPublish is false, so the deployment waits in the
         # Central portal for a human to release it.
         #
         # skipTests: the Verify step above already ran every test. This step

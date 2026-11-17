@@ -11,10 +11,16 @@
 #                    whole on every push to it
 #   api/index.html   the list of versions, the snapshot first, then the
 #                    releases from the newest
+#   everything else  the guide (json-docs/target/guide), replaced as a whole, so
+#                    that no page of an earlier guide lingers
 #
 # Usage:  scripts/docs-site.sh publish <site> <version> <javadoc> [--replace]
 #         scripts/docs-site.sh remove  <site> <version>
+#         scripts/docs-site.sh guide   <site> <guide> [<version>]
 #         scripts/docs-site.sh snapshot <site> <javadoc>
+#
+# With a version, guide publishes the guide only if that version is the newest:
+# publishing an older version again must not bring back its guide.
 
 set -euo pipefail
 
@@ -26,6 +32,7 @@ die() {
 usage() {
     die "Usage: $0 publish <site> <version> <javadoc> [--replace]
        $0 remove  <site> <version>
+       $0 guide   <site> <guide> [<version>]
        $0 snapshot <site> <javadoc>"
 }
 
@@ -109,6 +116,24 @@ publish)
     mkdir -p "$site/api"
     rm -rf "$site/api/$version"
     cp -R "$javadoc" "$site/api/$version"
+    ;;
+guide)
+    [[ $# -eq 3 || $# -eq 4 ]] || usage
+    guide=$3
+    [[ -f $guide/index.html ]] || die "$guide has no index.html."
+    # The guide links to the API documentation of the newest version.
+    newest=$(versions | tail -n 1)
+    [[ -n $newest ]] || die "No API documentation is published: publish a version first."
+    if [[ $# -eq 4 ]]; then
+        check_version "$4"
+        if [[ $4 != "$newest" ]]; then
+            printf 'The guide of %s is not published: the newest version is %s.\n' "$4" "$newest"
+            exit 0
+        fi
+    fi
+    find "$site" -mindepth 1 -maxdepth 1 ! -name api ! -name .nojekyll ! -name .git -exec rm -rf {} +
+    cp -R "$guide"/. "$site"/
+    exit 0
     ;;
 snapshot)
     [[ $# -eq 3 ]] || usage

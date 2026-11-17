@@ -21,6 +21,7 @@ Not included: the Vector API (planned, see [Vector API](#vector-api)), JSON Poin
 | `json`            | `be.imgn.json`, `.stream`, `.bind`, `.spi` (exported: see [Packages](#packages)), `.internal` | yes       |
 | `json-processor`  | the annotation processor, on gaia-processing                                | yes       |
 | `json-benchmarks` | JMH benchmarks                                                              | no        |
+| `json-docs`       | the guide, and the generator that turns its Markdown into HTML              | no        |
 
 `json` depends on gaia-core only.
 

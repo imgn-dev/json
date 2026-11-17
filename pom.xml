@@ -40,8 +40,9 @@
     <!-- Published. -->
     <module>json</module>
     <module>json-processor</module>
-    <!-- Not published: the JMH benchmarks. -->
+    <!-- Not published: the JMH benchmarks, and the guide. -->
     <module>json-benchmarks</module>
+    <module>json-docs</module>
   </modules>
 
   <properties>
@@ -62,8 +63,9 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- Only json-benchmarks runs something with exec:exec, so that the reactor can build what the
-             benchmarks need and run them in one command. -->
+        <!-- Only the modules that run something with exec turn it on: json-benchmarks, so that the reactor
+             can build what the benchmarks need and run them in one command, and json-docs, which generates
+             the guide. -->
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>

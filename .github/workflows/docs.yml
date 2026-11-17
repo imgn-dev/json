@@ -1,27 +1,35 @@
 name: API docs
 
 # Publishes or removes the API documentation of a released version on the
-# gh-pages branch, served at https://imgn-dev.github.io/json/api/. The release
-# workflow calls it; run it by hand to publish an older version again, or to
-# remove one that was never published to Maven Central. Every push to main
-# replaces the API documentation of the snapshot, at api/snapshot/.
+# gh-pages branch, served at https://imgn-dev.github.io/json/api/, and publishes
+# the guide of the newest version at https://imgn-dev.github.io/json/. The
+# release workflow calls it; run it by hand to publish an older version again,
+# to remove one that was never published to Maven Central, or to publish the
+# guide alone, from a branch, between releases. Every push to main replaces
+# the API documentation of the snapshot, at api/snapshot/.
 on:
   push:
     branches: [main]
   workflow_dispatch:
     inputs:
       version:
-        description: 'Released version, MAJOR.MINOR.PATCH, e.g. 0.1.0'
+        description: 'With publish or remove: released version, MAJOR.MINOR.PATCH, e.g. 0.1.0'
         required: false
         type: string
       action:
-        description: 'publish the documentation of the version, or remove it'
+        description: 'publish the documentation of the version, remove it, or publish the guide alone'
         required: true
         type: choice
         options:
           - publish
           - remove
+          - guide
         default: publish
+      ref:
+        description: 'With guide: the branch or tag to build the guide from (default: the default branch)'
+        required: false
+        type: string
+        default: ''
       replace:
         description: 'With publish: replace the documentation of a version already published'
         required: false
@@ -52,8 +60,9 @@ jobs:
       skip: ${{ steps.snapshot.outputs.skip }}
       snapshot-version: ${{ steps.snapshot.outputs.version }}
       snapshot-commit: ${{ steps.snapshot.outputs.commit }}
+      guide-commit: ${{ steps.guide.outputs.commit }}
     steps:
-      - if: env.ACTION != 'snapshot'
+      - if: env.ACTION == 'publish' || env.ACTION == 'remove'
         name: Check version format
         run: |
           if [[ ! $VERSION =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
@@ -72,7 +81,7 @@ jobs:
       - if: env.ACTION != 'remove'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ env.ACTION == 'snapshot' && github.sha || format('v{0}', inputs.version) }}
+          ref: ${{ env.ACTION == 'snapshot' && github.sha || env.ACTION == 'guide' && (inputs.ref || github.event.repository.default_branch) || format('v{0}', inputs.version) }}
           path: source
           persist-credentials: false
 
@@ -100,9 +109,19 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - if: env.ACTION != 'remove' && env.SKIP != 'true'
+      - if: (env.ACTION == 'publish' || env.ACTION == 'snapshot') && env.SKIP != 'true'
         name: Build the documentation
         run: main/scripts/javadoc.sh source "$RUNNER_TEMP/site-input/javadoc"
+
+      - if: env.ACTION == 'publish' || env.ACTION == 'guide'
+        id: guide
+        name: Build the guide
+        working-directory: source
+        run: |
+          ./mvnw -B -ntp package -pl json-docs -am -DskipTests
+          mkdir -p "$RUNNER_TEMP/site-input"
+          cp -R json-docs/target/guide "$RUNNER_TEMP/site-input/guide"
+          echo "commit=$(git rev-parse --short HEAD)" >>"$GITHUB_OUTPUT"
 
       - if: env.ACTION != 'remove' && env.SKIP != 'true'
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -131,6 +150,7 @@ jobs:
       REPLACE: ${{ inputs.replace && '--replace' || '' }}
       SNAPSHOT_VERSION: ${{ needs.build.outputs.snapshot-version }}
       SNAPSHOT_COMMIT: ${{ needs.build.outputs.snapshot-commit }}
+      GUIDE_COMMIT: ${{ needs.build.outputs.guide-commit }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -161,6 +181,10 @@ jobs:
           case $ACTION in
           publish)
             main/scripts/docs-site.sh publish site "$VERSION" "$input/javadoc" $REPLACE
+            main/scripts/docs-site.sh guide site "$input/guide" "$VERSION"
+            ;;
+          guide)
+            main/scripts/docs-site.sh guide site "$input/guide"
             ;;
           snapshot)
             main/scripts/docs-site.sh snapshot site "$input/javadoc"
@@ -179,7 +203,8 @@ jobs:
             exit 0
           fi
           case $ACTION in
-          publish) git commit -m "docs: publish the API of $VERSION" ;;
+          publish) git commit -m "docs: publish the documentation of $VERSION" ;;
+          guide)   git commit -m "docs: publish the guide of $GUIDE_COMMIT" ;;
           snapshot) git commit -m "docs: publish the API of $SNAPSHOT_VERSION ($SNAPSHOT_COMMIT)" ;;
           remove)  git commit -m "docs: remove the API of $VERSION" ;;
           esac

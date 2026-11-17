@@ -15,9 +15,10 @@ dependency besides [gaia-core](https://github.com/imgn-dev/gaia).
 - Writes compact or pretty JSON, in UTF-8.
 - Reads JSONC, JSON5 and JSON Lines too, each as strictly.
 
-API documentation: [snapshot](https://imgn-dev.github.io/json/api/snapshot/), or
-[every published version](https://imgn-dev.github.io/json/api/). The design, its trade-offs and how it is tested are
-in [docs/design.md](docs/design.md).
+The guide, in [json-docs/src/main/markdown](json-docs/src/main/markdown/index.md), is published with each release at
+[imgn-dev.github.io/json](https://imgn-dev.github.io/json/). API documentation:
+[snapshot](https://imgn-dev.github.io/json/api/snapshot/), or [every published version](https://imgn-dev.github.io/json/api/).
+The design, its trade-offs and how it is tested are in [docs/design.md](docs/design.md).
 
 ## Coordinates
 

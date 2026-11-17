@@ -8,7 +8,7 @@
 #   be.imgn.json:json             the parser, writer and binding runtime
 #   be.imgn.json:json-processor   the annotation processor that generates binders
 #
-# The benchmarks are built but neither installed nor deployed.
+# The benchmarks and the guide are built but neither installed nor deployed.
 #
 # Safe to re-run: every step detects what is already done and skips it. Nothing
 # becomes public until you press Publish in the Central portal, which this
@@ -119,7 +119,7 @@ portal_contents() {
     info "Expect ONE deployment, be.imgn.json:$RELEASE_VERSION, holding three components:"
     info '  json-parent                 pom only'
     info '  json, json-processor        jar, sources, javadoc'
-    info 'No json-benchmarks: the benchmarks are never deployed.'
+    info 'No json-benchmarks or json-docs: the benchmarks and the guide are never deployed.'
 }
 
 # --- steps --------------------------------------------------------------------

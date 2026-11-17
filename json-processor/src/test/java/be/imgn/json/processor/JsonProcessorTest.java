@@ -28,7 +28,10 @@ class JsonProcessorTest {
                 .generatedSourceFile("be.imgn.json.tests.$Order$$JsonBinder")
                 .contains("public final class $Order$$JsonBinder implements JsonBinder<Order>")
                 .contains("private static final JsonNames ORDER = JsonNames.of(\"id\", \"customer\", \"lines\","
-                        + " \"status\", \"shipped\", \"notes\", \"tags\", \"total-price\");");
+                        + " \"status\", \"shipped\", \"notes\", \"tags\", \"total-price\");")
+                .contains("var list = new ArrayList<Line>(reader.size());")
+                .contains("var set = LinkedHashSet.<String>newLinkedHashSet(reader.size());")
+                .contains("var map = LinkedHashMap.<String, String>newLinkedHashMap(reader.size());");
         assertThat(compilation)
                 .generatedFile(StandardLocation.CLASS_OUTPUT, "META-INF/services/be.imgn.json.spi.JsonBinder")
                 .contains("be.imgn.json.tests.$Order$$JsonBinder")

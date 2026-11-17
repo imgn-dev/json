@@ -41,6 +41,11 @@ final class Utf8 {
     private static final int CONTINUATION_TAG = 0x80;
     private static final int CONTINUATION_PAYLOAD = 0x3F;
     private static final int CONTINUATION_BITS = 6;
+    // The lead byte of a 4-byte sequence, and the first code points that need 2, 3 and 4 bytes.
+    private static final int FOUR_TAG = 0xF0;
+    private static final int TWO_BYTES_FROM = 0x80;
+    private static final int THREE_BYTES_FROM = 0x800;
+    private static final int FOUR_BYTES_FROM = 0x10000;
     // The bits of the lead byte that belong to the code point, by length of the sequence.
     private static final int[] LEAD_PAYLOAD = {0, 0x7F, 0x1F, 0x0F, 0x07};
 
@@ -120,6 +125,35 @@ final class Utf8 {
             codePoint = (codePoint << CONTINUATION_BITS) | (input[i] & CONTINUATION_PAYLOAD);
         }
         return codePoint;
+    }
+
+    /// Writes the UTF-8 sequence of a code point at an offset, and returns the offset after it.
+    static int encode(int codePoint, byte[] target, int at) {
+        if (codePoint < TWO_BYTES_FROM) {
+            target[at] = (byte) codePoint;
+            return at + 1;
+        }
+        if (codePoint < THREE_BYTES_FROM) {
+            target[at] = (byte) (TWO_TAG | codePoint >>> CONTINUATION_BITS);
+            target[at + 1] = continuation(codePoint);
+            return at + 2;
+        }
+        if (codePoint < FOUR_BYTES_FROM) {
+            target[at] = (byte) (THREE_TAG | codePoint >>> (2 * CONTINUATION_BITS));
+            target[at + 1] = continuation(codePoint >>> CONTINUATION_BITS);
+            target[at + 2] = continuation(codePoint);
+            return at + THREE;
+        }
+        target[at] = (byte) (FOUR_TAG | codePoint >>> (THREE * CONTINUATION_BITS));
+        target[at + 1] = continuation(codePoint >>> (2 * CONTINUATION_BITS));
+        target[at + 2] = continuation(codePoint >>> CONTINUATION_BITS);
+        target[at + THREE] = continuation(codePoint);
+        return at + MAX_LENGTH;
+    }
+
+    /// Returns the continuation byte of the low 6 bits of a code point.
+    private static byte continuation(int bits) {
+        return (byte) (CONTINUATION_TAG | (bits & CONTINUATION_PAYLOAD));
     }
 
     /// The lead bytes of a valid sequence, by range: the length of their sequences, and the range of the byte after

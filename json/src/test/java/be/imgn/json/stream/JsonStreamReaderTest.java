@@ -167,4 +167,66 @@ class JsonStreamReaderTest {
         assertThat(reader.hasNextMember()).isFalse();
         assertThatIllegalStateException().isThrownBy(reader::readInt).withMessage("the document was read whole");
     }
+
+    @Test
+    void sizesTheContainerBeingRead() {
+        var reader = new JsonParser().reader("{\"a\": [1, [2, 3], {}], \"b\": {\"c\": 1, \"d\": 2}, \"e\": []}");
+
+        reader.beginObject();
+        assertThat(reader.size()).isEqualTo(3);
+        reader.hasNextMember();
+        reader.readName();
+        reader.beginArray();
+        assertThat(reader.size()).isEqualTo(3);
+        reader.hasNextElement();
+        reader.readInt();
+        assertThat(reader.size()).isEqualTo(3);
+        reader.hasNextElement();
+        reader.beginArray();
+        assertThat(reader.size()).isEqualTo(2);
+        while (reader.hasNextElement()) {
+            reader.skipValue();
+        }
+        assertThat(reader.size()).isEqualTo(3);
+        reader.hasNextElement();
+        reader.beginObject();
+        assertThat(reader.size()).isZero();
+        assertThat(reader.hasNextMember()).isFalse();
+        assertThat(reader.hasNextElement()).isFalse();
+        assertThat(reader.size()).isEqualTo(3);
+        reader.hasNextMember();
+        reader.readName();
+        reader.beginObject();
+        assertThat(reader.size()).isEqualTo(2);
+        while (reader.hasNextMember()) {
+            reader.readName();
+            reader.skipValue();
+        }
+        reader.hasNextMember();
+        reader.readName();
+        reader.beginArray();
+        assertThat(reader.size()).isZero();
+    }
+
+    @Test
+    void sizesLargeArrays() {
+        var reader = new JsonParser().reader("[" + "0,".repeat(99_999) + "0]");
+
+        reader.beginArray();
+        assertThat(reader.size()).isEqualTo(100_000);
+    }
+
+    @Test
+    void rejectsSizeOutsideAContainer() {
+        var reader = new JsonParser().reader("[1]");
+
+        assertThatIllegalStateException()
+                .isThrownBy(reader::size)
+                .withMessage("the reader is not in an array or an object");
+        reader.beginArray();
+        reader.hasNextElement();
+        reader.readInt();
+        assertThat(reader.hasNextElement()).isFalse();
+        assertThatIllegalStateException().isThrownBy(reader::size);
+    }
 }

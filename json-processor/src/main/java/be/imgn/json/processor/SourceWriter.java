@@ -335,7 +335,7 @@ final class SourceWriter {
         switch (body.kind()) {
             case LIST -> {
                 code.line("reader.beginArray();");
-                code.line("var list = new " + scope.name("java.util.ArrayList") + "<" + element + ">();");
+                code.line("var list = new " + scope.name("java.util.ArrayList") + "<" + element + ">(reader.size());");
                 code.line("while (reader.hasNextElement()) {");
                 code.line("    list.add(" + readExpression(body.codec()) + ");");
                 code.line("}");
@@ -343,7 +343,8 @@ final class SourceWriter {
             }
             case SET -> {
                 code.line("reader.beginArray();");
-                code.line("var set = new " + scope.name("java.util.LinkedHashSet") + "<" + element + ">();");
+                code.line("var set = " + scope.name("java.util.LinkedHashSet") + ".<" + element
+                        + ">newLinkedHashSet(reader.size());");
                 code.line("while (reader.hasNextElement()) {");
                 code.line("    var mark = reader.mark();");
                 code.line("    if (!set.add(" + readExpression(body.codec()) + ")) {");
@@ -355,7 +356,8 @@ final class SourceWriter {
             default -> {
                 // A map.
                 code.line("reader.beginObject();");
-                code.line("var map = new " + scope.name("java.util.LinkedHashMap") + "<String, " + element + ">();");
+                code.line("var map = " + scope.name("java.util.LinkedHashMap") + ".<String, " + element
+                        + ">newLinkedHashMap(reader.size());");
                 code.line("while (reader.hasNextMember()) {");
                 code.line("    var name = reader.readName();");
                 code.line("    map.put(name, " + readExpression(body.codec()) + ");");

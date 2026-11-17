@@ -243,6 +243,17 @@ public final class JsonStreamReader {
         return true;
     }
 
+    /// Returns the number of elements of the array, or members of the object, being read: all of them, those read
+    /// and those left. Code that collects them can size its collection once, before reading them.
+    ///
+    /// @return the number of elements or members
+    /// @throws IllegalStateException if the reader is not in an array or an object
+    /// @since 0.1.0
+    public int size() {
+        checkState(depth > 0, "the reader is not in an array or an object");
+        return tape.count(starts[depth]);
+    }
+
     /// Reads a string.
     ///
     /// @return the string

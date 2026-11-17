@@ -4,7 +4,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteOrder;
 
-/// Finds bytes 8 at a time, as a `long`, for the translations of JSONC and JSON5.
+/// Finds bytes 8 at a time, as a `long`, for the translations of JSONC and JSON5, and for decoding strings.
 final class Swar {
 
     private static final VarHandle LONGS = MethodHandles.byteArrayViewVarHandle(long[].class, ByteOrder.LITTLE_ENDIAN);
@@ -15,6 +15,23 @@ final class Swar {
     private static final long BACKSLASHES = ONES * '\\';
 
     private Swar() {}
+
+    /// Returns the offset of the first byte from an offset that is a given one, or `end` if none is.
+    static int indexOf(byte[] input, int from, int end, byte target) {
+        var targets = ONES * Byte.toUnsignedLong(target);
+        var p = from;
+        while (p + Long.BYTES <= end) {
+            var mask = zeroBytes((long) LONGS.get(input, p) ^ targets);
+            if (mask != 0) {
+                return p + Long.numberOfTrailingZeros(mask) / Byte.SIZE;
+            }
+            p += Long.BYTES;
+        }
+        while (p < end && input[p] != target) {
+            p++;
+        }
+        return p;
+    }
 
     /// Returns the offset of the first byte from an offset that is one of two, or `end` if none is.
     static int indexOfEither(byte[] input, int from, int end, byte first, byte second) {

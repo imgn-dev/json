@@ -2,8 +2,11 @@ package be.imgn.json.internal;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.ByteOrder;
 
 /// Converts the text of validated numbers: these methods trust their input to follow the grammar of RFC 8259, or to be
 /// `NaN`, `Infinity` or `-Infinity`.
@@ -12,6 +15,18 @@ public final class Numbers {
     // An integer of up to 18 digits always fits in a long.
     private static final int MAX_LONG_DIGITS = 18;
     private static final int RADIX = 10;
+
+    // Digits are read 8 at a time, as a little-endian `long` whose first byte is the first digit.
+    private static final VarHandle LONGS = MethodHandles.byteArrayViewVarHandle(long[].class, ByteOrder.LITTLE_ENDIAN);
+    private static final long EIGHT_DIGITS = 100_000_000L;
+    private static final long ZEROS = 0x3030_3030_3030_3030L;
+    private static final long HIGH_NIBBLES = 0xF0F0_F0F0_F0F0_F0F0L;
+    private static final long SIXES = 0x0606_0606_0606_0606L;
+    private static final long LOW_BYTES = 0x0000_00FF_0000_00FFL;
+    // Combine pairs of digits, then pairs of those, with one multiplication each: see eightDigits.
+    private static final long TENS = 10;
+    private static final long HUNDREDS_AND_MILLIONS = 100 + (1_000_000L << Integer.SIZE);
+    private static final long ONES_AND_TEN_THOUSANDS = 1 + (10_000L << Integer.SIZE);
 
     // The fast path of Clinger: a mantissa and a power of ten both exact in a double give the nearest double with one
     // multiplication or division. 15 digits stay below 2^53; 10^22 is the largest exact power of ten.
@@ -43,10 +58,7 @@ public final class Numbers {
     /// Returns the value of an integer of at most 18 digits.
     public static long parseLong(byte[] input, int from, int length) {
         var negative = input[from] == '-';
-        var value = 0L;
-        for (var p = negative ? from + 1 : from; p < from + length; p++) {
-            value = value * RADIX + (input[p] - '0');
-        }
+        var value = accumulate(0, input, negative ? from + 1 : from, from + length);
         return negative ? -value : value;
     }
 
@@ -102,77 +114,150 @@ public final class Numbers {
     /// infinities are themselves.
     public static double parseDouble(byte[] input, int from, int length) {
         if (isNonFinite(input, from, length)) {
-            return Double.parseDouble(new String(input, from, length, ISO_8859_1));
+            return parseSlowly(input, from, length, false);
         }
-        var parsed = new Decimal(input, from, length);
-        if (parsed.digits <= MAX_DOUBLE_DIGITS && Math.abs(parsed.exponent) < DOUBLE_POWERS.length) {
-            double value = parsed.mantissa;
-            value = parsed.exponent >= 0
-                    ? value * DOUBLE_POWERS[parsed.exponent]
-                    : value / DOUBLE_POWERS[-parsed.exponent];
-            return parsed.negative ? -value : value;
-        }
-        if (parsed.digits <= MAX_EXACT_DIGITS
-                && parsed.mantissa != 0
-                && parsed.exponent >= EiselLemire.MIN_EXPONENT
-                && parsed.exponent <= EiselLemire.MAX_EXPONENT) {
-            var value = EiselLemire.toDouble(parsed.mantissa, parsed.exponent, parsed.negative);
-            if (!Double.isNaN(value)) {
-                return value;
-            }
-        }
-        return Double.parseDouble(new String(input, from, length, ISO_8859_1));
+        return parse(input, from, length, false);
     }
 
     /// Returns the `float` nearest a number, which is infinite when the number is too large; `NaN` and the
     /// infinities are themselves.
     public static float parseFloat(byte[] input, int from, int length) {
         if (isNonFinite(input, from, length)) {
-            return Float.parseFloat(new String(input, from, length, ISO_8859_1));
+            return (float) parseSlowly(input, from, length, true);
         }
-        var parsed = new Decimal(input, from, length);
-        if (parsed.digits <= MAX_FLOAT_DIGITS && Math.abs(parsed.exponent) < FLOAT_POWERS.length) {
-            float value = parsed.mantissa;
-            value = parsed.exponent >= 0
-                    ? value * FLOAT_POWERS[parsed.exponent]
-                    : value / FLOAT_POWERS[-parsed.exponent];
-            return parsed.negative ? -value : value;
+        // A float widened to a double, then narrowed back, is the same float.
+        return (float) parse(input, from, length, true);
+    }
+
+    /// Returns the nearest `double`, or the nearest `float` widened to a `double`, of a finite number: from its
+    /// significand and exponent when a fast path can tell it, from the JDK otherwise.
+    private static double parse(byte[] input, int from, int length, boolean single) {
+        var decimal = new Decimal(input, from, from + length);
+        var value = single
+                ? toFloat(decimal.significand, decimal.digits, decimal.exponent, decimal.negative)
+                : toDouble(decimal.significand, decimal.digits, decimal.exponent, decimal.negative);
+        return Double.isNaN(value) ? parseSlowly(input, from, length, single) : value;
+    }
+
+    /// Returns the `double` nearest `significand × 10^exponent`, or NaN if the fast paths cannot tell it.
+    ///
+    /// @param digits the significant digits of the number, the significand being exact if there are at most 19
+    private static double toDouble(long significand, int digits, int exponent, boolean negative) {
+        if (digits <= MAX_DOUBLE_DIGITS && Math.abs(exponent) < DOUBLE_POWERS.length) {
+            double value = significand;
+            value = exponent >= 0 ? value * DOUBLE_POWERS[exponent] : value / DOUBLE_POWERS[-exponent];
+            return negative ? -value : value;
         }
-        return Float.parseFloat(new String(input, from, length, ISO_8859_1));
+        if (digits <= MAX_EXACT_DIGITS
+                && significand != 0
+                && exponent >= EiselLemire.MIN_EXPONENT
+                && exponent <= EiselLemire.MAX_EXPONENT) {
+            return EiselLemire.toDouble(significand, exponent, negative);
+        }
+        return Double.NaN;
+    }
+
+    /// Returns the `float` nearest `significand × 10^exponent`, widened to a `double`, or NaN if the fast path cannot
+    /// tell it.
+    private static double toFloat(long significand, int digits, int exponent, boolean negative) {
+        if (digits <= MAX_FLOAT_DIGITS && Math.abs(exponent) < FLOAT_POWERS.length) {
+            float value = significand;
+            value = exponent >= 0 ? value * FLOAT_POWERS[exponent] : value / FLOAT_POWERS[-exponent];
+            return negative ? -value : value;
+        }
+        return Double.NaN;
+    }
+
+    private static double parseSlowly(byte[] input, int from, int length, boolean single) {
+        var text = new String(input, from, length, ISO_8859_1);
+        return single ? Float.parseFloat(text) : Double.parseDouble(text);
+    }
+
+    /// Returns a significand followed by the digits between two offsets, modulo 2^64.
+    private static long accumulate(long significand, byte[] input, int from, int to) {
+        var value = significand;
+        var p = from;
+        for (; p + Long.BYTES <= to; p += Long.BYTES) {
+            value = value * EIGHT_DIGITS + eightDigits((long) LONGS.get(input, p));
+        }
+        for (; p < to; p++) {
+            value = value * RADIX + (input[p] - '0');
+        }
+        return value;
+    }
+
+    /// Returns a mask of the high nibble of each of 8 bytes that is not an ASCII digit. The bytes of a number are
+    /// ASCII, so adding 6 to one never carries into the next.
+    private static long nonDigits(long chunk) {
+        return ((chunk & HIGH_NIBBLES) ^ ZEROS) | (((chunk + SIXES) & HIGH_NIBBLES) ^ ZEROS);
+    }
+
+    /// Returns the value of 8 ASCII digits, the first one in the lowest byte: each step combines neighbours, with
+    /// one multiplication for all of them.
+    private static long eightDigits(long chunk) {
+        var digits = chunk - ZEROS;
+        var pairs = digits * TENS + (digits >>> Byte.SIZE);
+        return ((pairs & LOW_BYTES) * HUNDREDS_AND_MILLIONS
+                        + ((pairs >>> Short.SIZE) & LOW_BYTES) * ONES_AND_TEN_THOUSANDS)
+                >>> Integer.SIZE;
+    }
+
+    /// Returns the digits of a number after its leading zeros, which JSON writes only as `0.000…`.
+    private static int significantDigits(byte[] input, int start, int integerEnd, int end) {
+        if (input[start] != '0') {
+            return end - start - (end == integerEnd ? 0 : 1);
+        }
+        var p = integerEnd + 1;
+        while (p < end && input[p] == '0') {
+            p++;
+        }
+        return end - p;
+    }
+
+    /// Returns the exponent after the `e`, capped where only the slow path can tell the result.
+    private static int exponent(byte[] input, int from, int to) {
+        var p = from;
+        var negative = input[p] == '-';
+        if (negative || input[p] == '+') {
+            p++;
+        }
+        var value = 0;
+        for (; p < to && value < MAX_FAST_EXPONENT; p++) {
+            value = value * RADIX + (input[p] - '0');
+        }
+        return negative ? -value : value;
     }
 
     private static boolean isDigit(byte b) {
         return b >= '0' && b <= '9';
     }
 
-    /// A number as a mantissa of significant digits and a power of ten, as far as the fast paths need: more digits
-    /// than they take only count, and leave the mantissa inexact.
+    /// A number as a significand and a power of ten, as far as the fast paths need: the significand is exact for up to
+    /// 19 significant digits, and more digits only count. Its digits are read 8 at a time while they last. Compiled
+    /// with its caller, it is replaced by its fields: reading a number allocates nothing.
     private static final class Decimal {
 
         private final boolean negative;
-        private long mantissa;
+        private long significand;
         // The significant digits: those after the leading zeros.
         private int digits;
         private int exponent;
 
-        Decimal(byte[] input, int from, int length) {
-            var to = from + length;
-            var p = from;
-            negative = input[p] == '-';
-            if (negative) {
-                p++;
+        Decimal(byte[] input, int from, int to) {
+            var start = input[from] == '-' ? from + 1 : from;
+            negative = start != from;
+            var integerEnd = digits(input, start, to);
+            var end = integerEnd;
+            if (end < to && input[end] == '.') {
+                end = digits(input, end + 1, to);
+                exponent = integerEnd + 1 - end;
             }
-            for (; p < to && isDigit(input[p]); p++) {
-                add(input[p]);
+            digits = end - start - (end == integerEnd ? 0 : 1);
+            if (digits > MAX_EXACT_DIGITS) {
+                digits = significantDigits(input, start, integerEnd, end);
             }
-            if (p < to && input[p] == '.') {
-                for (p++; p < to && isDigit(input[p]); p++) {
-                    add(input[p]);
-                    exponent--;
-                }
-            }
-            if (p < to) {
-                var written = exponent(input, p + 1, to);
+            if (end < to) {
+                var written = exponent(input, end + 1, to);
                 if (Math.abs(written) >= MAX_FAST_EXPONENT) {
                     // Capped: only the slow path gives the right value.
                     digits = Integer.MAX_VALUE;
@@ -181,27 +266,22 @@ public final class Numbers {
             }
         }
 
-        private void add(byte digit) {
-            if (digits < MAX_EXACT_DIGITS) {
-                mantissa = mantissa * RADIX + (digit - '0');
-            }
-            if (digits > 0 || digit != '0') {
-                digits++;
-            }
-        }
-
-        /// Returns the exponent after the `e`, capped where only the slow path can tell the result.
-        private static int exponent(byte[] input, int from, int to) {
+        /// Adds the digits from an offset to the significand, and returns the offset after them.
+        private int digits(byte[] input, int from, int to) {
+            var value = significand;
             var p = from;
-            var negative = input[p] == '-';
-            if (negative || input[p] == '+') {
-                p++;
+            for (; p + Long.BYTES <= to; p += Long.BYTES) {
+                var chunk = (long) LONGS.get(input, p);
+                if (nonDigits(chunk) != 0) {
+                    break;
+                }
+                value = value * EIGHT_DIGITS + eightDigits(chunk);
             }
-            var value = 0;
-            for (; p < to && value < MAX_FAST_EXPONENT; p++) {
+            for (; p < to && isDigit(input[p]); p++) {
                 value = value * RADIX + (input[p] - '0');
             }
-            return negative ? -value : value;
+            significand = value;
+            return p;
         }
     }
 }

@@ -122,7 +122,8 @@ Strings and numbers are not decoded in stage 1: they are decoded when they are r
 
 - ASCII without escapes: `new String(bytes, offset, length, ISO_8859_1)`, a copy into a compact string;
 - non-ASCII without escapes: `new String(..., UTF_8)`, safe because stage 1 validated the bytes;
-- with escapes: a custom decoder into a reused `char[]`.
+- with escapes: the bytes between escape sequences copied as they are, each escape sequence written as its UTF-8
+  bytes, then one `new String(..., UTF_8)`.
 
 Memory: about 8 bytes per token, often as much as the input or more, and the input must be in memory. Every input ends up
 as a `byte[]` anyway (see [Inputs](#inputs)).
@@ -244,15 +245,18 @@ while (reader.hasNextMember()) {
 - `peek()` returns the `JsonType` of the next value.
 - Containers: `beginObject()`, `hasNextMember()`, `beginArray()`, `hasNextElement()`; the `hasNext` methods return
   `false` at the end and leave the container.
+- `size()` returns the number of elements or members of the container being read, from the tape, so that a collection
+  is sized once.
 - Names: `name(JsonNames)` returns the index of the name, or -1, with no `String` created: for a shared name, from a
   cache by number in the `JsonNames`, filled on first use and shared by all threads; otherwise, by comparing the raw
   bytes of the name with the precomputed UTF-8 bytes of the candidates. `readName()` returns the name as a `String`.
 - Values: `readString()`, `readInt()`, `readLong()`, `readShort()`, `readByte()`, `readDouble()`, `readFloat()`,
   `readBigInteger()`, `readBigDecimal()`, `readBoolean()`, `readNull()` (returns whether the value is `null`, and reads
   it if it is), `readValue()` (a `JsonValue`), `skipValue()`.
-- Number reads follow `JsonNumber` (`readInt()` on `1.5` is a `JsonMappingException`). `readDouble()` uses the Clinger
-  fast path (mantissa below 2⁵³ and a power of ten up to 22: one exact multiplication or division) and falls back on
-  `Double.parseDouble`.
+- Number reads follow `JsonNumber` (`readInt()` on `1.5` is a `JsonMappingException`). Digits are read 8 at a time, as a
+  `long`. `readDouble()` uses the Clinger fast path (mantissa below 2⁵³ and a power of ten up to 22: one exact
+  multiplication or division), then the algorithm of Eisel and Lemire for up to 19 significant digits, and falls back
+  on `Double.parseDouble`.
 - For binders: `skipUnknownMember(JsonNames)` skips the value of a member that `name` did not know, or rejects it under
   `UnknownMembers.REJECT`; `peekTag(member, tags)` finds the tag of an object laid out with `@JsonTagMember`, wherever
   the member is, without moving; `mark()` and `mappingError(mark, message)` report an error at a value read earlier.
@@ -326,7 +330,8 @@ On `JsonParser.Builder`, all checked in stage 1, each failure a `JsonParseExcept
 - Types: `String`; primitives and their boxes; `BigInteger`, `BigDecimal`; enums (by name); records; `List<T>`,
   `Set<T>` (duplicates rejected), `Map<String, T>`; `JsonValue` and its subtypes; `Instant`, `OffsetDateTime`,
   `LocalDate`, `LocalTime`, `LocalDateTime` and `Duration` from ISO-8601 strings; `UUID` and `URI` from their canonical
-  strings. Collections are unmodifiable, in document order.
+  strings. Collections are unmodifiable, in document order: an `ArrayList`, `LinkedHashSet` or `LinkedHashMap`
+  created at the size `reader.size()` gives, then wrapped, without a copy.
 - A component of type `@Nullable JsonValue` tells a missing member (`null`) from a `null` member (`JsonNull.INSTANCE`),
   which a PATCH needs.
 
@@ -482,8 +487,9 @@ JMH, in `json-benchmarks`, built and run with
   and a built one, against the trees of the other libraries.
 - Binding is not in the module: compiling records with the processor under the parent's `-Xlint:all -Werror` fails
   on the processing lint, as gaia's `StepProcessor` never claims the annotations it processes, while Error Prone's
-  `DoNotClaimAnnotations` forbids claiming them. It was measured outside the build, on partial records of
-  `twitter.json` and full records of `canada.json`.
+  `DoNotClaimAnnotations` forbids claiming them. It is measured outside the build, on partial records of
+  `twitter.json` and `status.json`, and full records of `citm_catalog.json` and `canada.json`, against the same
+  records bound by the other libraries.
 
 ## Testing
 

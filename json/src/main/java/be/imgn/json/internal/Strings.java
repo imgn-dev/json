@@ -36,36 +36,34 @@ public final class Strings {
     }
 
     private static String unescape(byte[] input, int from, int to) {
-        // Each escape sequence and each UTF-8 sequence is at least as long in bytes as in UTF-16 code units.
-        var chars = new char[to - from];
+        // Each escape sequence is at least as long as the UTF-8 sequence it stands for: the bytes between them are
+        // copied as they are, and the string decoded once.
+        var bytes = new byte[to - from];
         var n = 0;
         var p = from;
         while (p < to) {
-            var b = input[p];
-            if (b == '\\') {
-                if (input[p + 1] == 'u') {
-                    chars[n++] = (char) hex4(input, p + 2);
+            var backslash = Swar.indexOf(input, p, to, (byte) '\\');
+            System.arraycopy(input, p, bytes, n, backslash - p);
+            n += backslash - p;
+            if (backslash == to) {
+                break;
+            }
+            if (input[backslash + 1] == 'u') {
+                var unit = (char) hex4(input, backslash + 2);
+                p = backslash + UNICODE_ESCAPE_LENGTH;
+                var codePoint = (int) unit;
+                if (Character.isHighSurrogate(unit)) {
+                    // The tape builder rejects a high surrogate that an escaped low surrogate does not follow.
+                    codePoint = Character.toCodePoint(unit, (char) hex4(input, p + 2));
                     p += UNICODE_ESCAPE_LENGTH;
-                } else {
-                    chars[n++] = unescape(input[p + 1]);
-                    p += 2;
                 }
-            } else if (b >= 0) {
-                chars[n++] = (char) b;
-                p++;
+                n = Utf8.encode(codePoint, bytes, n);
             } else {
-                var length = Utf8.sequenceLength(Byte.toUnsignedInt(b));
-                var codePoint = Utf8.codePoint(input, p, length);
-                if (length < Utf8.MAX_LENGTH) {
-                    chars[n++] = (char) codePoint;
-                } else {
-                    chars[n++] = Character.highSurrogate(codePoint);
-                    chars[n++] = Character.lowSurrogate(codePoint);
-                }
-                p += length;
+                bytes[n++] = (byte) unescape(input[backslash + 1]);
+                p = backslash + 2;
             }
         }
-        return new String(chars, 0, n);
+        return new String(bytes, 0, n, UTF_8);
     }
 
     private static char unescape(byte escaped) {

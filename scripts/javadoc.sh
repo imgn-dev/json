@@ -62,6 +62,22 @@ trap 'rm -rf "$work"' EXIT
 module_path=$(awk 1 "$work"/classpath-*.txt | tr ':' '\n' \
     | grep -v -e '^$' -e '/be/imgn/json/' -e '/target/classes' | sort -u | paste -sd: -)
 
+# The API documentation of gaia, whose types the json modules take and return,
+# as gaia publishes it at the version this checkout uses: a released version, or
+# the snapshot. Its element-list is fetched beforehand, retried, as javadoc would
+# fetch it once and, with -Werror, fail.
+GAIA_DOCS=https://imgn-dev.github.io/gaia/api
+gaia_version=$(sed -nE 's|.*<gaia.version>([^<]+)</gaia.version>.*|\1|p' "$checkout/pom.xml" | head -n 1)
+[[ -n $gaia_version ]] || die "No gaia.version in $checkout/pom.xml."
+if [[ $gaia_version == *-SNAPSHOT ]]; then
+    gaia_docs=$GAIA_DOCS/snapshot/
+else
+    gaia_docs=$GAIA_DOCS/$gaia_version/
+fi
+mkdir "$work/gaia"
+curl -fsS --retry 3 -o "$work/gaia/element-list" "${gaia_docs}element-list" \
+    || die "Cannot fetch the element-list of gaia's API documentation from $gaia_docs."
+
 rm -rf "$output"
 # The same checks as the javadoc jars of the parent POM: -Werror for
 # failOnWarnings, -Xdoclint:all,-missing for doclint.
@@ -71,5 +87,6 @@ javadoc -d "$output" -quiet -notimestamp -Werror -Xdoclint:all,-missing \
     --module "$(IFS=,; echo "${modules[*]}")" \
     ${module_path:+--module-path "$module_path"} \
     -linkoffline "https://docs.oracle.com/en/java/javase/$JDK/docs/api/" "$JDK_ELEMENT_LIST_DIR" \
+    -linkoffline "$gaia_docs" "$work/gaia" \
     -doctitle "json $version API" \
     -windowtitle "json $version API"

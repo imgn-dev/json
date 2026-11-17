@@ -78,7 +78,8 @@ strings, and checks the type of a <a href="be.imgn.json/be/imgn/json/JsonValue.h
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="be.imgn.json/be/imgn/json/JsonException.html" title="class in be.imgn.json">JsonException</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
-<div class="block">Thrown when a document cannot be read: it is not valid JSON, or it does not bind to the type it is read as.</div>
+<div class="block">Thrown when a document cannot be read: it is not valid in the format of the parser, or it does not bind to the
+type it is read as.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="be.imgn.json/be/imgn/json/JsonFormat.html" title="enum class in be.imgn.json">JsonFormat</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab3">
@@ -118,7 +119,7 @@ sealed interface, in place of its Java name.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="be.imgn.json/be/imgn/json/JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab5">
-<div class="block">Thrown when a document is not valid JSON, or exceeds a limit of the parser.</div>
+<div class="block">Thrown when a document is not valid in the format of the parser, or exceeds a limit of the parser.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/JsonParser.html" title="class in be.imgn.json">JsonParser</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
@@ -136,7 +137,7 @@ object with two members of the same name, or exceeds a limit, is rejected with a
 <div class="col-first even-row-color all-classes-table all-classes-table-tab6"><a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab6">
 <div class="block">Marks a record, or a sealed interface of records, that documents bind to, with
-[JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+<a href="be.imgn.json/be/imgn/json/JsonParser.html#parseAs(java.lang.Class,byte%5B%5D)">JsonParser#parseAs(Class, byte[])</a>, and that
 <a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)">JsonWriter#formatAs(Class, Object)</a> writes.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" title="class in be.imgn.json.stream">JsonStreamReader</a></div>

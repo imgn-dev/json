@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">JsonStreamReader</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block"><p>Reads a document value by value, as typed reads. The parser validated the whole document before the first read, so
-reading never finds invalid JSON: it fails only on a value of a type other than the one read, with a
+reading never finds an invalid document: it fails only on a value of a type other than the one read, with a
 <a href="../JsonMappingException.html" title="class in be.imgn.json"><code>JsonMappingException</code></a>, or on a call out of order, with an <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link"><code>IllegalStateException</code></a>.</p>
 <pre><code class="language-java">reader.beginObject();
 while (reader.hasNextMember()) {

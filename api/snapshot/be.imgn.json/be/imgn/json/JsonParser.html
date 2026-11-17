@@ -105,7 +105,7 @@ another <a href="JsonFormat.html" title="enum class in be.imgn.json"><code>JsonF
 JsonParser strict = JsonParser.builder().maxDepth(64).unknownMembers(UnknownMembers.REJECT).build();
 </code></pre>
 <p>A document is validated whole before anything is read from it. Everything is parsed from UTF-8 bytes: a <code>String</code>
-is encoded first. A byte order mark is rejected.</p>
+is encoded first. A byte order mark is rejected, except by JSON5, which reads it as white space.</p>
 <p>A parser is immutable and thread-safe, and holds nothing but its settings: creating one per call costs nothing.</p>
 </div>
 <dl class="notes">
@@ -315,7 +315,7 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the document</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, or exceeds a limit</dd>
 </dl>
 </div>
 </section>
@@ -332,7 +332,8 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the document</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, has an unpaired
+surrogate, or exceeds a limit</dd>
 </dl>
 </div>
 </section>
@@ -350,7 +351,7 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the document</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, or exceeds a limit</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the source cannot be read</dd>
 </dl>
 </div>
@@ -369,7 +370,8 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the document</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, has an unpaired
+surrogate, or exceeds a limit</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the source cannot be read</dd>
 </dl>
 </div>
@@ -387,7 +389,7 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the reader, at the root value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, or exceeds a limit</dd>
 </dl>
 </div>
 </section>
@@ -404,7 +406,8 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the reader, at the root value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, has an unpaired
+surrogate, or exceeds a limit</dd>
 </dl>
 </div>
 </section>
@@ -426,7 +429,7 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
 <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
@@ -451,7 +454,8 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, has an unpaired
+surrogate, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
 <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
@@ -476,7 +480,7 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
 <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>
@@ -502,7 +506,8 @@ the annotation processor generated.</div>
 <dt>Returns:</dt>
 <dd>the value</dd>
 <dt>Throws:</dt>
-<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid JSON, has an unpaired surrogate, or exceeds a limit</dd>
+<dd><code><a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a></code> - if the document is not valid in the format of this parser, has an unpaired
+surrogate, or exceeds a limit</dd>
 <dd><code><a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></code> - if the document does not bind to the type</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if no binder is registered for the type: see
 <a href="bind/JsonRecord.html" title="annotation interface in be.imgn.json.bind">JsonRecord</a></dd>

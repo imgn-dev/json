@@ -286,7 +286,7 @@ object, reads it and returns <code>false</code>.</div>
 <dl class="index">
 <dt><a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html#IGNORE" class="member-name-link">IGNORE</a> - Enum constant in enum class be.imgn.json.bind.<a href="be.imgn.json/be/imgn/json/bind/UnknownMembers.html" title="enum class in be.imgn.json.bind">UnknownMembers</a></dt>
 <dd>
-<div class="block">Skips the member; its value must still be valid JSON.</div>
+<div class="block">Skips the member; its value must still be valid.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html#indent(int)" class="member-name-link">indent(int)</a> - Method in class be.imgn.json.<a href="be.imgn.json/be/imgn/json/JsonWriter.Builder.html" title="class in be.imgn.json">JsonWriter.Builder</a></dt>
 <dd>
@@ -345,7 +345,8 @@ strings, and checks the type of a <a href="be.imgn.json/be/imgn/json/JsonValue.h
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonException.html" class="type-name-link" title="class in be.imgn.json">JsonException</a> - Exception Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
-<div class="block">Thrown when a document cannot be read: it is not valid JSON, or it does not bind to the type it is read as.</div>
+<div class="block">Thrown when a document cannot be read: it is not valid in the format of the parser, or it does not bind to the
+type it is read as.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonFormat.html" class="type-name-link" title="enum class in be.imgn.json">JsonFormat</a> - Enum Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
@@ -385,7 +386,7 @@ sealed interface, in place of its Java name.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParseException.html" class="type-name-link" title="class in be.imgn.json">JsonParseException</a> - Exception Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
-<div class="block">Thrown when a document is not valid JSON, or exceeds a limit of the parser.</div>
+<div class="block">Thrown when a document is not valid in the format of the parser, or exceeds a limit of the parser.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/JsonParser.html" class="type-name-link" title="class in be.imgn.json">JsonParser</a> - Class in <a href="be.imgn.json/be/imgn/json/package-summary.html">be.imgn.json</a></dt>
 <dd>
@@ -411,7 +412,7 @@ object with two members of the same name, or exceeds a limit, is rejected with a
 <dt><a href="be.imgn.json/be/imgn/json/bind/JsonRecord.html" class="type-name-link" title="annotation interface in be.imgn.json.bind">JsonRecord</a> - Annotation Interface in <a href="be.imgn.json/be/imgn/json/bind/package-summary.html">be.imgn.json.bind</a></dt>
 <dd>
 <div class="block">Marks a record, or a sealed interface of records, that documents bind to, with
-[JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+<a href="be.imgn.json/be/imgn/json/JsonParser.html#parseAs(java.lang.Class,byte%5B%5D)">JsonParser#parseAs(Class, byte[])</a>, and that
 <a href="be.imgn.json/be/imgn/json/JsonWriter.html#formatAs(java.lang.Class,T)">JsonWriter#formatAs(Class, Object)</a> writes.</div>
 </dd>
 <dt><a href="be.imgn.json/be/imgn/json/stream/JsonStreamReader.html" class="type-name-link" title="class in be.imgn.json.stream">JsonStreamReader</a> - Class in <a href="be.imgn.json/be/imgn/json/stream/package-summary.html">be.imgn.json.stream</a></dt>

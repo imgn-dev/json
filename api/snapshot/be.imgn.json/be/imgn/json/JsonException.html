@@ -91,7 +91,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public abstract sealed class </span><span class="element-name type-name-label">JsonException</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a></span>
 <span class="permits">permits <a href="JsonParseException.html" title="class in be.imgn.json">JsonParseException</a>, <a href="JsonMappingException.html" title="class in be.imgn.json">JsonMappingException</a></span></div>
-<div class="block"><p>Thrown when a document cannot be read: it is not valid JSON, or it does not bind to the type it is read as.</p>
+<div class="block"><p>Thrown when a document cannot be read: it is not valid in the format of the parser, or it does not bind to the
+type it is read as.</p>
 <p>The message starts with the position of the error and, below the root, its path, then states what was expected and
 what was found: <code>line 3, column 14, at /items/2: expected ',' or ']' after an element, found ':'</code>.</p>
 </div>

@@ -69,7 +69,7 @@ loadScripts(document, 'script');</script>
 <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Target.html" title="class or interface in java.lang.annotation" class="external-link">@Target</a>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/ElementType.html#TYPE" title="class or interface in java.lang.annotation" class="external-link">TYPE</a>)
 </span><span class="modifiers">public @interface </span><span class="element-name type-name-label">JsonRecord</span></div>
 <div class="block"><p>Marks a record, or a sealed interface of records, that documents bind to, with
-[JsonParser#parseAs(Class, byte[])][be.imgn.json.JsonParser#parseAs(Class, byte[])], and that
+<a href="../JsonParser.html#parseAs(java.lang.Class,byte%5B%5D)">JsonParser#parseAs(Class, byte[])</a>, and that
 <a href="../JsonWriter.html#formatAs(java.lang.Class,T)">JsonWriter#formatAs(Class, Object)</a> writes.</p>
 <pre><code class="language-java">@JsonRecord
 record Order(long id, Customer customer, List&lt;Line&gt; lines, @Nullable Instant shipped) {}

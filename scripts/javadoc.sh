@@ -32,9 +32,11 @@ die() {
 [[ $# -eq 2 ]] || die "Usage: $0 <checkout> <output directory>"
 checkout=$(cd "$1" && pwd)
 output=$2
-[[ -f $checkout/.mvn/maven.config ]] || die "$checkout is not a json checkout."
-version=$(sed -nE 's/.*-Drevision=([^[:space:]]+).*/\1/p' "$checkout/.mvn/maven.config")
-[[ -n $version ]] || die "No -Drevision in $checkout/.mvn/maven.config."
+[[ -f $checkout/pom.xml && -x $checkout/mvnw ]] || die "$checkout is not a json checkout."
+# The project's version is the first <version> after the parent's.
+version=$(awk '/<\/parent>/ { found = 1 } found && /<version>/ { gsub(/.*<version>|<\/version>.*/, ""); print; exit }' \
+    "$checkout/pom.xml")
+[[ -n $version ]] || die "No version in $checkout/pom.xml."
 
 modules=()
 source_paths=()

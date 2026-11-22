@@ -8,7 +8,7 @@
   <parent>
     <groupId>be.imgn.json</groupId>
     <artifactId>json-parent</artifactId>
-    <version>${revision}</version>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>json-benchmarks</artifactId>
